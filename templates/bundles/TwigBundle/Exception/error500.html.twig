@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Error 500{% endblock %}
+
+{% block body %}
+
+<div class="row errors">
+    <h2 class="text-center text-danger">Internal Server Error!</h2>
+    <h3 class="text-center text-light">Contact us for assistance or return to home.</h3>
+    <div class="d-flex justify-content-center mt-4">
+        <a id="cancel-reserve" class="me-4" href="{{ path('contact') }}">Contact</a>
+        <a id="confirm-reserve" href="{{ path('home') }}">Home</a>
+    </div>
+</div>
+
+{% endblock %}

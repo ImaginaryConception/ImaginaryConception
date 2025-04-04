@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block body %}
+
+  <div class="mt-6">
+
+    <div class="d-flex justify-content-center my-5 infos">
+      <p class="text-light text-center"><span class="fw-bold">E-mail address: </span>{{ app.user.email }}</p>
+    </div>
+    <div class="d-flex justify-content-center my-5 infos">
+      <p class="text-light text-center"><span class="fw-bold">Password: </span>••••••••</p>
+    </div>
+
+    <div class="my-5 d-flex justify-content-center">
+      <a id="edit-profil" class="text-decoration-none" href="{{ path('edit_profil', {'id': user.id}) }}">Edit profile</a>
+    </div>
+
+  </div>
+
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Websites purchases{% endblock %}
+
+{% block body %}
+
+	<div class="row mx-auto">
+
+		{% for website in websites %}
+
+			<div class="my-5 row mx-auto">
+
+				<p class="text-light text-center">
+					<span class="fw-bold mx-2">Full name</span>
+				</p>
+				<p class="text-light text-center">{{ website.lastnameFirstname }}</p>
+				<hr class="text-light mx-auto w-25">
+                <p class="text-light text-center">
+					<span class="fw-bold mx-2">Residence</span>
+				</p>
+				<p class="text-light text-center">{{ website.domicile }}</p>
+				<hr class="text-light mx-auto w-25">
+                <p class="text-light text-center">
+					<span class="fw-bold mx-2">Website type</span>
+				</p>
+				<p class="text-light text-center">{{ website.websiteType }}</p>
+				<hr class="text-light mx-auto w-25">
+                <p class="text-light text-center">
+					<span class="fw-bold mx-2">Domain name</span>
+				</p>
+				<p class="text-light text-center">{{ website.domain }}</p>
+				<hr class="text-light mx-auto w-25">
+                <p class="text-light text-center">
+					<span class="fw-bold mx-2">Budget</span>
+				</p>
+				<p class="text-light text-center">{{ website.budget }}</p>
+				<hr class="text-light mx-auto w-25">
+                {# <p class="text-light text-center">
+					<span class="fw-bold mx-2">Cahier des charges</span>
+				</p>
+				<p class="text-light text-center">{{ website.specifications }}</p>
+				<hr class="text-light mx-auto w-25">
+                <p class="text-light text-center">
+					<span class="fw-bold mx-2">Maquettes visuelles</span>
+				</p>
+				<p class="text-light text-center">{{ website.models }}</p>
+				<hr class="text-light mx-auto w-25"> #}
+                <p class="text-light text-center">
+					<span class="fw-bold mx-2">Time before delivery</span>
+				</p>
+				<p class="text-light text-center">{{ website.delay }}</p>
+				<hr class="text-light mx-auto w-25">
+
+				<div class="d-flex justify-content-center mb-5" id="btn-row">
+
+					<a class="text-decoration-none" href="{{ path('contact_user', {'id': website.user.id, csrf_token: csrf_token('contact_user_' ~ website.user.id ) }) }}">Contact</a>
+
+				</div>
+
+				<hr class="text-light mx-auto w-50">
+
+			</div>
+
+	{% else %}
+
+		</div>
+
+		<p class="mt-6 col-12 text-center text-light bg-none">No current request.</p>
+
+	{% endfor %}
+
+{% endblock %}

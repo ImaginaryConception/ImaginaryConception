@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editing profile{% endblock %}
+
+{% block body %}
+
+<div id="edit_profil_form" class="row mt-6 mx-auto">
+
+  {{ form_start( edit_profil_form ) }}
+
+  {{ form_row( edit_profil_form.email) }}
+
+  <div class="d-flex justify-content-center mb-3">
+    <a class="text-center" aria-current="page" href="{{ path('app_forgot_password_request') }}">Forgot your password?</a>
+  </div>
+
+  {{ form_errors( edit_profil_form ) }}
+
+  {{ form_row( edit_profil_form.save ) }}
+
+  {{ form_end( edit_profil_form ) }}
+
+</div>
+
+{% endblock %}

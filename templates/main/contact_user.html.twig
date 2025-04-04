@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact User{% endblock %}
+
+{% block body %}
+
+<div id="contact_user_form" class="row mt-6 mx-auto">
+
+  {{ form_start( contact_user_form ) }}
+
+  {{ form_row( contact_user_form.email) }}
+
+  <p class="text-light text-center">If the user wishes to reply to you in return, he will have to reply to your e-mail address above.</p>
+
+  {{ form_row( contact_user_form.object ) }}
+
+  {{ form_row( contact_user_form.message ) }}
+
+  {{ form_errors( contact_user_form ) }}
+
+  {{ form_row( contact_user_form.save ) }}
+
+  {{ form_end( contact_user_form ) }}
+
+</div>
+
+{% endblock %}

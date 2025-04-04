@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Users{% endblock %}
+
+{% block body %}
+
+<div id="users-view" class="row mx-auto">
+
+    {% for user in users %}
+
+    <div id="user-list" class="my-5 row mx-auto">
+
+        <p class="text-light text-center"><span class="fw-bold mx-2">E-mail</span></p>
+        <p class="text-light text-center">{{ user.email }}</p>
+		<hr class="text-light mx-auto w-25">
+        {% if "ROLE_ADMIN" in user.roles %}
+        <p class="text-light text-center"><span class="fw-bold mx-2">Role</span></p>
+        <p class="text-light text-center">Administrator</p>
+        <hr class="text-light mx-auto w-25">
+        {% elseif "ROLE_USER" in user.roles %}
+        <p class="text-light text-center"><span class="fw-bold mx-2">Role</span></p>
+        <p class="text-light text-center">User</p>
+        <hr class="text-light mx-auto w-25">
+        {% endif %}
+
+        <div class="d-flex justify-content-center mb-5" id="btn-row">
+
+            <a class="me-3 text-decoration-none" href="{{ path('delete_user', {'id': user.id, csrf_token: csrf_token('delete_user_' ~ user.id ) }) }}">Delete</a>
+
+            <a class="text-decoration-none" href="{{ path('contact_user', {'id': user.id, csrf_token: csrf_token('contact_user_' ~ user.id ) }) }}">Contact</a>
+
+        </div>
+
+    </div>
+
+    {% else %}
+
+</div>
+
+<p class="mt-6 col-12 text-center text-light bg-none">No users to display.</p>
+
+{% endfor %}
+
+{% endblock %}

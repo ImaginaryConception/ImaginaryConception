@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact{% endblock %}
+
+{% block body %}
+
+	{# <div id="contact_form" class="row mx-auto">
+
+		{{ form_start( contact_form ) }}
+
+		{{ form_row( contact_form.firstname_lastname ) }}
+
+		{{ form_row( contact_form.email) }}
+
+		{{ form_row( contact_form.object ) }}
+
+		{{ form_row( contact_form.message ) }}
+
+		<div class="mb-3">
+			<div class="mb-2 text-center text-light">Security captcha *</div>
+			<div class="d-flex justify-content-center g-recaptcha" data-sitekey="{{ google_recaptcha_site_key }}"></div>
+		</div>
+
+		{{ form_row( contact_form.save ) }}
+
+		{{ form_errors( contact_form ) }}
+
+		{{ form_end( contact_form ) }}
+
+	</div #}
+
+	<div class="container text-white d-flex justify-content-center align-items-center">
+        <div class="contact-card text-center">
+            <h2>Contact</h2>
+            <p><i class="fa-solid fa-envelope me-2"></i> Email : <a href="mailto:exemple@email.com">anishamouche@gmail.com</a></p>
+            <p><i class="fa-solid fa-phone me-2"></i> Téléphone : <a href="tel:+33612345678">+33 7 49 43 07 18</a></p>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}<script src="https://www.google.com/recaptcha/api.js" async defer></script>{% endblock %}

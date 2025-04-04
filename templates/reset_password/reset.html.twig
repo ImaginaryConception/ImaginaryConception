@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reset
+{% endblock %}
+
+{% block body %}
+
+    <h2 class="text-light text-center mt-6">New Password</h2>
+
+	<div id="reset_form" class="row mt-5 mx-auto">
+
+		{{ form_start(resetForm) }}
+
+		{{ form_row(resetForm.plainPassword) }}
+
+		{{ form_errors(resetForm) }}
+
+		{% for flash_error in app.flashes('reset_password_error') %}
+			<div class="text-danger text-center" role="alert">{{ flash_error }}</div>
+		{% endfor %}
+
+		{{ form_row(resetForm.save) }}
+
+	    {{ form_end(resetForm) }}
+
+{% endblock %}

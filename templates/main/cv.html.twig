@@ -1,0 +1,171 @@
+{% set route = app.request.attributes.get('_route')%}
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>CV - Imaginary Conception</title>
+		<link rel="stylesheet" href="{{ asset('CSS/bootstrap.min.css') }}">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+		<link rel="stylesheet" href="{{ asset('CSS/styles.css') }}">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js" defer></script>
+		<script src="{{ asset(('JS/bootstrap.bundle.min.js')) }}" defer></script>
+		<script src="{{ asset(('JS/script.js')) }}" defer></script>
+	</head>
+	<body>
+
+		<div class="mx-auto mt-6">
+
+			<li class="mb-5 text-center d-flex justify-content-center">
+				<a style="font-size: 1.2rem;" class="text-center text-decoration-none" href="{{ path('home') }}">Retourner à l'accueil</a>
+			</li>
+
+			<p class="ml11 mt-6 fs-custom">
+				<span class="text-wrapper">
+					<span class="line line1"></span>
+					<span class="letters text-center col-9 mx-auto fw-bold text-light">Anis Hamouche</span>
+				</span>
+			</p>
+
+			<p class="ml12 mt-6 my-tooltip text-center mt-4 fs-custom-2 col-11 col-lg-6 mx-auto text-light">Développeur Web, Web mobile, Jeux-vidéos, 3D</p>
+
+			<p class="ml14 mt-6 my-tooltip text-center mt-4 fs-custom-2 col-11 col-lg-6 mx-auto text-light"></p>
+
+  			<button id="arrow" onclick="next()" class="mb-4 d-none text-center mx-auto bg-black radius-code d-flex justify-content-center mt-5 text-black fs-1"><i class="fa-sharp fa-solid fa-arrow-right"></i></button>
+
+			<p class="ml15 d-none fs-custom mt-6">
+		 		<span class="text-wrapper">
+					<span class="line line1"></span>
+					<span class="letters text-center col-9 mx-auto text-light">Coordonnées</span>
+				</span>
+			</p>
+
+			<p class="ml3 d-none mt-6 my-tooltip text-center mt-4 col-11 fs-custom-2 col-lg-6 mx-auto text-light">Mon adresse postale est le 292 Cours Émile Zola, 69100 Villeurbanne, France. Mon numéro de téléphone est le 07 49 43 07 18. Mon adresse e-mail est anishamouche@gmail.com. Je suis né le 08/06/2005.</p>
+
+			<button id="arrow1" onclick="next2()" class="mb-4 d-none text-center mx-auto bg-black radius-code d-flex justify-content-center mt-5 text-black fs-1"><i class="fa-sharp fa-solid fa-arrow-right"></i></button>
+
+			<p class="ml16 d-none fs-custom mt-5">
+				<span class="text-wrapper">
+					<span class="line line1"></span>
+					<span class="letters text-center col-9 mx-auto text-light">Compétences diplômes qualités</span>
+				</span>
+			</p>
+
+			<p class="ml6 d-none text-center mt-1 fw-bolder fs-custom-3 col-11 col-lg-6 mx-auto text-danger">Compétences (Langages, Framework, logiciels et moteurs)</p>
+
+			<p class="ml5 d-none my-tooltip text-center mt-4 fs-custom-2 col-11 col-lg-6 mx-auto text-light">HTML, CSS, JavaScript (et Ajax + jQuery) PHP, SQL, GIT, Bootstrap, Symfony, Angular, Ionic, Blender, Unreal Engine.</p>
+
+			<div class="d-none justify-content-center mb-4 mt-4 ml24">
+				{# <img class="w-5 lo-screen h-5 img-fluid" src="{{ asset('Images/lo.png') }}"></img> #}
+			</div>
+
+			<p class="ml4 d-none justify-content-center">
+  				<span class="text-wrapper">
+					{# <span class="letters text-light fs-custom-2 letters-left">Visitez le site web <a target="_blank" href="https://www.lemondedeludopus.fr">ici</a>.</span> #}
+				</span>
+			</p>
+
+			<button id="arrow2" onclick="next3()" class="mb-4 radius-code d-none text-center mx-auto bg-black d-flex justify-content-center mt-5 text-black fs-1"><i class="fa-sharp fa-solid fa-arrow-right"></i></button>
+
+			<p class="ml7 d-none text-center mt-1 fw-bolder fs-custom-3 col-11 col-lg-6 mx-auto text-danger">Compétences (Domaines)</p>
+
+			<p class="ml8 d-none mt-4 my-tooltip text-center mt-4 col-11 col-lg-6 mx-auto fs-custom-2 text-light">Développement web, conception de jeux-vidéos, programmation informatique, Programmation orienté objet.</p>
+
+			<div class="d-none justify-content-center mb-4 mt-4 ml25">
+				{# <img class="w-5 ic-screen h-5 img-fluid" src="{{ asset('Images/ic.png') }}"></img> #}
+			</div>
+
+			<p class="ml9 d-none justify-content-center">
+  				<span class="text-wrapper">
+					{# <span class="letters text-light letters-left">Visitez le site web <a target="_blank" href="{{ path('home') }}">ici</a>.</span> #}
+				</span>
+			</p>
+
+			<button id="arrow3" onclick="next4()" class="radius-code mb-4 d-none text-center mx-auto bg-black d-flex justify-content-center mt-5 text-black fs-1"><i class="fa-sharp fa-solid fa-arrow-right"></i></button>
+
+			<p class="ml10 d-none text-center mt-1 fw-bolder fs-custom-3 col-11 col-lg-6 mx-auto text-danger">Diplômes</p>
+
+			<p class="ml17 d-none mt-4 my-tooltip text-center mt-4 fs-custom-2 col-11 col-lg-6 mx-auto text-light">Titre professionnel classé au niveau 5 (BTS BAC +2) et certification Pix + SST.</p>
+
+			<div class="d-none justify-content-center mb-4 mt-4 ml26">
+				{# <img class="w-10 vg-screen h-10 img-fluid" src="{{ asset('Images/vg.png') }}"></img> #}
+			</div>
+
+			<p class="ml18 d-none justify-content-center">
+  				<span class="text-wrapper">
+					{# <span class="letters text-light fs-custom-2 letters-left">Visitez le site web <a target="_blank" href="https://www.varg31.fr">ici</a>.</span> #}
+				</span>
+			</p>
+
+			<button id="arrow4" onclick="next5()" class="radius-code mb-4 d-none text-center mx-auto bg-black d-flex justify-content-center mt-5 text-black fs-1"><i class="fa-sharp fa-solid fa-arrow-right"></i></button>
+
+			<p class="mf1 d-none text-center mt-1 fw-bolder fs-custom-3 col-11 col-lg-6 mx-auto text-danger">Qualités</p>
+
+			<p class="mf2 d-none mt-4 opacity0 my-tooltip text-center mt-4 fs-custom-2 col-11 col-lg-6 mx-auto text-light">Je suis curieux, ponctuel, organisé, pragmatique, relationnel, patient et calme.</p>
+
+			<div class="d-none justify-content-center mb-4 mt-4 mf3">
+				{# <img class="w-10 lh-screen h-10 img-fluid" src="{{ asset('Images/lh.png') }}"></img> #}
+			</div>
+
+			<p class="mf4 d-none justify-content-center">
+  				<span class="text-wrapper">
+					{# <span class="letters text-light fs-custom-2 d-flex justify-content-center mx-auto">Visitez le site web <a class="ms-1" target="_blank" href="https://www.lhannz.fr">ici</a>.</span> #}
+				</span>
+			</p>
+
+			<button id="arrow5" onclick="next6()" class="radius-code mb-4 d-none text-center mx-auto bg-black d-flex justify-content-center mt-5 text-black fs-1"><i class="fa-sharp fa-solid fa-arrow-right"></i></button>
+
+			<p class="ml101 d-none text-center mt-1 fw-bolder fs-custom-3 col-11 col-lg-6 mx-auto text-danger">Centres d’intérêt</p>
+			{# 5. Chemin Islamique #}
+
+			<p class="ml171 d-none mt-4 my-tooltip text-center mt-4 fs-custom-2 col-11 opacity0 col-lg-6 justify-content-center mx-auto text-light">Je suis principalement intéressé par les domaines du Développement Web, Applications mobiles, Cybersécurité, Intelligence artificielle, Modélisation et animation 3D, Conception de Jeux-vidéos, Cinéma et de l'Informatique.</p>
+			{# Un site internet avec du contenu islamique, des rappels, des invocations et toutes les sourates du Coran en français, arabe et phonétique à lire et à écouter. Beaucoup plus de contenu à venir. #}
+
+			<div class="d-none justify-content-center mb-4 mt-4 ml261">
+				{# <img class="w-10 ci-screen h-10 img-fluid" src="{{ asset('Images/mms.png') }}"></img> #}
+			</div>
+
+			<p class="ml181 d-none justify-content-center">
+  				{# <span class="text-wrapper">
+					<span class="letters text-light fs-custom-2 d-flex justify-content-center mx-auto">Visitez le site web <a class="ms-1" target="_blank" href="https://www.chemin-islamique.fr">ici</a>.</span>
+				</span> #}
+				<span class="text-wrapper">
+					{# <span class="letters text-light fs-custom-2 d-flex justify-content-center mx-auto">Non disponible</span> #}
+				</span>
+			</p>
+
+			<button id="arrow6" onclick="next7()" class="radius-code mb-4 d-none text-center mx-auto bg-black d-flex justify-content-center mt-5 text-black fs-1"><i class="fa-sharp fa-solid fa-arrow-right"></i></button>
+
+			<p class="ml19 d-none fs-custom mt-5">
+				<span class="text-wrapper">
+					<span class="line line1"></span>
+					<span class="letters text-center col-9 mx-auto text-light">Formations et expériences</span>
+				</span>
+			</p>
+
+			<p class="ml20 d-none text-center mt-1 fw-bolder fs-custom-3 col-11 col-lg-6 mx-auto text-danger"></p>
+
+			<p class="ml21 d-none mt-4 my-tooltip text-center mt-4 col-11 col-lg-6 mx-auto text-light">En 2022 : >Web Force 3 Développeur Web, Web Mobile et 3D / Stage dans une librairie (création de son site internet) | En 2023 : Dispositif en Amont de la Qualification (DAQ 2.0) / Stage dans une boutique d'informatique (création de son site internet) / Sauveteur Secouriste du Travail (SST).</p>
+
+			<div class="d-none justify-content-center mb-4 mt-4 ml23">
+				{# <img class="t-screen h-70 w-70 img-fluid" src="{{ asset('Images/thanatophobia-screen.png') }}"></img> #}
+			</div>
+
+			<p class="ml22 d-none justify-content-center">
+				<span class="text-wrapper">
+					{# <span class="letters text-light d-flex justify-content-center mx-auto">Allez à la page d'achat <a class="ms-1" target="_blank" href="https://www.imaginary-conception.com/Thanatophobia/1/">ici</a>.</span> #}
+				</span>
+			</p>
+
+			<a id="arrow7" id="seemore" class="mb-4 d-none text-black text-center mx-auto bg-black d-flex justify-content-center col-3 text-decoration-none mt-2 fs-5" target="_blank" href="{{ path('portfolio') }}">Cliquez ici pour consulter le portfolio.</a>
+
+		</div>
+
+		<div class="my-5">
+
+	</body>
+</html>

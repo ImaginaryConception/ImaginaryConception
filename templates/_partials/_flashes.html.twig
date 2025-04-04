@@ -1,0 +1,35 @@
+{% if app.session.flashBag.has('success') or app.session.flashBag.has('error') or app.session.flashBag.has('info') %}
+
+	<div class="container">
+		<div class="row">
+
+			{% for message in app.flashes('success') %}
+
+				<div class="flashes alert text-success text-center col-12 my-3 mt-6 alert-dismissible fade show fw-bold" role="alert">
+					{{ message }}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			{% endfor %}
+
+			{% for message in app.flashes('error') %}
+
+				<div class="flashes alert text-danger text-center col-12 my-3 mt-6 alert-dismissible fade show fw-bold" role="alert">
+					{{ message }}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+
+			{% endfor %}
+
+			{% for message in app.flashes('info') %}
+
+				<div class="flashes alert text-warning text-center col-12 my-3 mt-6 alert-dismissible fade show fw-bold" role="alert">
+					{{ message }}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+
+			{% endfor %}
+
+		</div>
+	</div>
+
+{% endif %}

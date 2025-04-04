@@ -1,0 +1,173 @@
+<div class="container-fluid mx-auto">
+
+	<div
+		class="row navbar-container">
+
+		<!-- SIDEBAR -->
+		<nav class="navbar d-md-flex navbar-black">
+
+			<!-- Sidebar Mobile/Tablet format -->
+			<button class="sidebar-toggler d-block d-xl-none button-style mt-5 position-fixed" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+				<i class="fa-solid fa-bars"></i>
+			</button>
+
+			<div class="offcanvas offcanvas-start bg-black" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+
+				<div class="offcanvas-header-2 bg-black mt-5">
+					<button type="button" class="close-style ms-3 me-2 fs-3" data-bs-dismiss="offcanvas" aria-label="Close">
+						<i class="fa-solid fa-x"></i>
+					</button>
+					<a class="text-light fs-3" href="{{ path('home') }}">
+						<i class="fa-solid home-btn fa-house"></i>
+					</a>
+				</div>
+
+				<div class="offcanvas-body px-3 py-2 bg-black side-container">
+					<ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
+						<li class="nav-item mt-5 mb-4">
+							<a class="link{{ route == 'games' ? ' nav-active' }}" href="{{ path('games') }}">Games</a>
+						</li>
+						<li class="nav-item mb-4">
+							<a class="link{{ route == 'website' ? ' nav-active' }}" href="{{ path('website') }}">Design your website</a>
+						</li>
+						<li class="nav-item mb-4">
+							<a class="link{{ route == 'portfolio' ? ' nav-active' }}" href="{{ path('portfolio') }}">Portfolio</a>
+						</li>
+						<li class="nav-item mb-4">
+							<a class="link{{ route == 'contact' ? ' nav-active' }}" href="{{ path('contact') }}">Contact</a>
+						</li>
+					</ul>
+
+
+					{# Bouton quand l'utilisateur est connecté #}
+
+					{% if app.user %}
+
+						<hr class="text-light">
+
+						<ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
+							<li class="nav-item mb-4">
+								<a class="link{{ route == 'profil' ? ' nav-active' }}" href="{{ path('profil') }}">Profile</a>
+							</li>
+
+							<li class="nav-item mb-4">
+								<a class="link{{ route == 'logout' ? ' nav-active' }}" href="{{ path('logout') }}">Logout</a>
+							</li>
+						</ul>
+
+						{# Bouton quand l'utilisateur n'est pas connecté #}
+
+					{% else %}
+
+						<hr class="text-light">
+
+						<li class="nav-item mb-4">
+							<a class="link{{ route == 'login' ? ' nav-active' }}" href="{{ path('login') }}">Login</a>
+						</li>
+
+						<li class="nav-item mb-4">
+							<a class="link{{ route == 'register' ? ' nav-active' }}" href="{{ path('register') }}">Register</a>
+						</li>
+
+					{% endif %}
+
+					{% if is_granted('ROLE_ADMIN') %}
+
+						<hr class="text-light">
+
+						<ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
+							<li class="nav-item mb-4">
+								<a class="link{{ route == 'requested_website' ? ' nav-active' }}" href="{{ path('requested_website') }}">Websites purchases</a>
+							</li>
+
+							<li class="nav-item mb-4">
+								<a class="link{{ route == 'users' ? ' nav-active' }}" href="{{ path('users') }}">Users</a>
+							</li>
+
+							<li class="nav-item mb-4">
+								<a class="link{{ route == 'add_game' ? ' nav-active' }}" href="{{ path('add_game') }}">Add game</a>
+							</li>
+						</ul>
+
+					{% endif %}
+
+				</div>
+
+			</nav>
+
+			<!-- NAVBAR Only full Screen -->
+
+			<nav class="d-none d-xl-flex flex-column mt-4 p-0">
+
+				<ul class="flex-row d-flex justify-content-start">
+					<li class="nav-item me-4">
+						<a class="link" href="{{ path('home') }}">Home</a>
+					</li>
+                    <li class="nav-item me-4">
+						<a class="link{{ route == 'games' ? ' nav-active' }}" href="{{ path('games') }}">Games</a>
+					</li>
+					<li class="nav-item me-4">
+						<a class="link{{ route == 'website' ? ' nav-active' }}" href="{{ path('website') }}">Design your website</a>
+					</li>
+					<li class="nav-item me-4">
+						<a class="link{{ route == 'portfolio' ? ' nav-active' }}" href="{{ path('portfolio') }}">Portfolio</a>
+					</li>
+					<li class="nav-item">
+						<a class="link{{ route == 'contact' ? ' nav-active' }}" href="{{ path('contact') }}">Contact</a>
+					</li>
+				</ul>
+
+				{% if is_granted('ROLE_ADMIN') %}
+
+				<ul class="flex-row d-flex justify-content-start">
+					<li class="nav-item me-4">
+						<a class="link{{ route == 'requested_website' ? ' nav-active' }}" href="{{ path('requested_website') }}">Websites purchases</a>
+					</li>
+
+					<li class="nav-item me-4">
+						<a class="link{{ route == 'users' ? ' nav-active' }}" href="{{ path('users') }}">Users</a>
+					</li>
+
+					<li class="nav-item">
+						<a class="link{{ route == 'add_game' ? ' nav-active' }}" href="{{ path('add_game') }}">Add game</a>
+					</li>
+
+				</ul>
+
+				{% endif %}
+
+				{# Bouton quand l'utilisateur est connecté #}
+
+				{% if app.user %}
+
+				<ul class="flex-row d-flex justify-content-start">
+					<li class="nav-item me-4">
+						<a class="link{{ route == 'profil' ? ' nav-active' }}" href="{{ path('profil') }}">Profile</a>
+					</li>
+
+					<li class="nav-item me-4">
+						<a class="link{{ route == 'logout' ? ' nav-active' }}" href="{{ path('logout') }}">Logout</a>
+					</li>
+				</ul>
+
+				{# Bouton quand l'utilisateur n'est pas connecté #}
+
+				{% else %}
+
+				<ul class="flex-row d-flex justify-content-start">
+				    <li class="nav-item me-4">
+					    <a class="link{{ route == 'login' ? ' nav-active' }}" href="{{ path('login') }}">Login</a>
+				    </li>
+
+				    <li class="nav-item me-4">
+					    <a class="link{{ route == 'register' ? ' nav-active' }}" href="{{ path('register') }}">Register</a>
+					</li>
+				</ul>
+
+				{% endif %}
+
+			</nav>
+
+		</div>
+
+	</div>

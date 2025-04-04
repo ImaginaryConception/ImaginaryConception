@@ -1,0 +1,144 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ game.title }}{% endblock %}
+
+{% block body %}
+
+	<div class="row col-12 col-md-8 mt-4 mx-auto">
+
+		<div class="row mx-auto mt-3">
+
+			<div class="row mt-4 mx-auto">
+
+				<div id="global">
+
+					<div id="left">
+						<div class="d-flex justify-content-center mb-4">
+							<img class="img-fluid radius-code" src="{{ asset('Images/Jeux/' ~ game.image) }}" alt="">
+						</div>
+					</div>
+
+					<div id="right w-100">
+						<p class="text-danger fw-bold text-center">Title</p>
+						<p class="text-light text-center">{{ game.title }}</p>
+
+						<p class="text-danger fw-bold text-center">Game category</p>
+						<p class="text-light text-center">{{ game.genre }}</p>
+
+						<p class="text-danger fw-bold text-center">Price</p>
+						<p class="text-light text-center">{{ game.price }}</p>
+
+						<p class="text-danger fw-bold text-center">Description</p>
+						<p class="text-light text-center">{{ game.description }}</p>
+					</div>
+
+					<hr class="text-light w-50 mx-auto d-lg-none">
+
+				</div>
+
+				<div class="d-flex flex-column flex-md-row mb-3">
+
+					{% if not is_granted('ROLE_ADMIN') %}
+
+						<a class="text-decoration-none d-flex me-3 me-md-0 ms-0 justify-content-center mx-auto test-3 justify-content-md-center me-md-3 mb-3" target="_blank" href="{{ game.buyLink }}"><i class="fa-solid fa-arrow-up-right-from-square me-1 mt-1"></i> Buy</a>
+
+						{% if game.title == "Thanatophobia" %}
+
+							<a id="seemore" class="text-decoration-none mb-3 mb-lg-0 mx-auto test-3 pointer text-lg-left me-md-3" onclick="overlay()">See more</a><div class="overlay d-none flex-row me-md-3 mb-md-0 mb-3 ms-md-0 mx-auto text-center justify-content-center"><a class="text-light pointer text-decoration-none me-2 lang" href="{{ path('thanatophobia') }}">English</a><p class="text-danger">-</p><a class="ms-2 pointer lang text-light text-decoration-none" href="{{ path('thanatophobia_fr') }}">Français</a></div>
+
+						{% endif %}
+
+					{% endif %}
+
+					{% if is_granted('ROLE_ADMIN') %}
+
+						<a class="text-decoration-none mb-3 mb-lg-0 mx-auto test-3 text-lg-left me-md-3" target="_blank" href="{{ game.buyLink }}"><i class="fa-solid fa-arrow-up-right-from-square"></i> Buy</a>
+
+						{% if game.title == "Thanatophobia" %}
+
+							<a id="seemore" class="text-decoration-none mb-3 mb-lg-0 mx-auto test-3 pointer text-lg-left me-md-3" onclick="overlay()">See more</a><div class="overlay d-none flex-row me-md-3 mb-md-0 mb-3 ms-md-0 mx-auto text-center justify-content-center"><a class="text-light pointer text-decoration-none me-2 lang" href="{{ path('thanatophobia') }}">English</a><p class="text-danger">-</p><a class="ms-2 pointer lang text-light text-decoration-none" href="{{ path('thanatophobia_fr') }}">Français</a></div>
+
+						{% endif %}
+
+						<a class="text-decoration-none test-2 text-lg-left me-auto test me-md-3" href="{{ path('delete_game', {'id': game.id, csrf_token: csrf_token('delete_game_' ~ game.id ) }) }}">
+							Delete
+						</a>
+
+						<a href="{{ path('edit_game', {'id': game.id}) }}" class="text-lg-left me-auto test text-decoration-none">
+							Edit
+						</a>
+
+					{% endif %}
+
+				</div>
+
+				<hr class="text-light w-lg-50 d-none d-lg-block">
+
+			</div>
+
+			<div class="row my-2 mx-auto my-md-3 mt-4">
+
+				<h2 class="text-light text-center col-12 py-3">An opinion?</h2>
+
+				{% if app.user %}
+
+					<div id="add_comment_form" class="row mt-4 mx-auto">
+
+						{{ form_start(commentForm) }}
+
+						{{ form_row(commentForm.content) }}
+
+						{{ form_errors(commentForm) }}
+
+						{{ form_row(commentForm.save) }}
+
+						{{ form_end(commentForm) }}
+
+					</div>
+
+				{% else %}
+					<p class="text-center text-danger mt-4 col-12">You have to
+						<a href="{{ path('login') }}">log in</a>
+						to leave a comment!</p>
+				{% endif %}
+
+				<h2 class="text-center text-light py-3 col-12 mt-4">Comments ({{ game.comments|length }})</h2>
+
+				<div class="d-flex flex-column overflow-auto position-relative flex-lg-row">
+
+					{% for comment in game.comments %}
+						<div class="d-flex comments mb-4 flex-column mx-auto">
+
+							<div class="text-center">
+								<p class="text-light">Published on
+									<span class="text-muted">{{ comment.publicationDate|date('d/m/Y') }}</span>
+								</p>
+							</div>
+							<hr class="text-light mx-auto w-25">
+							<div class="text-center text-break">
+								<p class="text-light text-break">
+									<span class="fw-bold">{{ comment.content|nl2br }}</span>
+								</p>
+							</div>
+
+							{% if (is_granted('ROLE_ADMIN')) %}
+								<a href="{{ path('comment_delete', {'id': comment.id, csrf_token: csrf_token('comment_delete_' ~ comment.id )}) }}" id="comment-delete" class="mt-3 text-decoration-none text-center">Delete</a>
+							{% endif %}
+
+						</div>
+
+					{% else %}
+
+						<p class="my-5 col-12 text-center text-light bg-none">Be the first to comment!</p>
+
+					{% endfor %}
+
+				</div>
+
+				<iframe width="560" height="315" class="d-flex mx-auto justify-content-center" src="{{ game.trailer }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+			</div>
+
+		</div>
+
+	{% endblock %}

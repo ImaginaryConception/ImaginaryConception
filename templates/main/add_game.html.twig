@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Adding a game{% endblock %}
+
+{% block body %}
+
+<div id="add_game_form" class="row mt-6 mx-auto">
+
+  {{ form_start( add_game_form ) }}
+
+  {{ form_row( add_game_form.title ) }}
+
+  {{ form_row( add_game_form.genre ) }}
+
+  {{ form_row( add_game_form.description ) }}
+
+  {{ form_row( add_game_form.buylink ) }}
+
+  {{ form_row( add_game_form.trailer ) }}
+
+  {{ form_row( add_game_form.price ) }}
+
+  <p class="text-danger text-center">You can leave the field empty.</p>
+
+  <p class="text-light text-center">Game logo</p>
+
+  {{ form_row( add_game_form.image ) }}
+
+  {{ form_errors( add_game_form ) }}
+
+  {{ form_row( add_game_form.save ) }}
+
+  {{ form_end( add_game_form ) }}
+
+</div>
+
+{% endblock %}

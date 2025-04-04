@@ -1,0 +1,204 @@
+{% set route = app.request.attributes.get('_route')%}
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<!--[if lt IE 9]>
+							<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+						<![endif]-->
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Thanatophobia - Imaginary Conception</title>
+		<link rel="stylesheet" href="{{ asset('CSS/bootstrap.min.css') }}">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+		<link rel="stylesheet" href="{{ asset('CSS/styles.css') }}">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js" defer></script>
+		<script src="{{ asset(('JS/bootstrap.bundle.min.js')) }}" defer></script>
+		<script src="{{ asset(('JS/script.js')) }}" defer></script>
+	</head>
+	<body>
+
+		<div class="mx-auto mt-6">
+
+			<li class="mb-5 text-center d-flex justify-content-center">
+				<a style="font-size: 1.2rem;" class="text-center text-decoration-none" href="{{ path('home') }}">Retourner à l'accueil</a>
+			</li>
+
+			<p class="ml11 mt-6 fs-custom">
+				<span class="text-wrapper">
+					<span class="line line1"></span>
+					<span class="letters text-center col-9 mx-auto fw-bold text-light">Thanatophobia</span>
+				</span>
+			</p>
+
+			<p class="ml12 mt-6 my-tooltip text-center mt-4 fs-custom-2 col-11 col-lg-6 mx-auto text-light">Développé, édité et publié par Imaginary Conception.</p>
+
+			<p class="ml14 mt-6 my-tooltip text-center mt-4 fs-custom-2 col-11 col-lg-6 mx-auto text-light">Thanatophobia est un jeu de survie dans une ambiance horrifique, jouable en solo ou en coopération avec un minimum de 2 joueurs et un maximum de 4 joueurs. Sortez indemne, ne vous faites pas prendre, il n'y aura pas de seconde chance.</p>
+
+			{# <audio id="sentence_1" style="display: none;">
+				<source src="{{ asset('audios/1_fr.mp3') }}">
+			</audio>
+
+			<audio id="sentence_2" style="display: none;">
+				<source src="{{ asset('audios/2_fr.mp3') }}">
+			</audio>
+
+			<audio id="sentence_3" style="display: none;">
+				<source src="{{ asset('audios/3_fr.mp3') }}">
+			</audio>
+
+			<audio id="sentence_4" style="display: none;">
+				<source src="{{ asset('audios/4_fr.mp3') }}">
+			</audio>
+
+			<audio id="sentence_5" style="display: none;">
+				<source src="{{ asset('audios/5_fr.mp3') }}">
+			</audio>
+
+			<audio id="sentence_6" style="display: none;">
+				<source src="{{ asset('audios/6_fr.mp3') }}">
+			</audio>
+
+			<audio id="sentence_7" style="display: none;">
+				<source src="{{ asset('audios/7_fr.mp3') }}">
+			</audio> #}
+
+			<button id="arrow" onclick="next()" class="mb-4 d-none text-center mx-auto bg-black radius-code d-flex justify-content-center mt-5 text-black fs-1">
+				<i class="fa-sharp fa-solid fa-arrow-right"></i>
+			</button>
+
+			<p class="ml15 d-none fs-custom mt-6">
+				<span class="text-wrapper">
+					<span class="line line1"></span>
+					<span class="letters text-center col-9 mx-auto text-light">FAQ</span>
+				</span>
+			</p>
+
+			<p class="ml3 d-none mt-6 my-tooltip text-center mt-4 col-11 fs-custom-2 col-lg-6 mx-auto text-light">Quel logiciel?<br>
+				J'ai créé ce jeu avec le moteur graphique, Unreal Engine.<br>
+				Combien de temps a duré le développement?<br>
+				Le développement de ce jeu a pris 3 ans.<br>
+			</p>
+
+			<button id="arrow1" onclick="next2()" class="mb-4 d-none text-center mx-auto bg-black radius-code d-flex justify-content-center mt-5 text-black fs-1">
+				<i class="fa-sharp fa-solid fa-arrow-right"></i>
+			</button>
+
+			<p class="ml16 d-none fs-custom mt-5">
+				<span class="text-wrapper">
+					<span class="line line1"></span>
+					<span class="letters text-center col-9 mx-auto text-light">Présentation</span>
+				</span>
+			</p>
+
+			<p class="ml6 d-none mt-4 my-tooltip text-center mt-4 fs-custom-2 col-11 col-lg-6 mx-auto text-light">Vous atterrissez dans un endroit étrange habité par un tueur fou, votre objectif est de sortir vivant, utilisez des indices.</p>
+
+			<p class="ml5 d-none my-tooltip text-center mt-4 fs-custom-2 col-11 col-lg-6 mx-auto text-light"></p>
+
+			<div class="d-none justify-content-center mb-4 mt-4 ml24">
+				<img class="w-70 lo-screen h-70 img-fluid" src="{{ asset('Images/clues.png') }}"></img>
+		</div>
+
+		<p class="ml4 d-none justify-content-center">
+			{# <span class="text-wrapper">
+				<span class="letters text-light fs-custom-2 letters-left">Visitez le site web <a target="_blank" href="https://www.lemondedeludopus.fr">ici</a>.</span>
+			</span> #}
+		</p>
+
+		<button id="arrow2" onclick="next3()" class="mb-4 radius-code d-none text-center mx-auto bg-black d-flex justify-content-center mt-5 text-black fs-1">
+			<i class="fa-sharp fa-solid fa-arrow-right"></i>
+		</button>
+
+		<p class="ml7 d-none mt-4 my-tooltip text-center mt-4 fs-custom-2 col-11 col-lg-6 mx-auto text-light">Chaque fois que vous démarrez une partie, vous serez dans un endroit différent, avec un objectif différent, vous aurez également un personnage aléatoire avec sa compétence associée.</p>
+
+		<p class="ml8 d-none mt-4 my-tooltip text-center mt-4 col-11 col-lg-6 mx-auto fs-custom-2 text-light"></p>
+
+		<div class="d-none justify-content-center mb-4 mt-4 ml25">
+			<img class="w-70 ic-screen h-70 img-fluid" src="{{ asset('Images/2.png') }}"></img>
+		</div>
+
+		<p class="ml9 d-none justify-content-center">
+			{# <span class="text-wrapper">
+				<span class="letters text-light letters-left">Visitez le site web <a target="_blank" href="{{ path('home') }}">ici</a>.</span>
+			</span> #}
+		</p>
+
+		<button id="arrow3" onclick="next4()" class="radius-code mb-4 d-none text-center mx-auto bg-black d-flex justify-content-center mt-5 text-black fs-1"><i class="fa-sharp fa-solid fa-arrow-right"></i></button>
+
+		<p class="ml10 d-none mt-4 my-tooltip text-center mt-4 col-11 col-lg-6 mx-auto fs-custom-2 text-light">Exemple: Jody peut courir en continu, la barre d'endurance ne s'épuise jamais. Adam a la capacité de lancer des tasses afin d'attirer le tueur dans une direction spécifique. Il dispose de 7 tasses qui se rechargent après 35 secondes. Brian jette des pierres sur le tueur, l'étourdissant pendant 5 secondes. Il a 7 pierres qui se rechargent après 35 secondes. Josh peut ralentir le temps avec son sang-froid pendant 10 secondes, passé ce délai il ne sera utilisable qu'après 15 secondes.</p>
+
+		<p class="ml17 d-none mt-4 my-tooltip text-center mt-4 fs-custom-2 col-11 col-lg-6 mx-auto text-light"></p>
+
+		<div class="d-none justify-content-center mb-4 mt-4 ml26">
+			<img class="w-70 vg-screen h-70 img-fluid" src="{{ asset('Images/thanatophobia-screen.png') }}"></img>
+		</div>
+
+		<p class="ml18 d-none justify-content-center">
+  			{# <span class="text-wrapper">
+				<span class="letters text-light fs-custom-2 letters-left">Visitez le site web <a target="_blank" href="https://www.varg31.fr">ici</a>.</span>
+			</span> #}
+		</p>
+
+		<button id="arrow4" onclick="next5()" class="radius-code mb-4 d-none text-center mx-auto bg-black d-flex justify-content-center mt-5 text-black fs-1"><i class="fa-sharp fa-solid fa-arrow-right"></i></button>
+
+		<p class="mf1 d-none text-center mt-1 fw-bolder fs-custom-3 col-11 col-lg-6 mx-auto text-danger">Des nouveautés régulières</p>
+
+		<p class="mf2 d-none mt-4 opacity0 my-tooltip text-center mt-4 fs-custom-2 col-11 col-lg-6 mx-auto text-light">Le jeu peut être mis à jour régulièrement, en ajoutant de nouveaux contenus tels que des personnages avec leurs compétences associées, ainsi que des cartes et un nouvel objectif. Bonne chance!</p>
+
+		<div class="d-none justify-content-center mb-4 mt-4 mf3">
+			<img class="w-70 lh-screen h-70 img-fluid" src="{{ asset('Images/1.png') }}"></img>
+		</div>
+
+		<p class="mf4 d-none justify-content-center">
+  			{# <span class="text-wrapper">
+				<span class="letters text-light fs-custom-2 d-flex justify-content-center mx-auto">Visitez le site web <a class="ms-1" target="_blank" href="https://www.lhannz.fr">ici</a>.</span>
+			</span> #}
+		</p>
+
+		<button id="arrow5" onclick="next6()" class="radius-code mb-4 d-none text-center mx-auto bg-black d-flex justify-content-center mt-5 text-black fs-1"><i class="fa-sharp fa-solid fa-arrow-right"></i></button>
+
+		<p class="ml101 d-none text-center mt-1 fw-bolder fs-custom-3 col-11 col-lg-6 mx-auto text-danger">Un service pour nos joueurs</p>
+
+		<p class="ml171 d-none mt-4 my-tooltip text-center mt-4 fs-custom-2 col-11 opacity0 col-lg-6 justify-content-center mx-auto text-light">Pour toute assistance supplémentaire, que ce soit pour une question, une suggestion ou un rapport de bogue, vous pouvez nous contacter par courrier électronique à deux adresses : support@imaginaryconception.com (à utiliser en secondaire uniquement) ou imaginaryconception@gmail.com, qui permettra une réponse plus rapide et probablement plus efficace que l'autre.</p>
+
+		<div class="d-none justify-content-center mb-4 mt-4 ml261">
+			<img class="w-70 ci-screen h-70 img-fluid" src="{{ asset('Images/support.png') }}"></img>
+		</div>
+
+		<p class="ml181 d-none justify-content-center">
+  			{# <span class="text-wrapper">
+				<span class="letters text-light fs-custom-2 d-flex justify-content-center mx-auto">Visitez le site web <a class="ms-1" target="_blank" href="https://www.chemin-islamique.fr">ici</a>.</span>
+			</span> #}
+		</p>
+
+		<button id="arrow6" onclick="next7()" class="radius-code mb-4 d-none text-center mx-auto bg-black d-flex justify-content-center mt-5 text-black fs-1"><i class="fa-sharp fa-solid fa-arrow-right"></i></button>
+
+		<p class="ml19 d-none fs-custom mt-5">
+			<span class="text-wrapper">
+				<span class="line line1"></span>
+				<span class="letters text-center col-9 mx-auto text-light">Bande annonce</span>
+			</span>
+		</p>
+
+		<p class="ml20 d-none text-center mt-1 fw-bolder fs-custom-3 col-11 col-lg-6 mx-auto text-danger">Voici la bande-annonce du jeu:</p>
+
+		<p class="ml21 d-none mt-4 my-tooltip text-center mt-4 col-11 col-lg-6 mx-auto text-light"></p>
+
+		<div class="mx-auto d-none justify-content-center mb-4 mt-4 ml22">
+			<iframe width="560" height="315" class="d-flex mx-auto justify-content-center" src="https://www.youtube.com/embed/52-cdE8fRyo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+		</div>
+
+		{# <p class="ml22 d-none justify-content-center">
+			<span class="text-wrapper">
+				<span class="letters text-light d-flex justify-content-center mx-auto">Allez à la page d'achat <a class="ms-1" target="_blank" href="https://www.imaginary-conception.com/Thanatophobia/1/">ici</a>.</span>
+			</span>
+		</p> #}
+
+		<a id="arrow7" class="d-none text-black mx-auto justify-content-center" target="_blank" href="https://www.imaginary-conception.com/Thanatophobia/1/">Aller à la page d'achat</a>
+
+	</div>
+
+	<div class="my-5">
+
+	</body>
+</html>

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Design your website{% endblock %}
+
+{% block body %}
+
+	<div id="website_form" class="row mt-6 mx-auto">
+
+		{{ form_start( website_form ) }}
+
+		{{ form_row( website_form.email) }}
+
+		<p class="text-light text-center">Adresse e-mail : Cette information sera utilisée pour vous envoyer le devis de conception du site Internet.</p>
+
+		{{ form_row( website_form.lastname_firstname) }}
+
+		{{ form_row( website_form.websiteType) }}
+
+		{{ form_errors( website_form ) }}
+
+		{{ form_row( website_form.save ) }}
+
+		{{ form_end( website_form ) }}
+
+		<p class="text-muted fw-bold mt-4 text-center">{{ websites.getTotalItemCount() }} sites internet actuellement en cours de développement.</p>
+
+	</div>
+
+{% endblock %}

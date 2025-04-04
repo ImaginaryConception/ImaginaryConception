@@ -1,0 +1,208 @@
+{% set route = app.request.attributes.get('_route')%}
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Portfolio - Imaginary Conception</title>
+		<link rel="stylesheet" href="{{ asset('CSS/bootstrap.min.css') }}">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+		<link rel="stylesheet" href="{{ asset('CSS/styles.css') }}">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js" defer></script>
+		<script src="{{ asset(('JS/bootstrap.bundle.min.js')) }}" defer></script>
+		<script src="{{ asset(('JS/script.js')) }}" defer></script>
+	</head>
+	<body>
+
+		<div class="mx-auto mt-6">
+
+			<li class="mb-5 text-center d-flex justify-content-center">
+				<a style="font-size: 1.2rem;" class="text-center text-decoration-none" href="{{ path('home') }}">Retourner à l'accueil</a>
+			</li>
+
+			<p class="ml11 mt-6 fs-custom">
+				<span class="text-wrapper">
+					<span class="line line1"></span>
+					<span class="letters text-center col-9 mx-auto fw-bold text-light">Portfolio</span>
+				</span>
+			</p>
+
+			<p class="ml12 mt-6 my-tooltip text-center mt-4 fs-custom-2 col-11 col-lg-6 mx-auto text-light">Développeur Web / Développeur Jeux vidéo</p>
+
+			<p class="ml14 mt-6 my-tooltip text-center mt-4 fs-custom-2 col-11 col-lg-12 mx-auto text-light">anishamouche@gmail.com / support@imaginaryconception.com / imaginaryconception@gmail.com</p>
+
+  			<button id="arrow" onclick="next()" class="mb-4 d-none text-center mx-auto bg-black radius-code d-flex justify-content-center mt-5 text-black fs-1"><i class="fa-sharp fa-solid fa-arrow-right"></i></button>
+
+			<p class="ml15 d-none fs-custom mt-6">
+		 		<span class="text-wrapper">
+					<span class="line line1"></span>
+					<span class="letters text-center col-9 mx-auto text-light">Présentation</span>
+				</span>
+			</p>
+
+			<p class="ml3 d-none mt-6 my-tooltip text-center mt-4 col-11 fs-custom-2 col-lg-6 mx-auto text-light">Je m'appelle Anis et je suis développeur web et game developer. Je vends mes jeux vidéo et je crée des sites web. Depuis toujours, je suis passionné par l’informatique.</p>
+
+			{# Je m'appelle Anis Hamouche, j'ai 18 ans et je suis développeur web. Je vends mes jeux vidéos et je crée des sites web. Depuis toujours, je suis intéressé par ce milieu, qui est l'informatique et j'ai toujours voulu ouvrir mon studio de jeux vidéo ou faire partie de l'équipe de l'un des plus grands studios de jeux vidéo au Canada, Behaviour Interactive. #}
+
+			<button id="arrow1" onclick="next2()" class="mb-4 d-none text-center mx-auto bg-black radius-code d-flex justify-content-center mt-5 text-black fs-1"><i class="fa-sharp fa-solid fa-arrow-right"></i></button>
+
+			<p class="ml16 d-none fs-custom mt-5">
+				<span class="text-wrapper">
+					<span class="line line1"></span>
+					<span class="letters text-center col-9 mx-auto text-light">Sites web</span>
+				</span>
+			</p>
+
+			<p class="ml6 d-none text-center mt-1 fw-bolder fs-custom-3 col-11 col-lg-6 mx-auto text-danger">1. Le Monde de Lud'Opus</p>
+
+			<p class="ml5 d-none my-tooltip text-center mt-4 fs-custom-2 col-11 col-lg-6 mx-auto text-light">Le Monde de Lud'Opus est une librairie d'occasion. Ouvert le 05/04/2022. La situation géographique de la librairie ne permettait pas d'attirer des clients potentiels. Seuls Instagram et Facebook ont été utilisés comme supports publicitaires. Les clients venaient surtout de bouche à oreille. L'attractivité était donc limitée. Un site internet était alors nécessaire pour se faire connaître d'un public plus large, facilitant les personnes éloignées ou les personnes en situation de handicap grâce à la future livraison à domicile et ainsi, mettant en avant les opérations promotionnelles et permettant aux clients de réserver en ligne.</p>
+
+			<div class="d-none justify-content-center mb-4 mt-4 ml24">
+				<img class="w-5 lo-screen h-5 img-fluid" src="{{ asset('Images/lo.png') }}"></img>
+			</div>
+
+			<p class="ml4 d-none justify-content-center">
+  				<span class="text-wrapper">
+					<span class="letters text-light fs-custom-2 letters-left">Visitez le site web <a target="_blank" href="https://www.lemondedeludopus.fr">ici</a>.</span>
+				</span>
+			</p>
+
+			<button id="arrow2" onclick="next3()" class="mb-6 radius-code d-none text-center mx-auto bg-black d-flex justify-content-center mt-5 text-black fs-1"><i class="fa-sharp fa-solid fa-arrow-right"></i></button>
+
+			<p class="ml7 d-none text-center mt-1 fw-bolder fs-custom-3 col-11 col-lg-6 mx-auto text-danger">2. Imaginary Conception</p>
+
+			<p class="ml8 d-none mt-4 my-tooltip text-center mt-4 col-11 col-lg-6 mx-auto fs-custom-2 text-light">Bienvenue sur Imaginary Conception, ce site est mon portfolio personnel où je rassemble toutes mes créations. Ce site est à la fois une vitrine de mon travail en développement web et un espace dédié à mes jeux vidéo. Vous y trouverez des descriptions détaillées de mes projets, des liens d'achat pour mes jeux, ainsi que mes informations de contact. Que ce soit pour découvrir mes réalisations ou échanger avec moi, tout commence ici.</p>
+
+			<div class="d-none justify-content-center mb-4 mt-4 ml25">
+				<img class="w-5 ic-screen h-5 img-fluid" src="{{ asset('Images/ic.png') }}"></img>
+			</div>
+
+			<p class="ml9 mb-6 d-none justify-content-center">
+  				<span class="text-wrapper">
+					<span class="letters text-light letters-left">Visitez le site web <a target="_blank" href="{{ path('home') }}">ici</a>.</span>
+				</span>
+			</p>
+
+			<button id="arrow3" onclick="next4()" class="radius-code mb-6 d-none text-center mx-auto bg-black d-flex justify-content-center mt-5 text-black fs-1"><i class="fa-sharp fa-solid fa-arrow-right"></i></button>
+
+			<p class="ml10 d-none text-center mt-1 fw-bolder fs-custom-3 col-11 col-lg-6 mx-auto text-danger">3. Varg31</p>
+
+			<p class="ml17 d-none mt-4 my-tooltip text-center mt-4 fs-custom-2 col-11 col-lg-6 mx-auto text-light">J'ai conçu le site d'un streamer français afin d'accompagner le développement de sa chaîne. Il intègre un système de propositions de contenu, un flux en direct, un planning hebdomadaire et bien plus encore !</p>
+
+			<div class="d-none justify-content-center mb-4 mt-4 ml26">
+				<img class="w-10 vg-screen h-10 img-fluid" src="{{ asset('Images/vg.png') }}"></img>
+			</div>
+
+			{# <p class="ml18 d-none justify-content-center">
+  				<span class="text-wrapper">
+					<span class="letters text-light fs-custom-2 letters-left">Lien non disponible</span>
+				</span>
+			</p> #}
+
+			<button id="arrow4" onclick="next5()" class="radius-code mb-6 d-none text-center mx-auto bg-black d-flex justify-content-center mt-5 text-black fs-1"><i class="fa-sharp fa-solid fa-arrow-right"></i></button>
+
+			<p class="mf1 d-none text-center mt-1 fw-bolder fs-custom-3 col-11 col-lg-6 mx-auto text-danger">4. Lhannz</p>
+
+			<p class="mf2 d-none mt-4 opacity0 my-tooltip text-center mt-4 fs-custom-2 col-11 col-lg-6 mx-auto text-light">J'ai conçu le site internet d'une micro-entreprise spécialisée dans la vente de tableaux uniques faits à la main, personnalisés selon les préférences de chaque client. Ces œuvres d'art allient habilement toile et résine, témoignant d'un travail minutieux et d'une grande attention portée aux détails. La fabrication demande généralement entre 10 et 15 jours. Avec une livraison dans toute la France, vous permettant ainsi de profiter de votre création dans le confort de votre maison. De plus, les clients ont la liberté de choisir parmi une vaste sélection de tailles et de couleurs, offrant ainsi une expérience personnalisée.</p>
+
+			<div class="d-none justify-content-center mb-4 mt-4 mf3">
+				<img class="w-10 lh-screen h-10 img-fluid" src="{{ asset('Images/lh.png') }}"></img>
+			</div>
+
+			{# <p class="mf4 d-none justify-content-center">
+  				<span class="text-wrapper">
+					<span class="letters text-light fs-custom-2 d-flex justify-content-center mx-auto">Visitez le site web <a class="ms-1" target="_blank" href="https://www.lhannz.fr">ici</a>.</span>
+				</span>
+			</p> #}
+
+			<button id="arrow5" onclick="next6()" class="radius-code mb-6 d-none text-center mx-auto bg-black d-flex justify-content-center mt-5 text-black fs-1"><i class="fa-sharp fa-solid fa-arrow-right"></i></button>
+
+			<p class="ml101 d-none text-center mt-1 fw-bolder fs-custom-3 col-11 col-lg-6 mx-auto text-danger">5. Mobile Multimedia Services</p>
+			{# 5. Chemin Islamique #}
+
+			<p class="ml171 d-none mt-4 my-tooltip text-center mt-4 fs-custom-2 col-11 opacity0 col-lg-6 justify-content-center mx-auto text-light">Suite à mon stage chez Mobile Multimedia Service, une boutique de réparation de matériel électronique et nettoyage des virus et grâce à mes compétences en développement web, j'ai pu concevoir et mettre en place un site internet pour la boutique, offrant aux clients de nombreux avantages pratiques. Ce site permet aux clients d'accéder à une fonctionnalité de création de devis en ligne, leur donnant ainsi la possibilité de connaître à l'avance les disponibilités de la boutique ainsi que les tarifs correspondants pour effectuer leur demande. Cette plateforme en ligne facilite également la gestion des devis pour le gérant de la boutique. Plutôt que de s'appuyer sur des feuilles de papier ou des échanges de mails, il pourra disposer d'une liste claire et organisée des devis en cours, lui permettant de les gérer de manière plus efficace. Le gérant aura la possibilité de refuser les devis ou de les accepter en indiquant le prix et la date de disponibilité pour effectuer la demande du client. Le site offre aux clients la possibilité de laisser des avis et des notes sur la boutique, créant ainsi une interaction. Ils auront également accès à des informations essentielles telles que les horaires d'ouverture et l'adresse postale de la boutique, leur offrant une expérience plus complète et pratique.</p>
+			{# Un site internet avec du contenu islamique, des rappels, des invocations et toutes les sourates du Coran en français, arabe et phonétique à lire et à écouter. Beaucoup plus de contenu à venir. #}
+
+			<div class="d-none justify-content-center mb-4 mt-4 ml261">
+				<img class="w-10 ci-screen h-10 img-fluid" src="{{ asset('Images/mms.png') }}"></img>
+			</div>
+
+			{# <p class="ml181 d-none justify-content-center">
+  				{# <span class="text-wrapper">
+					<span class="letters text-light fs-custom-2 d-flex justify-content-center mx-auto">Visitez le site web <a class="ms-1" target="_blank" href="https://www.chemin-islamique.fr">ici</a>.</span>
+				</span>
+				<span class="text-wrapper">
+					<span class="letters text-light fs-custom-2 d-flex justify-content-center mx-auto">Non disponible</span>
+				</span>
+			</p> #}
+
+			<button id="arrow6" onclick="next7()" class="radius-code mb-6 d-none text-center mx-auto bg-black d-flex justify-content-center mt-5 text-black fs-1"><i class="fa-sharp fa-solid fa-arrow-right"></i></button>
+
+			<p class="ml19 d-none fs-custom mt-5">
+				<span class="text-wrapper">
+					<span class="line line1"></span>
+					<span class="letters text-center col-9 mx-auto text-light">Jeux vidéos</span>
+				</span>
+			</p>
+
+			{# <p class="ml20 d-none text-center mt-1 fw-bolder fs-custom-3 col-11 col-lg-6 mx-auto text-danger">1. Thanatophobia</p> #}
+
+			<p class="ml21 d-none mt-4 my-tooltip text-center mt-4 col-11 col-lg-6 mx-auto text-light">Découvrez mes jeux vidéo, des expériences que j'ai créées avec passion. Que ce soit de l'horreur, de la stratégie ou de la détection d'anomalies, chaque projet reflète mon savoir-faire et mon imagination. Retrouvez ici leurs descriptions et les liens Steam pour les acheter.</p>
+
+			<div class="game-grid d-none ml23">
+				<div class="game-card">
+					<img src="{{ asset('Images/thanatophobia.png') }}" alt="Thanatophobia">
+					<h3 class="mt-4">Thanatophobia</h3>
+					<p>Sortie : 01/01/2024</p>
+					<p>Genre : Horreur</p>
+					<a href="https://store.steampowered.com/app/2566310/Thanatophobia/" class="btn btn-dark steam-button" target="_blank">Voir sur Steam</a>
+					<a href="{{ path('games') }}" class="btn btn-dark steam-button" target="_blank">Voir sur Imaginary Conception</a>
+				</div>
+				<div class="game-card">
+					<img src="{{ asset('Images/floorsofmadness.jpg') }}" alt="50 Floors of Madness">
+					<h3 class="mt-4">50 Floors of Madness</h3>
+					<p>Sortie : 19/07/2024</p>
+					<p>Genre : Détection d'anomalies</p>
+					<a href="https://store.steampowered.com/app/3043840/50_Floors_of_Madness/" class="btn btn-dark steam-button" target="_blank">Voir sur Steam</a>
+					<a href="{{ path('games') }}" class="btn btn-dark steam-button" target="_blank">Voir sur Imaginary Conception</a>
+				</div>
+				<div class="game-card">
+					<img src="{{ asset('Images/HBLogo.png') }}" alt="Hidden Bloodhunt">
+					<h3 class="mt-4">Hidden Bloodhunt</h3>
+					<p>Sortie : 15/12/2024</p>
+					<p>Genre : Stratégie et trahison</p>
+					<a href="https://store.steampowered.com/app/3323130/Hidden_Bloodhunt/" class="btn btn-dark steam-button" target="_blank">Voir sur Steam</a>
+					<a href="{{ path('games') }}" class="btn btn-dark steam-button" target="_blank">Voir sur Imaginary Conception</a>
+				</div>
+				<div class="game-card">
+					<img src="{{ asset('Images/breakingthegrip.png') }}" alt="Breaking the Grip">
+					<h3 class="mt-4">Breaking the Grip</h3>
+					<p>Sortie : 02/04/2025</p>
+					<p>Genre : Horreur asymétrique</p>
+					<a href="https://store.steampowered.com/app/3592220/Breaking_the_Grip/" class="btn btn-dark steam-button" target="_blank">Voir sur Steam</a>
+					<a href="{{ path('games') }}" class="btn btn-dark steam-button" target="_blank">Voir sur Imaginary Conception</a>
+				</div>
+			</div>
+
+			{# <div class="d-none justify-content-center mb-4 mt-4 ml23">
+				<img class="t-screen h-70 w-70 img-fluid" src="{{ asset('Images/thanatophobia-screen.png') }}"></img>
+			</div> #}
+
+			{# <p class="ml22 d-none justify-content-center">
+				<span class="text-wrapper">
+					<span class="letters text-light d-flex justify-content-center mx-auto">Allez à la page d'achat <a class="ms-1" target="_blank" href="https://www.imaginary-conception.com/Thanatophobia/1/">ici</a>.</span>
+				</span>
+			</p> #}
+
+			<a id="arrow7" id="seemore" class="radius-code mb-4 d-none text-black text-center mx-auto bg-black d-flex justify-content-center col-3 text-decoration-none mt-2 fs-5" onclick="overlay()">Voir plus</a><div class="overlay d-none flex-row mx-auto text-center justify-content-center text-decoration-none mt-2"><a target="_blank" class="text-light pointer text-decoration-none me-2 lang" href="{{ path('thanatophobia') }}">English</a><p class="text-danger">-</p><a target="_blank" class="ms-2 pointer lang text-light text-decoration-none" href="{{ path('thanatophobia_fr') }}">Français</a></div>
+
+		</div>
+
+		<div class="my-5">
+
+	</body>
+</html>
