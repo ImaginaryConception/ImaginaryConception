@@ -1,0 +1,195 @@
+/* Curseur personnalisé */
+* {
+    cursor: none !important;
+}
+
+.custom-cursor {
+    width: 12px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+    transform-origin: center;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    opacity: 1;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    transition: all 0.0s ease;
+}
+
+.custom-cursor.hover {
+    width: 24px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.8);
+    mix-blend-mode: difference;
+}
+
+/* Animations au scroll */
+/* [data-aos] {
+    opacity: 0;
+    transition-property: opacity, transform;
+    transition-duration: 0.6s;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+} */
+
+/* [data-aos].aos-animate {
+    opacity: 1;
+} */
+
+/* Animation fade-up avec scale */
+/* [data-aos="fade-up"] {
+    transform: translateY(50px) scale(0.98);
+    opacity: 0;
+} */
+
+/* [data-aos="fade-up"].aos-animate {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+} */
+
+/* Animation fade-right */
+/* [data-aos="fade-right"] {
+    transform: translateX(-50px);
+    opacity: 0;
+} */
+
+/* [data-aos="fade-right"].aos-animate {
+    transform: translateX(0);
+    opacity: 1;
+} */
+
+/* Animation fade-left */
+/* [data-aos="fade-left"] {
+    transform: translateX(50px);
+    opacity: 0;
+} */
+
+/* [data-aos="fade-left"].aos-animate {
+    transform: translateX(0);
+    opacity: 1;
+} */
+
+/* Animation zoom-in */
+/* [data-aos="zoom-in"] {
+    transform: scale(0.9);
+    opacity: 0;
+} */
+
+/* [data-aos="zoom-in"].aos-animate {
+    transform: scale(1);
+    opacity: 1;
+} */
+
+/* Animations des cartes de services */
+.service-card {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: rotate(45deg);
+    transition: all 0.5s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+}
+
+.service-card:hover::before {
+    top: -50%;
+    left: -50%;
+}
+
+.service-card .card-header {
+    transition: all 0.3s ease;
+}
+
+.service-card:hover .card-header {
+    background: rgba(255,255,255,0.1);
+}
+
+/* Animation des boutons */
+.btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: 0.5s;
+}
+
+.btn:hover::after {
+    left: 100%;
+}
+
+
+
+
+
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0;
+    }
+    50% { opacity: 1; }
+    100% {
+        transform: translateY(-100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+body {
+    background: linear-gradient(90deg, #000, #2c0707, #400a0a, #2c0707);
+    /* background: linear-gradient(90deg, #000 50%, #400a0a 100%); */
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.code-particle {
+    position: fixed;
+    color: rgba(255, 255, 255, 0.5);
+    font-family: monospace;
+    font-size: 20px;
+    user-select: none;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.code-particle::before {
+    content: attr(data-code);
+}
+  

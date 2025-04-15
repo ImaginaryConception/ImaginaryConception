@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réalisations - Imaginary Conception{% endblock %}
+
+{% block meta_description %}
+    <meta name="description" content="Découvrez mes réalisations en développement web. Portfolio de projets web créatifs et fonctionnels.">
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="text-center text-light mb-5">Mes Réalisations</h1>
+
+        <div class="row g-4">
+            <!-- Projet 1 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 bg-dark text-light border-light project-card" data-aos="fade-up">
+                    <img src="{{ asset('Images/mms.png') }}" class="card-img-top" alt="Mobile Multimedia Service">
+                    <div class="card-body">
+                        <h2 class="h5 mb-3">Mobile Multimedia Service</h2>
+                        <p class="mb-3">Site web pour une boutique de réparation électronique avec système de devis en ligne et gestion des rendez-vous.</p>
+                        <div class="stack-tags mb-3">
+                            <span class="badge bg-light text-dark me-2">Symfony</span>
+                            <span class="badge bg-light text-dark me-2">MySQL</span>
+                            <span class="badge bg-light text-dark">Bootstrap</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projet 2 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 bg-dark text-light border-light project-card" data-aos="fade-up" data-aos-delay="100">
+                    <img src="{{ asset('Images/thanatophobia.png') }}" class="card-img-top" alt="Thanatophobia">
+                    <div class="card-body">
+                        <h2 class="h5 mb-3">Thanatophobia</h2>
+                        <p class="mb-3">Jeu d'horreur psychologique développé avec une interface web pour la gestion de la communauté.</p>
+                        <div class="stack-tags mb-3">
+                            <span class="badge bg-light text-dark me-2">Unity</span>
+                            <span class="badge bg-light text-dark me-2">C#</span>
+                            <span class="badge bg-light text-dark">Steam API</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projet 3 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 bg-dark text-light border-light project-card" data-aos="fade-up" data-aos-delay="200">
+                    <img src="{{ asset('Images/code.png') }}" class="card-img-top" alt="Portfolio Personnel">
+                    <div class="card-body">
+                        <h2 class="h5 mb-3">Portfolio Personnel</h2>
+                        <p class="mb-3">Site vitrine professionnel présentant mes services de développement web et mes réalisations.</p>
+                        <div class="stack-tags mb-3">
+                            <span class="badge bg-light text-dark me-2">Symfony</span>
+                            <span class="badge bg-light text-dark me-2">Twig</span>
+                            <span class="badge bg-light text-dark">JavaScript</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .project-card {
+            transition: transform 0.3s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+        }
+        .stack-tags .badge {
+            font-size: 0.8rem;
+        }
+    </style>
+{% endblock %}

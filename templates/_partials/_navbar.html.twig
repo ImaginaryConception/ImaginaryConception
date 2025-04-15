@@ -1,4 +1,7 @@
 <div class="container-fluid mx-auto">
+	<a href="{{ path('home') }}" class="navbar-brand">
+		<img src="{{ asset('Images/ic.png') }}" alt="Logo" class="navbar-logo">
+	</a>
 
 	<div
 		class="row navbar-container">
@@ -29,6 +32,12 @@
 						</li>
 						<li class="nav-item mb-4">
 							<a class="link{{ route == 'website' ? ' nav-active' }}" href="{{ path('website') }}">Design your website</a>
+						</li>
+						<li class="nav-item mb-4">
+							<a class="link{{ route == 'realisations' ? ' nav-active' }}" href="{{ path('realisations') }}">Réalisations</a>
+						</li>
+						<li class="nav-item mb-4">
+							<a class="link{{ route == 'services' ? ' nav-active' }}" href="{{ path('services') }}">Services</a>
 						</li>
 						<li class="nav-item mb-4">
 							<a class="link{{ route == 'portfolio' ? ' nav-active' }}" href="{{ path('portfolio') }}">Portfolio</a>
@@ -99,7 +108,7 @@
 
 			<nav class="d-none d-xl-flex flex-column mt-4 p-0">
 
-				<ul class="flex-row d-flex justify-content-start">
+				<ul class="flex-row d-flex justify-content-center">
 					<li class="nav-item me-4">
 						<a class="link" href="{{ path('home') }}">Home</a>
 					</li>
@@ -108,6 +117,12 @@
 					</li>
 					<li class="nav-item me-4">
 						<a class="link{{ route == 'website' ? ' nav-active' }}" href="{{ path('website') }}">Design your website</a>
+					</li>
+					<li class="nav-item me-4">
+						<a class="link{{ route == 'realisations' ? ' nav-active' }}" href="{{ path('realisations') }}">Réalisations</a>
+					</li>
+					<li class="nav-item me-4">
+						<a class="link{{ route == 'services' ? ' nav-active' }}" href="{{ path('services') }}">Services</a>
 					</li>
 					<li class="nav-item me-4">
 						<a class="link{{ route == 'portfolio' ? ' nav-active' }}" href="{{ path('portfolio') }}">Portfolio</a>
@@ -119,7 +134,7 @@
 
 				{% if is_granted('ROLE_ADMIN') %}
 
-				<ul class="flex-row d-flex justify-content-start">
+				<ul class="flex-row d-flex justify-content-center">
 					<li class="nav-item me-4">
 						<a class="link{{ route == 'requested_website' ? ' nav-active' }}" href="{{ path('requested_website') }}">Websites purchases</a>
 					</li>
@@ -140,7 +155,7 @@
 
 				{% if app.user %}
 
-				<ul class="flex-row d-flex justify-content-start">
+				<ul class="flex-row d-flex justify-content-center">
 					<li class="nav-item me-4">
 						<a class="link{{ route == 'profil' ? ' nav-active' }}" href="{{ path('profil') }}">Profile</a>
 					</li>
@@ -154,7 +169,7 @@
 
 				{% else %}
 
-				<ul class="flex-row d-flex justify-content-start">
+				<ul class="flex-row d-flex justify-content-center">
 				    <li class="nav-item me-4">
 					    <a class="link{{ route == 'login' ? ' nav-active' }}" href="{{ path('login') }}">Login</a>
 				    </li>

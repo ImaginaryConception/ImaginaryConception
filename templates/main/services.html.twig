@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Services - Imaginary Conception
+{% endblock %}
+
+{% block meta_description %}
+    <meta name="description" content="Découvrez nos services de développement web sur mesure. Des solutions adaptées à vos besoins, du site vitrine au projet complexe.">
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="text-center text-light mb-5">Nos Services</h1>
+
+        <div class="row justify-content-center g-4">
+            <!-- Pack Starter -->
+            <div class="col-md-4">
+                <div class="card h-100 bg-dark text-light border-light service-card" data-aos="fade-up">
+                    <div class="card-header text-center py-3">
+                        <h2 class="h4 mb-0">Pack Starter</h2>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <div class="text-center mb-4">
+                            <span class="display-5">499€</span>
+                        </div>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-3"><i class="fas fa-check me-2 text-success"></i>Site 1 page responsive</li>
+                            <li class="mb-3"><i class="fas fa-check me-2 text-success"></i>Formulaire de contact</li>
+                            <li class="mb-3"><i class="fas fa-check me-2 text-success"></i>Livraison rapide</li>
+                        </ul>
+                        <div class="mt-auto text-center">
+                            <a href="{{ path('contact') }}" class="btn btn-outline-light btn-lg px-4">Demander un devis</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pack Business -->
+            <div class="col-md-4">
+                <div class="card h-100 bg-dark text-light border-light border-2 service-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-header text-center py-3 bg-light text-dark">
+                        <h2 class="h4 mb-0">Pack Business</h2>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <div class="text-center mb-4">
+                            <span class="display-5">999€</span>
+                        </div>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-3"><i class="fas fa-check me-2 text-success"></i>Site 3 à 5 pages</li>
+                            <li class="mb-3"><i class="fas fa-check me-2 text-success"></i>CMS ou sur-mesure</li>
+                            <li class="mb-3"><i class="fas fa-check me-2 text-success"></i>SEO de base</li>
+                        </ul>
+                        <div class="mt-auto text-center">
+                            <a href="{{ path('contact') }}" class="btn btn-light btn-lg px-4">Demander un devis</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pack Premium -->
+            <div class="col-md-4">
+                <div class="card h-100 bg-dark text-light border-light service-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card-header text-center py-3">
+                        <h2 class="h4 mb-0">Pack Premium</h2>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <div class="text-center mb-4">
+                            <span class="display-5">1499€</span>
+                        </div>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-3"><i class="fas fa-check me-2 text-success"></i>Design personnalisé</li>
+                            <li class="mb-3"><i class="fas fa-check me-2 text-success"></i>SEO avancé</li>
+                            <li class="mb-3"><i class="fas fa-check me-2 text-success"></i>Maintenance 3 mois</li>
+                            <li class="mb-3"><i class="fas fa-check me-2 text-success"></i>Analytics intégré</li>
+                        </ul>
+                        <div class="mt-auto text-center">
+                            <a href="{{ path('contact') }}" class="btn btn-outline-light btn-lg px-4">Demander un devis</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

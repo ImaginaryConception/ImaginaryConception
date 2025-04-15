@@ -12,14 +12,19 @@
         <link rel="stylesheet" href="{{ asset('CSS/bootstrap.min.css') }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
         <link rel="stylesheet" href="{{ asset('CSS/styles.css') }}">
+        <link rel="stylesheet" href="{{ asset('CSS/animations.css') }}">
         <script src="{{ asset(('JS/bootstrap.bundle.min.js')) }}" defer></script>
         <script src="{{ asset(('JS/script.js')) }}" defer></script>
+        <script src="{{ asset(('JS/animations.js')) }}" defer></script>
         {% block js %}{% endblock %}
     </head>
     <body>
         {% include '_partials/_navbar.html.twig' %}
 
         {% include '_partials/_flashes.html.twig' %}
+
+        <div class="cursor"></div>
+		<div class="cursor-trail"></div>
 
         <div class="container">
 

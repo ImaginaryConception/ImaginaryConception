@@ -12,9 +12,12 @@
 		<link rel="stylesheet" href="{{ asset('CSS/bootstrap.min.css') }}">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 		<link rel="stylesheet" href="{{ asset('CSS/styles.css') }}">
+		<link rel="stylesheet" href="{{ asset('CSS/animations.css') }}">
+		<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js" defer></script>
 		<script src="{{ asset(('JS/bootstrap.bundle.min.js')) }}" defer></script>
 		<script src="{{ asset(('JS/script.js')) }}" defer></script>
+		<script src="{{ asset(('JS/animations.js')) }}" defer></script>
 	</head>
 	<body>
 
@@ -23,70 +26,131 @@
 			<source src="{{ asset('audios/keyboard.ogg') }}">
 		</audio>
 
+		<div class="cursor"></div>
+		<div class="cursor-trail"></div>
+
 		<div
 			class="container">
 
-			<div class="row mx-auto mt-6">
-				<h1 id="animation" class="fw-bold text-center"></h1>
-			</div>
+            <div class="row mx-auto mt-6 hero-section" data-aos="fade-up">
+                <h1 id="animation" class="fw-bold text-center hero-title"></h1>
+                <div id="rotating-text" class="text-center text-light fs-4 mt-3 fade-in">
+                    <p class="mb-0 rotating-text-item active">Je transforme vos idées en expériences web innovantes</p>
+                    <p class="mb-0 rotating-text-item">Développeur web passionné par l'innovation</p>
+                    <p class="mb-0 rotating-text-item">Créateur de jeux vidéo avec une vision unique</p>
+                    <p class="mb-0 rotating-text-item">Solutions web sur mesure pour votre entreprise</p>
+                    <p class="mb-0 rotating-text-item">Expert en développement web et game design</p>
+                </div>
+                <div class="text-center mt-4 fade-in">
+                    <a href="{{ path('contact') }}" class="btn btn-light btn-lg">Demander un devis <i class="fas fa-arrow-right ms-2"></i></a>
+                </div>
+            </div>
 
-			{% include '_partials/_flashes.html.twig' %}
-
-			<div class="row mx-auto mt-5">
-
-				<div class="game-grid">
-				<div class="game-card">
-					<img src="{{ asset('Images/thanatophobia.png') }}" alt="Thanatophobia">
-					<h3 class="mt-4">Thanatophobia</h3>
-					<p>Sortie : 01/01/2024</p>
-					<p>Genre : Horreur</p>
-					<a href="https://store.steampowered.com/app/2566310/Thanatophobia/" class="btn btn-dark steam-button" target="_blank">Voir sur Steam</a>
-					<a href="{{ path('games') }}" class="btn btn-dark steam-button" target="_blank">Voir sur Imaginary Conception</a>
-				</div>
-				<div class="game-card">
-					<img src="{{ asset('Images/floorsofmadness.jpg') }}" alt="50 Floors of Madness">
-					<h3 class="mt-4">50 Floors of Madness</h3>
-					<p>Sortie : 19/07/2024</p>
-					<p>Genre : Détection d'anomalies</p>
-					<a href="https://store.steampowered.com/app/3043840/50_Floors_of_Madness/" class="btn btn-dark steam-button" target="_blank">Voir sur Steam</a>
-					<a href="{{ path('games') }}" class="btn btn-dark steam-button" target="_blank">Voir sur Imaginary Conception</a>
-				</div>
-				<div class="game-card">
-					<img src="{{ asset('Images/HBLogo.png') }}" alt="Hidden Bloodhunt">
-					<h3 class="mt-4">Hidden Bloodhunt</h3>
-					<p>Sortie : 15/12/2024</p>
-					<p>Genre : Stratégie et trahison</p>
-					<a href="https://store.steampowered.com/app/3323130/Hidden_Bloodhunt/" class="btn btn-dark steam-button" target="_blank">Voir sur Steam</a>
-					<a href="{{ path('games') }}" class="btn btn-dark steam-button" target="_blank">Voir sur Imaginary Conception</a>
-				</div>
-				<div class="game-card">
-					<img src="{{ asset('Images/breakingthegrip.png') }}" alt="Breaking the Grip">
-					<h3 class="mt-4">Breaking the Grip</h3>
-					<p>Sortie : 02/04/2025</p>
-					<p>Genre : Horreur asymétrique</p>
-					<a href="https://store.steampowered.com/app/3592220/Breaking_the_Grip/" class="btn btn-dark steam-button" target="_blank">Voir sur Steam</a>
-					<a href="{{ path('games') }}" class="btn btn-dark steam-button" target="_blank">Voir sur Imaginary Conception</a>
-				</div>
-			</div>
-
-				<div
-					class="row mx-auto">
-
-					<!-- NAVBAR Only full Screen -->
-
-					<nav class="d-block mt-4 p-0">
-
-						<ul class="navbar-nav flex-sm-row flex-column justify-content-center flex-grow-1 pe-3">
-							<li class="nav-item me-sm-3 mb-2 mb-lg-0">
-								<a class="link2 register2" href="{{ path('games') }}">Games</a>
-							</li>
-							<li class="nav-item me-sm-3 mb-2 mb-lg-0">
-								<a class="link2 register3" href="{{ path('website') }}">Web design</a>
-							</li>
-							<li class="nav-item me-sm-3 mb-2 mb-lg-0">
-								<a class="link2 register4" href="{{ path('portfolio') }}">Portfolio</a>
-							</li>
-						</ul>
+			<div class="row mx-auto">
+                    <nav class="custom-nav mt-4 p-0">
+                        <div class="nav-buttons-container">
+                            <a href="{{ path('games') }}" class="nav-button register2" data-aos="fade-up">
+                                <div class="nav-button-bg games-bg"></div>
+                                <span class="nav-button-content">Games</span>
+                                <p class="nav-button-description">Découvrez nos jeux vidéo innovants</p>
+                            </a>
+                            <a href="{{ path('website') }}" class="nav-button register3" data-aos="fade-up" data-aos-delay="200">
+                                <div class="nav-button-bg web-bg"></div>
+                                <span class="nav-button-content">Web development</span>
+                                <p class="nav-button-description">Solutions web sur mesure pour votre entreprise</p>
+                            </a>
+                            <a href="{{ path('portfolio') }}" class="nav-button register4 mb-4" data-aos="fade-up" data-aos-delay="400">
+                                <div class="nav-button-bg portfolio-bg"></div>
+                                <span class="nav-button-content">Portfolio</span>
+                                <p class="nav-button-description">Explorez nos réalisations</p>
+                            </a>
+                        </div>
+                        <style>
+                            .custom-nav {
+                                width: 100%;
+                                max-width: 1200px;
+                                margin: 0 auto;
+                            }
+                            .nav-buttons-container {
+                                display: flex;
+                                justify-content: center;
+                                gap: 2rem;
+                                flex-wrap: wrap;
+                            }
+                            .nav-button {
+                                position: relative;
+                                padding: 2rem;
+                                color: #fff;
+                                text-decoration: none;
+                                border: 1px solid rgba(255, 0, 0, 0.3);
+                                border-radius: 8px;
+                                overflow: hidden;
+                                transition: all 0.5s ease;
+                                flex: 1;
+                                min-width: 300px;
+                                max-width: 400px;
+                                text-align: center;
+                                height: 200px;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                background: rgba(0, 0, 0, 0.5);
+                            }
+                            .nav-button-bg {
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 100%;
+                                z-index: 0;
+                                background-size: cover;
+                                background-position: center;
+                                opacity: 0.5;
+                                transition: all 0.5s ease;
+                            }
+                            .games-bg {
+                                background-image: url('{{ asset('Images/gamesimg.png') }}');
+                            }
+                            .web-bg {
+                                background-image: url('{{ asset('Images/code.png') }}');
+                            }
+                            .portfolio-bg {
+                                background-image: url('{{ asset('Images/portfolio.png') }}');
+                            }
+                            .nav-button:hover {
+                                transform: scale(1.05);
+                                box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+                            }
+                            .nav-button:hover .nav-button-bg {
+                                opacity: 0.8;
+                                transform: scale(1.1);
+                            }
+                            .nav-button-content {
+                                font-size: 1.5rem;
+                                font-weight: 700;
+                                position: relative;
+                                z-index: 1;
+                                margin-bottom: 1rem;
+                            }
+                            .nav-button-description {
+                                font-size: 1rem;
+                                opacity: 0.8;
+                                position: relative;
+                                z-index: 1;
+                                margin: 0;
+                            }
+                            @media (max-width: 768px) {
+                                .nav-buttons-container {
+                                    flex-direction: column;
+                                    align-items: center;
+                                }
+                                .nav-button {
+                                    width: 100%;
+                                    max-width: none;
+                                    height: 180px;
+                                }
+                            }
+                        </style>
 
 						{# Bouton quand l'utilisateur est connecté #}
 
@@ -151,6 +215,75 @@
 
 				</div>
 
+			</div>
+
+            <style>
+                .rotating-text-item {
+                    opacity: 0;
+                    position: absolute;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    transition: opacity 0.5s ease;
+                    width: 100%;
+                }
+                .rotating-text-item.active {
+                    opacity: 1;
+                    position: relative;
+                }
+            </style>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const items = document.querySelectorAll('.rotating-text-item');
+                    let currentIndex = 0;
+
+                    function rotateText() {
+                        items[currentIndex].classList.remove('active');
+                        currentIndex = (currentIndex + 1) % items.length;
+                        items[currentIndex].classList.add('active');
+                    }
+
+                    setInterval(rotateText, 3000);
+                });
+            </script>
+
+			{% include '_partials/_flashes.html.twig' %}
+
+			<div class="row mx-auto mt-5">
+
+				<div class="game-grid">
+				<div class="game-card" data-aos="fade-up">
+					<img src="{{ asset('Images/thanatophobia.png') }}" alt="Thanatophobia">
+					<h3 class="mt-4">Thanatophobia</h3>
+					<p>Sortie : 01/01/2024</p>
+					<p>Genre : Horreur</p>
+					<a href="https://store.steampowered.com/app/2566310/Thanatophobia/" class="btn btn-dark steam-button" target="_blank">Voir sur Steam</a>
+					<a href="{{ path('games') }}" class="btn btn-dark steam-button" target="_blank">Voir sur Imaginary Conception</a>
+				</div>
+				<div class="game-card" data-aos="fade-up">
+					<img src="{{ asset('Images/floorsofmadness.jpg') }}" alt="50 Floors of Madness">
+					<h3 class="mt-4">50 Floors of Madness</h3>
+					<p>Sortie : 19/07/2024</p>
+					<p>Genre : Détection d'anomalies</p>
+					<a href="https://store.steampowered.com/app/3043840/50_Floors_of_Madness/" class="btn btn-dark steam-button" target="_blank">Voir sur Steam</a>
+					<a href="{{ path('games') }}" class="btn btn-dark steam-button" target="_blank">Voir sur Imaginary Conception</a>
+				</div>
+				<div class="game-card" data-aos="fade-up">
+					<img src="{{ asset('Images/HBLogo.png') }}" alt="Hidden Bloodhunt">
+					<h3 class="mt-4">Hidden Bloodhunt</h3>
+					<p>Sortie : 15/12/2024</p>
+					<p>Genre : Stratégie et trahison</p>
+					<a href="https://store.steampowered.com/app/3323130/Hidden_Bloodhunt/" class="btn btn-dark steam-button" target="_blank">Voir sur Steam</a>
+					<a href="{{ path('games') }}" class="btn btn-dark steam-button" target="_blank">Voir sur Imaginary Conception</a>
+				</div>
+				<div class="game-card" data-aos="fade-up">
+					<img src="{{ asset('Images/breakingthegrip.png') }}" alt="Breaking the Grip">
+					<h3 class="mt-4">Breaking the Grip</h3>
+					<p>Sortie : 02/04/2025</p>
+					<p>Genre : Horreur asymétrique</p>
+					<a href="https://store.steampowered.com/app/3592220/Breaking_the_Grip/" class="btn btn-dark steam-button" target="_blank">Voir sur Steam</a>
+					<a href="{{ path('games') }}" class="btn btn-dark steam-button" target="_blank">Voir sur Imaginary Conception</a>
+				</div>
 			</div>
 
 			<div class="row col-12 mt-5 col-md-8 d-flex justify-content-center mx-auto">
@@ -224,19 +357,19 @@
 
 						{% endfor %}
 
-						<div class="d-flex justify-content-center">
+						<div class="d-flex justify-content-center" data-aos="zoom-in">
 							<iframe id="steam" src="https://store.steampowered.com/widget/2566310/" frameborder="0" width="646" height="190"></iframe>
 						</div>
 
-						<div class="d-flex justify-content-center">
+						<div class="d-flex justify-content-center" data-aos="zoom-in">
 							<iframe id="steam" src="https://store.steampowered.com/widget/3043840/" frameborder="0" width="646" height="190"></iframe>
 						</div>
 
-						<div class="d-flex justify-content-center">
+						<div class="d-flex justify-content-center" data-aos="zoom-in">
 							<iframe id="steam" src="https://store.steampowered.com/widget/3323130/" frameborder="0" width="646" height="190"></iframe>
 						</div>
 
-						<div class="d-flex justify-content-center">
+						<div class="d-flex justify-content-center" data-aos="zoom-in">
 							<iframe id="steam" src="https://store.steampowered.com/widget/3592220/" frameborder="0" width="646" height="190"></iframe>
 						</div>
 
@@ -247,5 +380,14 @@
 				{% include '_partials/_footer.html.twig' %}
 			</body>
 		</html>
-	</body>
+
+        <!-- AOS Animation Library -->
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <script>
+            AOS.init({
+                duration: 1000,
+                once: true
+            });
+        </script>
+    </body>
 </html>

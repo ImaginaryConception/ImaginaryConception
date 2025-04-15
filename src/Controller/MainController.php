@@ -61,6 +61,18 @@ class MainController extends AbstractController
         return $this->render('main/cv.html.twig');
     }
 
+    #[Route('/realisations/', name: 'realisations')]
+    public function realisations(): Response
+    {
+        return $this->render('main/realisations.html.twig');
+    }
+
+    #[Route('/services/', name: 'services')]
+    public function services(): Response
+    {
+        return $this->render('main/services.html.twig');
+    }
+
     #[Route('/thanatophobia/', name: 'thanatophobia')]
     public function thanatophobia(): Response
     {
@@ -160,46 +172,46 @@ class MainController extends AbstractController
     public function contact(Request $request, RecaptchaValidator $recaptcha, MailerInterface $mailer): Response
     {
 
-        // $contact_form = $this->createForm(ContactFormType::class);
+        $contact_form = $this->createForm(ContactFormType::class);
 
-        // $contact_form->handleRequest($request);
+        $contact_form->handleRequest($request);
 
-        // if ($contact_form->isSubmitted() && $contact_form->isValid()) {
+        if ($contact_form->isSubmitted() && $contact_form->isValid()) {
 
-        //     // // Récupération de la réponse envoyée par le captcha dans le formulaire
-        //     // // ( $_POST['g-recaptcha-response'] )
-        //     // $recaptchaResponse = $request->request->get('g-recaptcha-response', null);
+            // // Récupération de la réponse envoyée par le captcha dans le formulaire
+            // // ( $_POST['g-recaptcha-response'] )
+            // $recaptchaResponse = $request->request->get('g-recaptcha-response', null);
 
-        //     // // Si le captcha n'est pas valide, on crée une nouvelle erreur dans le formulaire (ce qui l'empêchera de créer l'article et affichera l'erreur)
-        //     // // $request->server->get('REMOTE_ADDR') -----> Adresse IP de l'utilisateur dont la méthode verify() a besoin
-        //     // if ($recaptchaResponse == null || !$recaptcha->verify($recaptchaResponse, $request->server->get('REMOTE_ADDR'))) {
+            // // Si le captcha n'est pas valide, on crée une nouvelle erreur dans le formulaire (ce qui l'empêchera de créer l'article et affichera l'erreur)
+            // // $request->server->get('REMOTE_ADDR') -----> Adresse IP de l'utilisateur dont la méthode verify() a besoin
+            // if ($recaptchaResponse == null || !$recaptcha->verify($recaptchaResponse, $request->server->get('REMOTE_ADDR'))) {
 
-        //     //     // Ajout d'une nouvelle erreur manuellement dans le formulaire
-        //     //     $contact_form->addError(new FormError('Le Captcha doit être validé !'));
-        //     // }
+            //     // Ajout d'une nouvelle erreur manuellement dans le formulaire
+            //     $contact_form->addError(new FormError('Le Captcha doit être validé !'));
+            // }
 
-        //     $email = (new TemplatedEmail())
-        //         ->from($contact_form['email']->getData())
-        //         ->to('support@imaginary-conception.com')
-        //         ->subject('Imaginary-Conception Contact: ' . $contact_form['object']->getData())
-        //         ->textTemplate('emails/contact.txt.twig')
-        //         ->htmlTemplate('emails/contact.html.twig')
-        //         ->context([
-        //             'contact_form_object' => $contact_form['object']->getData(),
-        //             'contact_form_message' => $contact_form['message']->getData(),
-        //             'contact_form_email' => $contact_form['email']->getData(),
-        //         ])
-        //     ;
+            $email = (new TemplatedEmail())
+                ->from($contact_form['email']->getData())
+                ->to('support@imaginary-conception.com')
+                ->subject('Imaginary-Conception Contact: ' . $contact_form['object']->getData())
+                ->textTemplate('emails/contact.txt.twig')
+                ->htmlTemplate('emails/contact.html.twig')
+                ->context([
+                    'contact_form_object' => $contact_form['object']->getData(),
+                    'contact_form_message' => $contact_form['message']->getData(),
+                    'contact_form_email' => $contact_form['email']->getData(),
+                ])
+            ;
 
-        //     $mailer->send($email);
+            $mailer->send($email);
 
-        //     $this->addFlash('success', 'Message sent successfully !');
+            $this->addFlash('success', 'Message sent successfully !');
 
-        //     return $this->redirectToRoute('home');
-        // }
+            return $this->redirectToRoute('home');
+        }
 
         return $this->render('main/contact.html.twig', [
-            // 'contact_form' => $contact_form->createView(),
+            'contact_form' => $contact_form->createView(),
         ]);
     }
 
