@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use VictorPrdh\RecaptchaBundle\Form\ReCaptchaType;
 
 class ContactFormType extends AbstractType
 {
@@ -81,6 +82,7 @@ class ContactFormType extends AbstractType
                 ]),
             ],
         ])
+        ->add('recaptcha', ReCaptchaType::class)
         ->add('save', SubmitType::class, [
             'label' => 'Send',
             'attr' => [

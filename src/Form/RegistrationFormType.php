@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use VictorPrdh\RecaptchaBundle\Form\ReCaptchaType;
 
 class RegistrationFormType extends AbstractType
 {
@@ -68,6 +69,7 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('recaptcha', ReCaptchaType::class)
             ->add('save', SubmitType::class, [
                 'label' => 'Register',
                 'attr' => [

@@ -12,6 +12,7 @@ use App\Form\AddCommentFormType;
 use App\Form\EditProfilFormType;
 use App\Form\ContactUserFormType;
 use App\Form\WebsiteRequestFormType;
+use App\Recaptcha\RecaptchaValidator;
 use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -92,7 +93,7 @@ class MainController extends AbstractController
 
     #[Route('/get-a-quote/', name: 'website')]
     #[IsGranted('ROLE_USER')]
-    public function website(Request $request, ManagerRegistry $doctrine, MailerInterface $mailer): Response
+    public function website(Request $request, ManagerRegistry $doctrine, MailerInterface $mailer, RecaptchaValidator $recaptcha): Response
     {
         // Création du formulaire
         $quote = new Website();
@@ -101,21 +102,24 @@ class MainController extends AbstractController
         // Traitement du formulaire
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
 
-            if ($quote->getDeadline() === null) {
-                $quote->setDeadline(new \DateTime()); // date actuelle par défaut
+            if ($form->isValid()) {
+                if ($quote->getDeadline() === null) {
+                    $quote->setDeadline(new \DateTime()); // date actuelle par défaut
+                }
+                $quote->setUser($this->getUser()); // Associer l'utilisateur connecté
+
+                // Sauvegarde en base de données
+                $entityManager = $doctrine->getManager();
+                $entityManager->persist($quote);
+                $entityManager->flush();
+
+                // Message de confirmation
+                $this->addFlash('success', 'Merci pour votre demande, je vous recontacte dans les 24h. — Imaginary Conception');
+
+                return $this->redirectToRoute('website');
             }
-
-            // Sauvegarde en base de données
-            $entityManager = $doctrine->getManager();
-            $entityManager->persist($quote);
-            $entityManager->flush();
-
-            // Message de confirmation
-            $this->addFlash('success', 'Merci pour votre demande, je vous recontacte dans les 24h. — Imaginary Conception');
-
-            return $this->redirectToRoute('website');
         }
 
         // Affichage du formulaire
@@ -125,14 +129,20 @@ class MainController extends AbstractController
     }
 
     #[Route('/contact/', name: 'contact')]
-    public function contact(Request $request, MailerInterface $mailer): Response
+    public function contact(Request $request, MailerInterface $mailer, RecaptchaValidator $recaptcha): Response
     {
 
         $contact_form = $this->createForm(ContactFormType::class);
 
         $contact_form->handleRequest($request);
 
-        if ($contact_form->isSubmitted() && $contact_form->isValid()) {
+        if ($contact_form->isSubmitted()) {
+            if (!$recaptcha->verify($request->request->get('g-recaptcha-response'))) {
+                $this->addFlash('error', 'Please validate the captcha.');
+                return $this->redirectToRoute('contact');
+            }
+
+            if ($contact_form->isValid()) {
 
             $email = (new TemplatedEmail())
                 ->from($contact_form['email']->getData())
@@ -152,6 +162,7 @@ class MainController extends AbstractController
             $this->addFlash('success', 'Message sent successfully !');
 
             return $this->redirectToRoute('home');
+            }
         }
 
         return $this->render('main/contact.html.twig', [

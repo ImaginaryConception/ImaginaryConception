@@ -8,6 +8,9 @@ parameters:
     app.user.photo.allowed_mime_types:
         - 'image/jpeg'
         - 'image/png'
+    google_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
+    google_recaptcha_secret_key: '%env(GOOGLE_RECAPTCHA_SECRET_KEY)%'
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -23,5 +26,6 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    App\Recaptcha\RecaptchaValidator:
+        arguments:
+            $secretKey: '%google_recaptcha_secret_key%'

@@ -9,7 +9,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use App\Entity\User;
 use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: WebsiteRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'Cet email est déjà utilisé.')]
+#[UniqueEntity(fields: ['email'], message: 'Cette adresse email est déjà utilisée !')]
 class Website
 {
     #[ORM\Id]
@@ -25,7 +25,7 @@ class Website
     #[Assert\NotBlank(message: 'Le nom ne peut pas être vide.')]
     private $lastname;
 
-    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[ORM\Column(type: 'string', length: 180)]
     #[Assert\NotBlank(message: 'L\'email ne peut pas être vide.')]
     #[Assert\Email(message: 'L\'email {{ value }} n\'est pas un email valide.')]
     private $email;

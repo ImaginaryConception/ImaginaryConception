@@ -21,6 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use VictorPrdh\RecaptchaBundle\Form\ReCaptchaType;
 
 class WebsiteRequestFormType extends AbstractType
 {
