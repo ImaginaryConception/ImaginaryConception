@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block body %}
-
+	<h1 class="text-center text-light mb-5">Inscription</h1>
 	<div id="register_form" class="row mt-6 mx-auto">
 
 		{{ form_start(registrationForm) }}
@@ -13,7 +13,7 @@
 
 		{{ form_row(registrationForm.plainPassword) }}
 
-		<p class="text-light text-center">By registering, you confirm that you have read and accepted the
+		<p class="text-light text-center mt-3">By registering, you confirm that you have read and accepted the
 			<a href="{{ path('mentions_legales') }}">Legal Notices</a>.</p>
 
 		<p class="text-light text-center">Already registered? Login

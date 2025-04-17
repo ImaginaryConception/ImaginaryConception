@@ -92,7 +92,6 @@ class MainController extends AbstractController
     }
 
     #[Route('/get-a-quote/', name: 'website')]
-    #[IsGranted('ROLE_USER')]
     public function website(Request $request, ManagerRegistry $doctrine, MailerInterface $mailer, RecaptchaValidator $recaptcha): Response
     {
         // Création du formulaire
@@ -129,7 +128,7 @@ class MainController extends AbstractController
     }
 
     #[Route('/contact/', name: 'contact')]
-    public function contact(Request $request, MailerInterface $mailer, RecaptchaValidator $recaptcha): Response
+    public function contact(Request $request, MailerInterface $mailer): Response
     {
 
         $contact_form = $this->createForm(ContactFormType::class);
@@ -137,10 +136,6 @@ class MainController extends AbstractController
         $contact_form->handleRequest($request);
 
         if ($contact_form->isSubmitted()) {
-            if (!$recaptcha->verify($request->request->get('g-recaptcha-response'))) {
-                $this->addFlash('error', 'Please validate the captcha.');
-                return $this->redirectToRoute('contact');
-            }
 
             if ($contact_form->isValid()) {
 

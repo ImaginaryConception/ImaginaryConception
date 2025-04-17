@@ -3,11 +3,10 @@
 {% block title %}Contact{% endblock %}
 
 {% block body %}
-
 	<div class="container text-white">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <div class="contact-card p-4 rounded-3 mb-4">
+                <div class="contact-card p-4 rounded-pill mb-4">
                     <h2 class="text-center mb-4">Contact</h2>
                     <div class="d-flex flex-column text-center gap-3">
                         <p class="mb-0"><i class="fa-solid fa-envelope me-2"></i> Email : <a href="mailto:anishamouche@gmail.com" class="text-light">anishamouche@gmail.com</a></p>
@@ -21,37 +20,28 @@
                     <a href="{{ path('website') }}" class="btn btn-light btn-lg"><i class="fas fa-file-signature me-2"></i>Demander un devis</a>
                 </div>
 
-                <div id="contact_form" class="rounded-3">
-                    {{ form_start(contact_form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+                <div id="contact_form" class="row my-5 mx-auto">
 
-                    <div class="mb-3">
-                        {{ form_label(contact_form.firstname_lastname, 'Nom et Prénom', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(contact_form.firstname_lastname, {'attr': {'class': 'form-control bg-none text-light border-light'}}) }}
-                    </div>
+                    {{ form_start( contact_form ) }}
 
-                    <div class="mb-3">
-                        {{ form_label(contact_form.email, 'Email', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(contact_form.email, {'attr': {'class': 'form-control bg-none text-light border-light'}}) }}
-                    </div>
+                    {{ form_errors( contact_form ) }}
 
-                    <div class="mb-3">
-                        {{ form_label(contact_form.object, 'Objet', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(contact_form.object, {'attr': {'class': 'form-control bg-none text-light border-light'}}) }}
-                    </div>
+                    {{ form_row( contact_form.lastname ) }}
 
-                    <div class="mb-3">
-                        {{ form_label(contact_form.message, 'Message', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(contact_form.message, {'attr': {'class': 'form-control bg-none text-light border-light', 'rows': '5'}}) }}
-                    </div>
+                    {{ form_row( contact_form.firstname ) }}
 
-                    {{ form_widget(contact_form.save, {'attr': {'class': 'btn btn-light btn-lg w-100'}}) }}
+                    {{ form_row( contact_form.email) }}
 
-                    {{ form_errors(contact_form) }}
+                    {{ form_row( contact_form.object ) }}
 
-                    {{ form_end(contact_form) }}
+                    {{ form_row( contact_form.message ) }}
+
+                    {{ form_row( contact_form.save ) }}
+
+                    {{ form_end( contact_form ) }}
+
                 </div>
             </div>
         </div>
     </div>
-
 {% endblock %}

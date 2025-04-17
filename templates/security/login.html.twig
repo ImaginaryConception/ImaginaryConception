@@ -3,6 +3,7 @@
 {% block title %}Login{% endblock %}
 
 {% block body %}
+	<h1 class="text-center text-light mb-5">Connexion</h1>
 	<form method="post">
 
 		{% if app.user %}
@@ -14,7 +15,7 @@
 		{% endif %}
 
         <div id="login_form" class="row mt-6 mx-auto">
-            <div>
+            <div class="mb-3">
                 <input type="email" value="{{ last_username }}" placeholder="E-mail address" name="email" id="inputEmail" autocomplete="email" autofocus>
             </div>
             <div>
