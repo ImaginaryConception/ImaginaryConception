@@ -13,18 +13,11 @@
 
 		{{ form_row(registrationForm.plainPassword) }}
 
-		<div class="mb-3">
-			<div class="mb-2 text-center text-light">Security captcha *</div>
-			<div class="d-flex justify-content-center g-recaptcha" data-sitekey="{{ google_recaptcha_site_key }}"></div>
-		</div>
-
 		<p class="text-light text-center">By registering, you confirm that you have read and accepted the
 			<a href="{{ path('mentions_legales') }}">Legal Notices</a>.</p>
 
 		<p class="text-light text-center">Already registered? Login
 			<a href="{{ path('login') }}">here</a>.</p>
-
-		<input type="hidden" id="recaptchaResponse" name="recaptcha-response">
 
 		{{ form_errors(registrationForm) }}
 
@@ -32,8 +25,4 @@
 
 	</div>
 
-{% endblock %}
-
-{% block js %}
-	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 {% endblock %}

@@ -1,0 +1,20 @@
+services:
+    # Doctrine Extension listeners to handle behaviors
+    gedmo.listener.tree:
+        class: Gedmo\Tree\TreeListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ "@annotation_reader" ] ]
+
+    # Register custom DQL functions
+    doctrine.extensions.mysql.rand:
+        class: DoctrineExtensions\Query\Mysql\Rand
+        tags:
+            - { name: doctrine.dbal.mysql.function, function: RAND }
+
+stof_doctrine_extensions:
+    default_locale: fr_FR
+    orm:
+        default:
+            tree: true

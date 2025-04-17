@@ -8,6 +8,8 @@
 /var/
 /vendor/
 .env
+.env.test
+.env.dev
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###

@@ -62,7 +62,7 @@
                                 <span class="nav-button-content">Portfolio</span>
                                 <p class="nav-button-description">Explorez nos réalisations</p>
                             </a>
-                            {% if app.user.hasPrivateBoardAccess %}
+                            {% if app.user and app.user.hasPrivateBoardAccess %}
                                 <a href="{{ path('private_board') }}" class="nav-button mb-4" data-aos="fade-up" data-aos-delay="400">
                                     <div class="nav-button-bg"></div>
                                     <span class="nav-button-content">Board privé</span>
@@ -202,7 +202,7 @@
 
 							<ul class="navbar-nav flex-lg-row flex-column justify-content-center flex-grow-1 pe-3">
 								<li class="nav-item me-lg-3 mb-2 mb-lg-0">
-									<a class="link2 register10" href="{{ path('requested_website') }}">Websites purchases</a>
+									<a class="link2 register10" href="{{ path('requested_website') }}">Requested quotes</a>
 								</li>
 
 								<li class="nav-item me-lg-3 mb-2 mb-lg-0">

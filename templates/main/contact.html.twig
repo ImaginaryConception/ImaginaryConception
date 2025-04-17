@@ -44,11 +44,6 @@
                         {{ form_widget(contact_form.message, {'attr': {'class': 'form-control bg-none text-light border-light', 'rows': '5'}}) }}
                     </div>
 
-                    <div class="mb-3">
-                        <div class="mb-2 text-center">Security captcha *</div>
-                        <div class="d-flex justify-content-center g-recaptcha" data-sitekey="{{ google_recaptcha_site_key }}"></div>
-                    </div>
-
                     {{ form_widget(contact_form.save, {'attr': {'class': 'btn btn-light btn-lg w-100'}}) }}
 
                     {{ form_errors(contact_form) }}
@@ -60,5 +55,3 @@
     </div>
 
 {% endblock %}
-
-{% block js %}<script src="https://www.google.com/recaptcha/api.js" async defer></script>{% endblock %}

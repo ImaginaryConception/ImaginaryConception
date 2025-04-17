@@ -12,7 +12,6 @@ use App\Form\AddCommentFormType;
 use App\Form\EditProfilFormType;
 use App\Form\ContactUserFormType;
 use App\Form\WebsiteRequestFormType;
-use App\Recaptcha\RecaptchaValidator;
 use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -93,7 +92,7 @@ class MainController extends AbstractController
 
     #[Route('/get-a-quote/', name: 'website')]
     #[IsGranted('ROLE_USER')]
-    public function website(Request $request, ManagerRegistry $doctrine, RecaptchaValidator $recaptcha, MailerInterface $mailer): Response
+    public function website(Request $request, ManagerRegistry $doctrine, MailerInterface $mailer): Response
     {
         // Création du formulaire
         $quote = new Website();
@@ -103,14 +102,6 @@ class MainController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Validation du recaptcha
-            // $recaptchaResponse = $request->request->get('g-recaptcha-response');
-            // $isValidRecaptcha = $recaptcha->verify($recaptchaResponse);
-
-            // if (!$isValidRecaptcha) {
-            //     $this->addFlash('error', 'Recaptcha verification failed.');
-            //     return $this->redirectToRoute('website');
-            // }
 
             if ($quote->getDeadline() === null) {
                 $quote->setDeadline(new \DateTime()); // date actuelle par défaut
@@ -120,9 +111,6 @@ class MainController extends AbstractController
             $entityManager = $doctrine->getManager();
             $entityManager->persist($quote);
             $entityManager->flush();
-
-            // Envoi d'un email de confirmation (optionnel)
-            // $mailer->sendConfirmationEmail($quote->getEmail());
 
             // Message de confirmation
             $this->addFlash('success', 'Merci pour votre demande, je vous recontacte dans les 24h. — Imaginary Conception');
@@ -137,7 +125,7 @@ class MainController extends AbstractController
     }
 
     #[Route('/contact/', name: 'contact')]
-    public function contact(Request $request, RecaptchaValidator $recaptcha, MailerInterface $mailer): Response
+    public function contact(Request $request, MailerInterface $mailer): Response
     {
 
         $contact_form = $this->createForm(ContactFormType::class);
@@ -145,18 +133,6 @@ class MainController extends AbstractController
         $contact_form->handleRequest($request);
 
         if ($contact_form->isSubmitted() && $contact_form->isValid()) {
-
-            // // Récupération de la réponse envoyée par le captcha dans le formulaire
-            // // ( $_POST['g-recaptcha-response'] )
-            // $recaptchaResponse = $request->request->get('g-recaptcha-response', null);
-
-            // // Si le captcha n'est pas valide, on crée une nouvelle erreur dans le formulaire (ce qui l'empêchera de créer l'article et affichera l'erreur)
-            // // $request->server->get('REMOTE_ADDR') -----> Adresse IP de l'utilisateur dont la méthode verify() a besoin
-            // if ($recaptchaResponse == null || !$recaptcha->verify($recaptchaResponse, $request->server->get('REMOTE_ADDR'))) {
-
-            //     // Ajout d'une nouvelle erreur manuellement dans le formulaire
-            //     $contact_form->addError(new FormError('Le Captcha doit être validé !'));
-            // }
 
             $email = (new TemplatedEmail())
                 ->from($contact_form['email']->getData())
