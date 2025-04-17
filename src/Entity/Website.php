@@ -75,7 +75,7 @@ class Website
     private $currentStage = 'initial';
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'websites')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?User $user = null;
 
     // Id

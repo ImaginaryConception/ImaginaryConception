@@ -4,7 +4,8 @@
 
 {% block body %}
 
-<div id="add_game_form" class="row mt-6 mx-auto">
+<h1 class="text-center text-light mb-5">Ajouter un jeu</h1>
+<div id="add_game_form" class="row mt-5 mx-auto">
 
   {{ form_start( add_game_form ) }}
 
@@ -19,8 +20,6 @@
   {{ form_row( add_game_form.trailer ) }}
 
   {{ form_row( add_game_form.price ) }}
-
-  <p class="text-danger text-center">You can leave the field empty.</p>
 
   <p class="text-light text-center">Game logo</p>
 

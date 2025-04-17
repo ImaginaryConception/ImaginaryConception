@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Comment;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use VictorPrdh\RecaptchaBundle\Form\ReCaptchaType;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -33,6 +34,7 @@ class AddCommentFormType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('recaptcha', ReCaptchaType::class)
             ->add('save', SubmitType::class, [
                 'label' => 'Send',
                 'attr' => [

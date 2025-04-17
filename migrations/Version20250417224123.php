@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250417174801 extends AbstractMigration
+final class Version20250417224123 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -26,6 +26,12 @@ final class Version20250417174801 extends AbstractMigration
         $this->addSql(<<<'SQL'
             ALTER TABLE user DROP type
         SQL);
+        $this->addSql(<<<'SQL'
+            DROP INDEX UNIQ_476F5DE7E7927C74 ON website
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE website CHANGE user_id user_id INT DEFAULT NULL
+        SQL);
     }
 
     public function down(Schema $schema): void
@@ -36,6 +42,12 @@ final class Version20250417174801 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE user ADD type VARCHAR(255) DEFAULT NULL
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE website CHANGE user_id user_id INT NOT NULL
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE UNIQUE INDEX UNIQ_476F5DE7E7927C74 ON website (email)
         SQL);
     }
 }

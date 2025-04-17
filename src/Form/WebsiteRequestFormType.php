@@ -233,10 +233,11 @@ class WebsiteRequestFormType extends AbstractType
                     'class' => 'text-black',
                 ],
             ])
+            ->add('recaptcha', ReCaptchaType::class)
             ->add('save', SubmitType::class, [
                 'label' => 'Envoyer',
                 'attr' => [
-                    'class' => 'btn btn-outline-light btn-lg px-4 w-100',
+                    'class' => 'btn btn-outline-light btn-lg px-4 w-100 mt-3',
                 ],
             ])
         ;
