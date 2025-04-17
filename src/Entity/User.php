@@ -40,6 +40,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Website::class)]
     private Collection $websites;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $hasPrivateBoardAccess = false;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -172,6 +175,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $website->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getHasPrivateBoardAccess(): bool
+    {
+        return $this->hasPrivateBoardAccess;
+    }
+
+    public function setHasPrivateBoardAccess(bool $hasPrivateBoardAccess): self
+    {
+        $this->hasPrivateBoardAccess = $hasPrivateBoardAccess;
 
         return $this;
     }

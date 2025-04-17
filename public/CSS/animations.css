@@ -91,6 +91,23 @@
     overflow: hidden;
 }
 
+.navbar-logo {
+    animation: drawLogo 1.5s ease-in-out forwards;
+}
+
+@keyframes drawLogo {
+    0% {
+        clip-path: inset(0 100% 0 0);
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+    100% {
+        clip-path: inset(0 0 0 0);
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
 .service-card::before {
     content: '';
     position: absolute;

@@ -1,0 +1,458 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Board Privé{% endblock %}
+
+{% block body %}
+<div class="dashboard-container">
+    <h1 class="dashboard-title">Tableau de bord privé</h1>
+
+    <div class="project-cards">
+        {% for website in websites %}
+            <div class="glass-card project-card">
+                <div class="card-header">
+                    <h3 class="company-name">{{ website.companyName ?? 'Projet Web' }}</h3>
+                    <span class="project-type">{{ website.type }}</span>
+                </div>
+                <div class="card-body">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <i class="fas fa-euro-sign"></i>
+                            <span>{{ website.estimatedBudget }}€</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>{{ website.deadline|date('d/m/Y') }}</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-file"></i>
+                            <span>{{ website.estimatedPages }} pages</span>
+                        </div>
+                    </div>
+
+                    {% if website.existingWebsite %}
+                        <div class="link-item">
+                            <i class="fas fa-link"></i>
+                            <a href="{{ website.existingWebsite }}" target="_blank" class="website-link">Site actuel</a>
+                        </div>
+                    {% endif %}
+
+                    {% if website.specificFunctions|length > 0 %}
+                        <div class="functions-list">
+                            <h4>Fonctionnalités</h4>
+                            <ul>
+                                {% for function in website.specificFunctions %}
+                                    <li><i class="fas fa-check"></i> {{ function }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+
+                    {% if website.additionalInfo %}
+                        <div class="additional-info">
+                            <p>{{ website.additionalInfo }}</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-folder-open"></i>
+                <p>Aucun projet web en cours</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if websites|length > 0 %}
+    {% set website = websites|first %}
+    <!-- Détails du devis -->
+    <div class="glass-card quote-details">
+        <h2 class="section-title">Détails du Projet</h2>
+        <div class="quote-grid">
+            <div class="quote-info">
+                <div class="info-label"><i class="fas fa-user"></i> Client</div>
+                <div class="info-value">{{ website.firstname }} {{ website.lastname }}</div>
+            </div>
+            <div class="quote-info">
+                <div class="info-label"><i class="fas fa-envelope"></i> Email</div>
+                <div class="info-value">{{ website.email }}</div>
+            </div>
+            <div class="quote-info">
+                <div class="info-label"><i class="fas fa-laptop"></i> Type de Site</div>
+                <div class="info-value">{{ website.type }}</div>
+            </div>
+            <div class="quote-info">
+                <div class="info-label"><i class="fas fa-euro-sign"></i> Budget</div>
+                <div class="info-value">{{ website.estimatedBudget }}€</div>
+            </div>
+            <div class="quote-info">
+                <div class="info-label"><i class="fas fa-calendar"></i> Date Limite</div>
+                <div class="info-value">{{ website.deadline|date('d/m/Y') }}</div>
+            </div>
+            <div class="quote-info">
+                <div class="info-label"><i class="fas fa-info-circle"></i> Description</div>
+                <div class="info-value">{{ website.additionalInfo }}</div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Timeline -->
+    <div class="timeline-container glass-card">
+        <h2 class="section-title">Progression du Projet</h2>
+        <div class="timeline">
+            {% set stages = [
+                {'title': 'Prise de contact', 'description': 'Premier contact et discussion initiale du projet', 'icon': 'handshake'},
+                {'title': 'Brief et devis', 'description': 'Définition détaillée du projet et établissement du devis', 'icon': 'file-contract'},
+                {'title': 'Maquette', 'description': 'Création des maquettes et validation du design', 'icon': 'paint-brush'},
+                {'title': 'Développement', 'description': 'Développement du site web', 'icon': 'code'},
+                {'title': 'Tests', 'description': 'Phase de tests et corrections', 'icon': 'vial'},
+                {'title': 'Mise en ligne', 'description': 'Déploiement du site sur le serveur de production', 'icon': 'rocket'},
+                {'title': 'Suivi / maintenance', 'description': 'Support continu et maintenance du site', 'icon': 'wrench'}
+            ] %}
+
+            <div class="timeline-items">
+                {% for stage in stages %}
+                    <div class="timeline-item{% if websites|length > 0 and loop.index <= (websites|first).currentStage %} completed{% endif %}{% if websites|length > 0 and loop.index == (websites|first).currentStage %} active{% endif %}">
+                        <div class="timeline-dot">
+                            <i class="fas fa-{{ stage.icon }}"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-title">{{ stage.title }}</h3>
+                            <p class="timeline-description">{{ stage.description }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+        /* Styles de base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dashboard-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            letter-spacing: -0.5px;
+            font-weight: 700;
+        }
+
+        /* Project Cards */
+        .project-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .project-card .card-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .company-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .project-type {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: rgba(74, 158, 255, 0.15);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #4a9eff;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .info-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .info-item i {
+            font-size: 1.2rem;
+            color: #4a9eff;
+            margin-bottom: 0.5rem;
+        }
+
+        .website-link {
+            color: #4a9eff;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .website-link:hover {
+            color: #7ab5ff;
+        }
+
+        .functions-list {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .functions-list h4 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .functions-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .functions-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .functions-list i {
+            color: #4a9eff;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .quote-details {
+            margin-bottom: 3rem;
+        }
+
+        .quote-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .quote-info {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1.2rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .quote-info:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-3px);
+        }
+
+        .info-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .info-label i {
+            color: #4a9eff;
+        }
+
+        .info-value {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 600;
+        }
+
+        /* Timeline */
+        .timeline-container {
+            padding: 3rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding-top: 2rem;
+        }
+
+        .progress-bar {
+            position: absolute;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            width: 90%;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #4a9eff, #7ab5ff);
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px rgba(74, 158, 255, 0.5);
+        }
+
+        .timeline-items {
+            display: flex;
+            justify-content: space-between;
+            width: 90%;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .timeline-item {
+            position: relative;
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            opacity: 0.6;
+            transition: all 0.4s ease;
+        }
+
+        .timeline-item.completed,
+        .timeline-item.active {
+            opacity: 1;
+        }
+
+        .timeline-item.completed .timeline-dot {
+            background: #4CAF50;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .timeline-item.completed .timeline-content {
+            border-color: rgba(76, 175, 80, 0.3);
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .timeline-item.active .timeline-dot {
+            background: #4a9eff;
+            box-shadow: 0 0 0 4px rgba(74, 158, 255, 0.2);
+            animation: pulse 2s infinite;
+            transform: scale(1.2);
+        }
+
+        .timeline-item.active .timeline-content {
+            border-color: rgba(74, 158, 255, 0.3);
+            background: rgba(74, 158, 255, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .timeline-dot {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin: 0 auto 1rem;
+            font-size: 1.1rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1.2rem;
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .timeline-title {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+
+        .timeline-description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(74, 158, 255, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(74, 158, 255, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(74, 158, 255, 0);
+            }
+        }
+    </style>
+{% endblock %}

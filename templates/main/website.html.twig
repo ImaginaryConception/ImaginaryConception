@@ -1,29 +1,245 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Design your website{% endblock %}
+{% block title %}Get a quote{% endblock %}
 
 {% block body %}
+<style>
+    /* Global Styles */
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Arial', sans-serif;
+    }
 
-	<div id="website_form" class="row mt-6 mx-auto">
+    /* Body Styling */
+    body {
+        height: 100vh;
+        color: #000;
+    }
 
-		{{ form_start( website_form ) }}
+    /* Form Container */
+    form {
+        background-color:rgba(255, 255, 255, 0.5);
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.5s ease;
+    }
 
-		{{ form_row( website_form.email) }}
+    /* Input Field Styling */
+    input, select, textarea {
+        width: 100%;
+        padding: 1rem;
+        margin: 0.8rem 0;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
 
-		<p class="text-light text-center">Adresse e-mail : Cette information sera utilisée pour vous envoyer le devis de conception du site Internet.</p>
+    /* Focus Animation */
+    input:focus, select:focus, textarea:focus {
+        border-color: #007BFF;
+        outline: none;
+        transform: scale(1.02);
+    }
 
-		{{ form_row( website_form.lastname_firstname) }}
+    /* Label Styling */
+    label {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+        display: block;
+        color: #333;
+    }
 
-		{{ form_row( website_form.websiteType) }}
+    /* Button Styling */
+    button {
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        padding: 1rem;
+        border-radius: 4px;
+        width: 100%;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
 
-		{{ form_errors( website_form ) }}
+    button:hover {
+        background-color: #0056b3;
+    }
 
-		{{ form_row( website_form.save ) }}
+    /* Error Message Styling */
+    .form-error {
+        color: red;
+        font-size: 0.9rem;
+        margin-top: -0.5rem;
+    }
 
-		{{ form_end( website_form ) }}
+    /* Animation Keyframes */
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 
-		<p class="text-muted fw-bold mt-4 text-center">{{ websites.getTotalItemCount() }} sites internet actuellement en cours de développement.</p>
+    @keyframes fieldFocus {
+        0% {
+            border-color: #ccc;
+        }
+        100% {
+            border-color: #007BFF;
+        }
+    }
 
-	</div>
+    /* Additional Styling for Textarea */
+    textarea {
+        min-height: 120px;
+        resize: vertical;
+        font-family: 'Arial', sans-serif;
+    }
 
+    /* Checkbox Styling */
+    .form-check {
+        display: flex;
+        align-items: center;
+        margin: 1rem 0;
+    }
+
+    /* Checkbox Input Styling */
+    input[type="checkbox"] {
+        width: auto;
+        margin: 0 0.8rem 0 0;
+        cursor: pointer;
+        transform-origin: left;
+        transition: transform 0.2s ease;
+    }
+
+    input[type="checkbox"]:hover {
+        transform: scale(1.2);
+    }
+
+    input[type="checkbox"]:checked {
+        animation: checkmark 0.3s ease-in-out;
+    }
+
+    @keyframes checkmark {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.3); }
+        100% { transform: scale(1); }
+    }
+
+    /* Custom Select Dropdown */
+    select {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 1rem;
+        border-radius: 4px;
+    }
+
+    select:focus {
+        border-color: #007BFF;
+    }
+
+    /* Responsiveness */
+    @media screen and (max-width: 768px) {
+        form {
+            padding: 1.5rem;
+        }
+
+        label, input, button, select, textarea {
+            font-size: 0.9rem;
+        }
+    }
+
+    form label {
+        color: white;
+    }
+
+    /* Aligning checkbox and label side by side */
+    #website_request_form_specificFunctions input[type="checkbox"] {
+        margin-right: 10px;
+        margin-bottom: 0; /* To remove extra space between checkbox and label */
+    }
+
+    #website_request_form_specificFunctions label {
+        display: inline-block;
+        margin-left: 5px; /* Small space between checkbox and label */
+        cursor: pointer;
+        margin-right: 50px;
+    }
+
+    /* Checkbox Styling */
+.form-check {
+    display: flex;
+    flex-wrap: wrap;  /* Les éléments peuvent se déplacer sur plusieurs lignes si nécessaire */
+    gap: 1rem;  /* Espacement entre les éléments */
+    margin: 1rem 0;
+}
+
+/* Checkbox Input Styling */
+input[type="checkbox"] {
+    width: auto;
+    margin-right: 0.8rem; /* Espacement à droite de la case */
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+/* Custom label Styling */
+.form-check label {
+    font-size: 1rem;
+    color: #fff;
+    display: inline-block;
+    cursor: pointer;
+}
+</style>
+
+<div class="container mt-5">
+<h1 class="text-center text-light mb-5">Demander un devis</h1>
+    <div class="row my-5 mx-auto">
+
+        {{ form_start( quote_form ) }}
+
+        {{ form_row( quote_form.firstname ) }}
+
+        {{ form_row( quote_form.lastname ) }}
+
+        {{ form_row( quote_form.email ) }}
+
+        {{ form_row( quote_form.phone ) }}
+
+        {{ form_row( quote_form.companyName ) }}
+
+        {{ form_row( quote_form.existingWebsite ) }}
+
+        {{ form_row( quote_form.type ) }}
+
+        {{ form_row( quote_form.estimatedPages ) }}
+
+        {{ form_row( quote_form.logo ) }}
+
+        {{ form_row( quote_form.likedWebsites ) }}
+
+        {{ form_row( quote_form.specificFunctions ) }}
+
+        {{ form_row( quote_form.deadline ) }}
+
+        {{ form_row( quote_form.estimatedBudget ) }}
+
+        {{ form_row( quote_form.additionalInfo ) }}
+
+        {{ form_errors( quote_form ) }}
+
+        {{ form_row( quote_form.save ) }}
+
+        {{ form_end( quote_form ) }}
+
+    </div>
+</div>
 {% endblock %}

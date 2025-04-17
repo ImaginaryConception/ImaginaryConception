@@ -1,72 +1,113 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Websites purchases{% endblock %}
+{% block title %}Requested Quotes{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .quote-card {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .quote-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .quote-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.quote-card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            cards.forEach(card => observer.observe(card));
+        });
+    </script>
+{% endblock %}
 
 {% block body %}
+    <div class="container">
+        <h1 class="text-center text-light mb-5">Demandes de Devis</h1>
 
-	<div class="row mx-auto">
+        <div class="row g-4">
+            {% for website in websites %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card quote-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ website.firstname }} {{ website.lastname }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ website.companyName ?: 'Particulier' }}</h6>
 
-		{% for website in websites %}
+                            <p class="card-text">
+                                <strong>Type de projet:</strong> {{ website.type }}<br>
+                                <strong>Budget estimé:</strong> {{ website.estimatedBudget }}€<br>
+                                <strong>Date limite:</strong> {{ website.deadline|date('d/m/Y') }}<br>
+                                <strong>Pages estimées:</strong> {{ website.estimatedPages }}<br>
+                                {% if website.existingWebsite %}
+                                    <strong>Site existant:</strong> <a class="text-black" href="{{ website.existingWebsite }}" target="_blank">{{ website.existingWebsite }}</a><br>
+                                {% endif %}
+                            </p>
 
-			<div class="my-5 row mx-auto">
+                            <div class="mt-3">
+                                <strong>Contact:</strong><br>
+                                <i class="fas fa-envelope"></i> {{ website.email }}<br>
+                                {% if website.phone %}
+                                    <i class="fas fa-phone"></i> {{ website.phone }}
+                                {% endif %}
+                            </div>
 
-				<p class="text-light text-center">
-					<span class="fw-bold mx-2">Full name</span>
-				</p>
-				<p class="text-light text-center">{{ website.lastnameFirstname }}</p>
-				<hr class="text-light mx-auto w-25">
-                <p class="text-light text-center">
-					<span class="fw-bold mx-2">Residence</span>
-				</p>
-				<p class="text-light text-center">{{ website.domicile }}</p>
-				<hr class="text-light mx-auto w-25">
-                <p class="text-light text-center">
-					<span class="fw-bold mx-2">Website type</span>
-				</p>
-				<p class="text-light text-center">{{ website.websiteType }}</p>
-				<hr class="text-light mx-auto w-25">
-                <p class="text-light text-center">
-					<span class="fw-bold mx-2">Domain name</span>
-				</p>
-				<p class="text-light text-center">{{ website.domain }}</p>
-				<hr class="text-light mx-auto w-25">
-                <p class="text-light text-center">
-					<span class="fw-bold mx-2">Budget</span>
-				</p>
-				<p class="text-light text-center">{{ website.budget }}</p>
-				<hr class="text-light mx-auto w-25">
-                {# <p class="text-light text-center">
-					<span class="fw-bold mx-2">Cahier des charges</span>
-				</p>
-				<p class="text-light text-center">{{ website.specifications }}</p>
-				<hr class="text-light mx-auto w-25">
-                <p class="text-light text-center">
-					<span class="fw-bold mx-2">Maquettes visuelles</span>
-				</p>
-				<p class="text-light text-center">{{ website.models }}</p>
-				<hr class="text-light mx-auto w-25"> #}
-                <p class="text-light text-center">
-					<span class="fw-bold mx-2">Time before delivery</span>
-				</p>
-				<p class="text-light text-center">{{ website.delay }}</p>
-				<hr class="text-light mx-auto w-25">
+                            <div class="mt-3">
+                                <strong>Logo:</strong> {{ website.logo ? 'Oui' : 'Non' }}
+                            </div>
 
-				<div class="d-flex justify-content-center mb-5" id="btn-row">
+                            {% if website.additionalInfo %}
+                                <div class="mt-3">
+                                    <strong>Informations supplémentaires:</strong><br>
+                                    {{ website.additionalInfo|nl2br }}
+                                </div>
+                            {% endif %}
 
-					<a class="text-decoration-none" href="{{ path('contact_user', {'id': website.user.id, csrf_token: csrf_token('contact_user_' ~ website.user.id ) }) }}">Contact</a>
+                            {% if website.likedWebsites %}
+                                <div class="mt-3">
+                                    <strong>Sites de référence:</strong><br>
+                                    {{ website.likedWebsites|nl2br }}
+                                </div>
+                            {% endif %}
+                            {% if website.specificFunctions|length > 0 %}
+                                <div class="mt-3">
+                                    <strong>Fonctionnalités:</strong><br>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        {% for function in website.specificFunctions %}
+                                            <span class="badge bg-primary">{{ function }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-12 text-center">
+                    <p>Aucune demande de devis pour le moment.</p>
+                </div>
+            {% endfor %}
+        </div>
 
-				</div>
-
-				<hr class="text-light mx-auto w-50">
-
-			</div>
-
-	{% else %}
-
-		</div>
-
-		<p class="mt-6 col-12 text-center text-light bg-none">No current request.</p>
-
-	{% endfor %}
-
+        <div class="d-flex justify-content-center mt-4">
+            {{ knp_pagination_render(websites) }}
+        </div>
+    </div>
 {% endblock %}

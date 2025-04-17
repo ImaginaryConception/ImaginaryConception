@@ -1,35 +1,159 @@
 {% if app.session.flashBag.has('success') or app.session.flashBag.has('error') or app.session.flashBag.has('info') %}
+    <div class="container position-fixed top 0 start-50 translate-middle-x" style="z-index: 1050;">
+        <div class="row justify-content-center">
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.querySelectorAll('.btn-close-custom').forEach(function(button) {
+                        button.addEventListener('click', function() {
+                            const alert = this.closest('.alert-custom');
+                            alert.style.animation = 'slideOut 0.5s ease forwards';
+                            setTimeout(() => {
+                                alert.closest('.col-md-8').remove();
+                            }, 500);
+                        });
+                    });
+                });
+            </script>
+            {% for message in app.flashes('success') %}
+                <div class="col-md-8 col-lg-6">
+                    <div class="alert-custom success-alert animate-flash" role="alert">
+                        <div class="alert-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="alert-content">
+                            {{ message }}
+                        </div>
+                        <button type="button" class="btn-close-custom" data-bs-dismiss="alert" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
 
-	<div class="container">
-		<div class="row">
+            {% for message in app.flashes('error') %}
+                <div class="col-md-8 col-lg-6">
+                    <div class="alert-custom error-alert animate-flash" role="alert">
+                        <div class="alert-icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div class="alert-content">
+                            {{ message }}
+                        </div>
+                        <button type="button" class="btn-close-custom" data-bs-dismiss="alert" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
 
-			{% for message in app.flashes('success') %}
+            {% for message in app.flashes('info') %}
+                <div class="col-md-8 col-lg-6">
+                    <div class="alert-custom info-alert animate-flash" role="alert">
+                        <div class="alert-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div class="alert-content">
+                            {{ message }}
+                        </div>
+                        <button type="button" class="btn-close-custom" data-bs-dismiss="alert" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 
-				<div class="flashes alert text-success text-center col-12 my-3 mt-6 alert-dismissible fade show fw-bold" role="alert">
-					{{ message }}
-					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-				</div>
-			{% endfor %}
+    <style>
+        .alert-custom {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
 
-			{% for message in app.flashes('error') %}
+        .alert-icon {
+            margin-right: 1rem;
+            font-size: 1.5rem;
+        }
 
-				<div class="flashes alert text-danger text-center col-12 my-3 mt-6 alert-dismissible fade show fw-bold" role="alert">
-					{{ message }}
-					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-				</div>
+        .alert-content {
+            flex-grow: 1;
+            font-weight: 500;
+        }
 
-			{% endfor %}
+        .btn-close-custom {
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
 
-			{% for message in app.flashes('info') %}
+        .btn-close-custom:hover {
+            opacity: 1;
+        }
 
-				<div class="flashes alert text-warning text-center col-12 my-3 mt-6 alert-dismissible fade show fw-bold" role="alert">
-					{{ message }}
-					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-				</div>
+        .success-alert {
+            border-left: 4px solid #28a745;
+        }
 
-			{% endfor %}
+        .success-alert .alert-icon {
+            color: #28a745;
+        }
 
-		</div>
-	</div>
+        .error-alert {
+            border-left: 4px solid #dc3545;
+        }
 
+        .error-alert .alert-icon {
+            color: #dc3545;
+        }
+
+        .info-alert {
+            border-left: 4px solid #ffc107;
+        }
+
+        .info-alert .alert-icon {
+            color: #ffc107;
+        }
+
+        .animate-flash {
+            animation: slideIn 0.5s ease forwards, fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+        }
+    </style>
 {% endif %}

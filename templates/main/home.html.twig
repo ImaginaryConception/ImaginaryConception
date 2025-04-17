@@ -22,8 +22,8 @@
 	<body>
 
 		<audio id="keyboard-audio" style="display: none;">
-			<source src="{{ asset('audios/keyboard.mp3') }}">
-			<source src="{{ asset('audios/keyboard.ogg') }}">
+			<source src="{{ asset('audios/keyboardz.mp3') }}">
+			<source src="{{ asset('audios/keyboardz.ogg') }}">
 		</audio>
 
 		<div class="cursor"></div>
@@ -41,9 +41,6 @@
                     <p class="mb-0 rotating-text-item">Solutions web sur mesure pour votre entreprise</p>
                     <p class="mb-0 rotating-text-item">Expert en développement web et game design</p>
                 </div>
-                <div class="text-center mt-4 fade-in">
-                    <a href="{{ path('contact') }}" class="btn btn-light btn-lg">Demander un devis <i class="fas fa-arrow-right ms-2"></i></a>
-                </div>
             </div>
 
 			<div class="row mx-auto">
@@ -54,16 +51,24 @@
                                 <span class="nav-button-content">Games</span>
                                 <p class="nav-button-description">Découvrez nos jeux vidéo innovants</p>
                             </a>
-                            <a href="{{ path('website') }}" class="nav-button register3" data-aos="fade-up" data-aos-delay="200">
+                            <a href="{{ path('services') }}" class="nav-button register3" data-aos="fade-up" data-aos-delay="200">
                                 <div class="nav-button-bg web-bg"></div>
                                 <span class="nav-button-content">Web development</span>
                                 <p class="nav-button-description">Solutions web sur mesure pour votre entreprise</p>
+                                <p class="nav-button-description mt-3 btn-light btn-lg">Découvrir nos services</p>
                             </a>
-                            <a href="{{ path('portfolio') }}" class="nav-button register4 mb-4" data-aos="fade-up" data-aos-delay="400">
+                            <a href="{{ path('realisations') }}" class="nav-button register4 mb-4" data-aos="fade-up" data-aos-delay="400">
                                 <div class="nav-button-bg portfolio-bg"></div>
                                 <span class="nav-button-content">Portfolio</span>
                                 <p class="nav-button-description">Explorez nos réalisations</p>
                             </a>
+                            {% if app.user.hasPrivateBoardAccess %}
+                                <a href="{{ path('private_board') }}" class="nav-button mb-4" data-aos="fade-up" data-aos-delay="400">
+                                    <div class="nav-button-bg"></div>
+                                    <span class="nav-button-content">Board privé</span>
+                                    <p class="nav-button-description">Suivez l'évolution du projet en temps réel.</p>
+                                </a>
+							{% endif %}
                         </div>
                         <style>
                             .custom-nav {
@@ -235,15 +240,51 @@
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     const items = document.querySelectorAll('.rotating-text-item');
+                    const audio = document.getElementById('keyboard-audio');
                     let currentIndex = 0;
+                    let isTyping = false;
 
-                    function rotateText() {
-                        items[currentIndex].classList.remove('active');
-                        currentIndex = (currentIndex + 1) % items.length;
-                        items[currentIndex].classList.add('active');
+                    function typeText(element, text, callback) {
+                        let index = 0;
+                        isTyping = true;
+                        element.textContent = '';
+                        element.classList.add('active');
+
+                        function type() {
+                            if (index < text.length) {
+                                element.textContent += text[index];
+                                if (audio.duration > 0 && !audio.paused) {
+                                    audio.currentTime = 0;
+                                }
+                                // audio.play();
+                                index++;
+                                setTimeout(type, 50);
+                            } else {
+                                isTyping = false;
+                                if (callback) callback();
+                            }
+                        }
+                        type();
                     }
 
-                    setInterval(rotateText, 3000);
+                    function rotateText() {
+                        if (isTyping) return;
+                        items[currentIndex].classList.remove('active');
+                        items[currentIndex].textContent = '';
+                        currentIndex = (currentIndex + 1) % items.length;
+                        const nextText = items[currentIndex].getAttribute('data-text');
+                        typeText(items[currentIndex], nextText);
+                    }
+
+                    // Sauvegarder le texte original dans un attribut data-text
+                    items.forEach(item => {
+                        item.setAttribute('data-text', item.textContent);
+                        item.textContent = '';
+                    });
+
+                    // Démarrer avec le premier texte
+                    typeText(items[0], items[0].getAttribute('data-text'));
+                    setInterval(rotateText, 6000);
                 });
             </script>
 

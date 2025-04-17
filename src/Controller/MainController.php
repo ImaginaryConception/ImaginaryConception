@@ -49,11 +49,11 @@ class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/portfolio/', name: 'portfolio')]
-    public function portfolio(): Response
-    {
-        return $this->render('main/portfolio.html.twig');
-    }
+    // #[Route('/portfolio/', name: 'portfolio')]
+    // public function portfolio(): Response
+    // {
+    //     return $this->render('main/portfolio.html.twig');
+    // }
 
     #[Route('/cv/', name: 'cv')]
     public function cv(): Response
@@ -61,7 +61,7 @@ class MainController extends AbstractController
         return $this->render('main/cv.html.twig');
     }
 
-    #[Route('/realisations/', name: 'realisations')]
+    #[Route('/portfolio/', name: 'realisations')]
     public function realisations(): Response
     {
         return $this->render('main/realisations.html.twig');
@@ -91,81 +91,49 @@ class MainController extends AbstractController
         return $this->render('main/mentions_legales.html.twig');
     }
 
-    #[Route('/design-your-website/', name: 'website')]
-    // #[IsGranted('ROLE_USER')]
-    public function website(Request $request, ManagerRegistry $doctrine, RecaptchaValidator $recaptcha, PaginatorInterface $paginator, MailerInterface $mailer): Response
+    #[Route('/get-a-quote/', name: 'website')]
+    #[IsGranted('ROLE_USER')]
+    public function website(Request $request, ManagerRegistry $doctrine, RecaptchaValidator $recaptcha, MailerInterface $mailer): Response
     {
+        // Création du formulaire
+        $quote = new Website();
+        $form = $this->createForm(WebsiteRequestFormType::class, $quote);
 
-        $this->addFlash('info', 'This feature is temporarily unavailable. For more information, please contact me with the following information:');
+        // Traitement du formulaire
+        $form->handleRequest($request);
 
-        return $this->redirectToRoute('contact');
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Validation du recaptcha
+            // $recaptchaResponse = $request->request->get('g-recaptcha-response');
+            // $isValidRecaptcha = $recaptcha->verify($recaptchaResponse);
 
-        // $website = new Website();
+            // if (!$isValidRecaptcha) {
+            //     $this->addFlash('error', 'Recaptcha verification failed.');
+            //     return $this->redirectToRoute('website');
+            // }
 
-        // $website_form = $this->createForm(WebsiteRequestFormType::class, $website);
+            if ($quote->getDeadline() === null) {
+                $quote->setDeadline(new \DateTime()); // date actuelle par défaut
+            }
 
-        // $website_form->handleRequest($request);
+            // Sauvegarde en base de données
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($quote);
+            $entityManager->flush();
 
-        // $em = $doctrine->getManager();
+            // Envoi d'un email de confirmation (optionnel)
+            // $mailer->sendConfirmationEmail($quote->getEmail());
 
-        // $query = $em->createQuery('SELECT w FROM App\Entity\Website w');
+            // Message de confirmation
+            $this->addFlash('success', 'Merci pour votre demande, je vous recontacte dans les 24h. — Imaginary Conception');
 
-        // $websites = $paginator->paginate(
-        //     $query,
-        //     1000,
-        // );
+            return $this->redirectToRoute('website');
+        }
 
-        // if ($website_form->isSubmitted() && $website_form->isValid()) {
-
-        //     $user = $this->getUser();
-
-        //     $website
-        //         ->setUser($user)
-        //     ;
-
-        //     // Récupération de la réponse envoyée par le captcha dans le formulaire
-        //     // ( $_POST['g-recaptcha-response'] )
-        //     $recaptchaResponse = $request->request->get('g-recaptcha-response', null);
-
-        //     // Si le captcha n'est pas valide, on crée une nouvelle erreur dans le formulaire (ce qui l'empêchera de créer l'article et affichera l'erreur)
-        //     // $request->server->get('REMOTE_ADDR') -----> Adresse IP de l'utilisateur dont la méthode verify() a besoin
-        //     if ($recaptchaResponse == null || !$recaptcha->verify($recaptchaResponse, $request->server->get('REMOTE_ADDR'))) {
-
-        //         // Ajout d'une nouvelle erreur manuellement dans le formulaire
-        //         $website_form->addError(new FormError('Le Captcha doit être validé !'));
-        //     }
-
-        //     $email = (new TemplatedEmail())
-        //         ->from('support@imaginary-conception.com')
-        //         ->to($user->getEmail(), 'anishamouche@gmail.com')
-        //         ->subject('Imaginary-Conception Website Request: ' . $website_form['domain']->getData())
-        //         ->textTemplate('emails/website.txt.twig')
-        //         ->htmlTemplate('emails/website.html.twig')
-        //         ->context([
-        //             'website_form_firstname_lastname' => $website_form['lastname_firstname']->getData(),
-        //             'website_form_domicile' => $website_form['domicile']->getData(),
-        //             'website_form_websiteType' => $website_form['websiteType']->getData(),
-        //             'website_form_budget' => $website_form['budget']->getData(),
-        //             'website_form_domain' => $website_form['domain']->getData(),
-        //             'website_form_delay' => $website_form['delay']->getData(),
-        //         ]);
-
-        //     $mailer->send($email);
-
-        //     $em = $doctrine->getManager();
-
-        //     $em->persist($website);
-        //     $em->flush();
-
-        //     $this->addFlash('success', 'Website purchase request sent successfully, an email has been sent to you!');
-
-        //     return $this->redirectToRoute('home');
-        // }
-
-        // return $this->render('main/website.html.twig', [
-        //     'website_form' => $website_form->createView(),
-        //     'websites' => $websites,
-        // ]);
+        // Affichage du formulaire
+        return $this->render('main/website.html.twig', [
+            'quote_form' => $form->createView(),
+        ]);
     }
 
     #[Route('/contact/', name: 'contact')]
@@ -213,6 +181,32 @@ class MainController extends AbstractController
         return $this->render('main/contact.html.twig', [
             'contact_form' => $contact_form->createView(),
         ]);
+    }
+
+    #[Route('/update-project-stage', name: 'update_project_stage', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function updateProjectStage(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        if (!$this->isCsrfTokenValid('update_stage', $request->request->get('csrf_token'))) {
+            $this->addFlash('error', 'Token CSRF invalide');
+            return $this->redirectToRoute('users');
+        }
+
+        $userId = $request->request->get('userId');
+        $stage = $request->request->get('stage');
+
+        $website = $entityManager->getRepository(Website::class)->findOneBy(['user' => $userId]);
+
+        if (!$website) {
+            $this->addFlash('error', 'Projet non trouvé');
+            return $this->redirectToRoute('users');
+        }
+
+        $website->setCurrentStage($stage);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Étape du projet mise à jour avec succès');
+        return $this->redirectToRoute('users');
     }
 
     #[Route('/contact-user/{id}/', name: 'contact_user')]
@@ -278,26 +272,46 @@ class MainController extends AbstractController
         }
     }
 
-    #[Route('/requested-websites/', name: 'requested_website')]
+    #[Route('/requested-quotes/', name: 'requested_website')]
     #[IsGranted('ROLE_ADMIN')]
-    public function requestedWebsite(ManagerRegistry $doctrine): Response
+    public function requestedWebsite(ManagerRegistry $doctrine, Request $request, PaginatorInterface $paginator): Response
     {
+        $requestedPage = $request->query->getInt('page', 1);
 
-        if (!$this->isGranted('ROLE_ADMIN')) {
-
-            $this->addFlash('error', 'You are not authorized to access this page!');
-
-            return $this->redirectToRoute('home');
-        } else {
-
-            $repository = $doctrine->getRepository(Website::class);
-
-            $websites = $repository->findAll();
-
-            return $this->render('main/websites_list.html.twig', [
-                'websites' => $websites,
-            ]);
+        if ($requestedPage < 1) {
+            throw new NotFoundHttpException();
         }
+
+        $em = $doctrine->getManager();
+        $query = $em->createQuery('SELECT w FROM App\\Entity\\Website w ORDER BY w.id DESC');
+
+        $websites = $paginator->paginate(
+            $query,
+            $requestedPage,
+            10
+        );
+
+        return $this->render('main/websites_list.html.twig', [
+            'websites' => $websites,
+        ]);
+    }
+
+    #[Route('/toggle-private-board-access/{id}/', name: 'toggle_private_board_access', priority: 10)]
+    #[ParamConverter('user', options: ['mapping' => ['id' => 'id']])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function togglePrivateBoardAccess(User $user, Request $request, ManagerRegistry $doctrine): Response
+    {
+        if (!$this->isCsrfTokenValid('toggle_private_board_access_' . $user->getId(), $request->query->get('csrf_token'))) {
+            $this->addFlash('error', 'Jeton de sécurité invalide, veuillez réessayer.');
+        } else {
+            $user->setHasPrivateBoardAccess(!$user->getHasPrivateBoardAccess());
+            $em = $doctrine->getManager();
+            $em->flush();
+
+            $this->addFlash('success', 'Accès au board privé modifié avec succès !');
+        }
+
+        return $this->redirectToRoute('users');
     }
 
     #[Route('/delete-user/{id}/', name: 'delete_user', priority: 10)]
@@ -372,6 +386,28 @@ class MainController extends AbstractController
                 'user' => $user,
             ]);
         }
+    }
+
+    #[Route('/private-board/', name: 'private_board')]
+    public function privateBoard(ManagerRegistry $doctrine): Response
+    {
+        if (!$this->isGranted('ROLE_USER')) {
+            $this->addFlash('error', 'Vous devez être connecté pour accéder à cette page!');
+            return $this->redirectToRoute('login');
+        }
+
+        $user = $this->getUser();
+        if (!$user->getHasPrivateBoardAccess()) {
+            $this->addFlash('error', 'Vous n\'avez pas accès au tableau de bord privé!');
+            return $this->redirectToRoute('home');
+        }
+
+        $repository = $doctrine->getRepository(Website::class);
+        $websites = $repository->findBy(['user' => $user]);
+
+        return $this->render('main/private_board.html.twig', [
+            'websites' => $websites,
+        ]);
     }
 
     #[Route('/delete-comment/{id}/', name: 'comment_delete', priority: 10)]
@@ -589,4 +625,53 @@ class MainController extends AbstractController
             'games' => $games,
         ]);
     }
+    #[Route('/create-website', name: 'create_website', methods: ['POST'])]
+    public function createWebsite(Request $request, ManagerRegistry $doctrine): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        if (!$this->isCsrfTokenValid('create_website', $request->request->get('csrf_token'))) {
+            $this->addFlash('error', 'Jeton de sécurité invalide');
+            return $this->redirectToRoute('users');
+        }
+
+        $userId = $request->request->get('userId');
+        $user = $doctrine->getRepository(User::class)->find($userId);
+
+        if (!$user) {
+            $this->addFlash('error', 'Utilisateur non trouvé');
+            return $this->redirectToRoute('users');
+        }
+
+        $website = new Website();
+        $website->setFirstname($request->request->get('firstname'))
+            ->setLastname($request->request->get('lastname'))
+            ->setEmail($request->request->get('email'))
+            ->setPhone($request->request->get('phone'))
+            ->setCompanyName($request->request->get('companyName'))
+            ->setType($request->request->get('type'))
+            ->setEstimatedBudget((float)$request->request->get('estimatedBudget'))
+            ->setDeadline(new \DateTime($request->request->get('deadline')))
+            ->setEstimatedPages((int)$request->request->get('estimatedPages'))
+            ->setExistingWebsite($request->request->get('existingWebsite'))
+            ->setLikedWebsites($request->request->get('likedWebsites'))
+            ->setSpecificFunctions(explode(',', $request->request->get('specificFunctions')))
+            ->setAdditionalInfo($request->request->get('additionalInfo'))
+            ->setUser($user)
+            ->setCreatedAt(new \DateTime())
+            ->setStatus('pending')
+            ->setLogo(false);
+
+        $user->setHasPrivateBoardAccess(true);
+
+        $entityManager = $doctrine->getManager();
+        $entityManager->persist($website);
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Le projet web a été créé et l\'accès au board privé a été accordé.');
+
+        return $this->redirectToRoute('users');
+    }
 }
+

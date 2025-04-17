@@ -1,75 +1,483 @@
-{% extends 'base.html.twig' %}
+{% set route = app.request.attributes.get('_route')%}
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}{% endblock %} - Imaginary Conception</title>
+        <link rel="stylesheet" href="{{ asset('CSS/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+        <link rel="stylesheet" href="{{ asset('CSS/styles.css') }}">
+        <link rel="stylesheet" href="{{ asset('CSS/animations.css') }}">
+        <link rel="stylesheet" href="{{ asset('CSS/realisations.css') }}">
+        <script src="{{ asset(('JS/bootstrap.bundle.min.js')) }}" defer></script>
+        <script src="{{ asset(('JS/script.js')) }}" defer></script>
+        <script src="{{ asset(('JS/animations.js')) }}" defer></script>
+        <script src="{{ asset('JS/realisations.js') }}" defer></script>
+        {% block js %}{% endblock %}
+        <style>
+            .fullpage-container {
+                height: 100vh;
+                overflow-y: scroll;
+                scroll-snap-type: y mandatory;
+                background-color: #000;
+                perspective: 1000px;
+            }
 
-{% block title %}Réalisations - Imaginary Conception{% endblock %}
+            .project-section {
+                height: 100vh;
+                scroll-snap-align: start;
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+            }
 
-{% block meta_description %}
-    <meta name="description" content="Découvrez mes réalisations en développement web. Portfolio de projets web créatifs et fonctionnels.">
-{% endblock %}
+            .project-background {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-size: cover;
+                background-position: center;
+                filter: brightness(0.3);
+                transform: scale(1.1);
+                transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: inset 0 0 100px rgba(0,0,0,0.8);
+            }
 
-{% block body %}
-    <div class="container mt-5">
-        <h1 class="text-center text-light mb-5">Mes Réalisations</h1>
+            .project-section.active .project-background {
+                transform: scale(1);
+            }
 
-        <div class="row g-4">
+            .project-content {
+                position: relative;
+                z-index: 1;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 2rem;
+                opacity: 0;
+                transform: translateY(30px);
+                transition: all 0.8s ease;
+            }
+
+            .project-section.active .project-content {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .project-details {
+                color: #fff;
+                text-align: center;
+            }
+
+            .project-title {
+                font-size: 4rem;
+                margin-bottom: 1.5rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                opacity: 0;
+                transform: translateY(20px);
+                transition: all 0.8s ease 0.2s;
+            }
+
+            .project-section.active .project-title {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .project-description {
+                font-size: 1.4rem;
+                margin-bottom: 2rem;
+                line-height: 1.6;
+                opacity: 0;
+                transform: translateY(20px);
+                transition: all 0.8s ease 0.4s;
+            }
+
+            .project-section.active .project-description {
+                opacity: 0.9;
+                transform: translateY(0);
+            }
+
+            .project-tags {
+                display: flex;
+                justify-content: center;
+                gap: 1rem;
+                margin-bottom: 2rem;
+                opacity: 0;
+                transform: translateY(20px);
+                transition: all 0.8s ease 0.6s;
+            }
+
+            .project-section.active .project-tags {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .tag {
+                background: rgba(255, 255, 255, 0.1);
+                padding: 0.5rem 1rem;
+                border-radius: 20px;
+                font-size: 0.9rem;
+                transition: all 0.3s ease;
+                backdrop-filter: blur(5px);
+            }
+
+            .tag:hover {
+                background: rgba(255, 255, 255, 0.2);
+                transform: translateY(-2px);
+            }
+
+            .project-link {
+                display: inline-block;
+                background: transparent;
+                color: #fff;
+                padding: 1rem 2rem;
+                border: 2px solid rgba(255,255,255,0.3);
+                border-radius: 30px;
+                text-decoration: none;
+                font-weight: 600;
+                transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+                opacity: 0;
+                transform: translateY(20px);
+                transition: all 0.8s ease 0.8s;
+                position: relative;
+                overflow: hidden;
+                backdrop-filter: blur(5px);
+            }
+
+            .project-section.active .project-link {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .project-link:hover {
+                background: rgba(255,255,255,0.1);
+                border-color: rgba(255,255,255,0.8);
+                transform: translateY(-2px);
+                box-shadow: 0 0 20px rgba(255,255,255,0.2);
+            }
+
+            .project-link::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 200%;
+                height: 200%;
+                background: rgba(255,255,255,0.1);
+                transform: translate(-50%, -50%) rotate(45deg) scale(0);
+                transition: transform 0.6s ease;
+            }
+
+            .project-link:hover::before {
+                transform: translate(-50%, -50%) rotate(45deg) scale(1);
+            }
+
+            @media (max-width: 1024px) {
+                .project-title {
+                    font-size: 2.5rem;
+                }
+
+                .project-description {
+                    font-size: 1.2rem;
+                }
+
+                .project-content {
+                    padding: 1rem;
+                }
+            }
+        </style>
+
+        <style>
+            .home-button {
+                position: fixed;
+                top: 2rem;
+                left: 2rem;
+                z-index: 1000;
+                background: rgba(255, 255, 255, 0.1);
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                color: #fff;
+                padding: 1rem;
+                border-radius: 50%;
+                backdrop-filter: blur(5px);
+                transition: all 0.3s ease;
+                cursor: pointer;
+                text-decoration: none;
+            }
+
+            .home-button:hover {
+                background: rgba(255, 255, 255, 0.2);
+                border-color: rgba(255, 255, 255, 0.8);
+                transform: scale(1.1);
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            }
+
+            .home-button i {
+                font-size: 1.5rem;
+            }
+        </style>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const sections = document.querySelectorAll('.project-section');
+                let currentSection = 0;
+                let isAnimating = false;
+
+                const observerOptions = {
+                    root: null,
+                    threshold: 0.5,
+                    rootMargin: '0px'
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                            const index = Array.from(sections).indexOf(entry.target);
+                            currentSection = index;
+                            updateParallax(entry.target);
+                        } else {
+                            entry.target.classList.remove('active');
+                        }
+                    });
+                }, observerOptions);
+
+                sections.forEach(section => {
+                    observer.observe(section);
+                });
+
+                function updateParallax(section) {
+                    const background = section.querySelector('.project-background');
+                    const content = section.querySelector('.project-content');
+                    const rect = section.getBoundingClientRect();
+                    const scrollProgress = -rect.top / (window.innerHeight - rect.height);
+
+                    background.style.transform = `scale(${1.1 + scrollProgress * 0.1})`;
+                    content.style.transform = `translateY(${scrollProgress * 30}px)`;
+                }
+
+                // Effet parallax léger
+                document.querySelector('.fullpage-container').addEventListener('scroll', function() {
+                    sections.forEach(section => {
+                        const distance = section.getBoundingClientRect().top;
+                        const image = section.querySelector('.project-image');
+                        const movement = distance * 0.3;
+                        image.style.transform = `translateY(${movement}px)`;
+                    });
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <a href="{{ path('home') }}" class="home-button" title="Retour à l'accueil">
+            <i class="fas fa-home"></i>
+        </a>
+        <div class="fullpage-container">
             <!-- Projet 1 -->
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 bg-dark text-light border-light project-card" data-aos="fade-up">
-                    <img src="{{ asset('Images/mms.png') }}" class="card-img-top" alt="Mobile Multimedia Service">
-                    <div class="card-body">
-                        <h2 class="h5 mb-3">Mobile Multimedia Service</h2>
-                        <p class="mb-3">Site web pour une boutique de réparation électronique avec système de devis en ligne et gestion des rendez-vous.</p>
-                        <div class="stack-tags mb-3">
-                            <span class="badge bg-light text-dark me-2">Symfony</span>
-                            <span class="badge bg-light text-dark me-2">MySQL</span>
-                            <span class="badge bg-light text-dark">Bootstrap</span>
-                        </div>
+            <section class="project-section" data-categories="symfony,php">
+                <div class="project-background" style="background-image: url('{{ asset('Images/bg.png') }}');"></div>
+                <div class="project-content">
+                    <div class="project-details">
+                        <h2 class="project-title">Mes Réalisations Web & Jeux Vidéo</h2>
+                        <p class="project-description">Chaque projet est une nouvelle vision. Que ce soit un site web sur-mesure ou un jeu vidéo, je m'investis à fond pour donner vie à des expériences uniques, modernes, et bien pensées. Scroll pour découvrir mes créations 👇</p>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- Projet 2 -->
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 bg-dark text-light border-light project-card" data-aos="fade-up" data-aos-delay="100">
-                    <img src="{{ asset('Images/thanatophobia.png') }}" class="card-img-top" alt="Thanatophobia">
-                    <div class="card-body">
-                        <h2 class="h5 mb-3">Thanatophobia</h2>
-                        <p class="mb-3">Jeu d'horreur psychologique développé avec une interface web pour la gestion de la communauté.</p>
-                        <div class="stack-tags mb-3">
-                            <span class="badge bg-light text-dark me-2">Unity</span>
-                            <span class="badge bg-light text-dark me-2">C#</span>
-                            <span class="badge bg-light text-dark">Steam API</span>
-                        </div>
+            <section class="project-section" data-categories="symfony,php">
+                <div class="project-background" style="background-image: url('{{ asset('Images/code.png') }}');"></div>
+                <div class="project-content">
+                    <div class="project-details">
+                        <h2 class="project-title">🌐 Développement Web</h2>
+                        <p class="project-description">Des sites professionnels, performants, pensés pour les utilisateurs et le business. Voici quelques projets clients & perso.</p>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- Projet 3 -->
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 bg-dark text-light border-light project-card" data-aos="fade-up" data-aos-delay="200">
-                    <img src="{{ asset('Images/code.png') }}" class="card-img-top" alt="Portfolio Personnel">
-                    <div class="card-body">
-                        <h2 class="h5 mb-3">Portfolio Personnel</h2>
-                        <p class="mb-3">Site vitrine professionnel présentant mes services de développement web et mes réalisations.</p>
-                        <div class="stack-tags mb-3">
-                            <span class="badge bg-light text-dark me-2">Symfony</span>
-                            <span class="badge bg-light text-dark me-2">Twig</span>
-                            <span class="badge bg-light text-dark">JavaScript</span>
+            <section class="project-section" data-categories="symfony,php">
+                <div class="project-background" style="background-image: url('{{ asset('Images/lo.png') }}');"></div>
+                <div class="project-content">
+                    <div class="project-details">
+                        <h2 class="project-title">Le Monde de Lud'Opus</h2>
+                        <p class="project-description">Site de librairie avec système de réservation. UX design, développement complet, back Symfony + front responsive. Moteur de recherche par filtres dynamiques. Le Monde de Lud'Opus est une librairie d'occasion. Ouvert le 05/04/2022. La situation géographique de la librairie ne permettait pas d'attirer des clients potentiels. Seuls Instagram et Facebook ont été utilisés comme supports publicitaires. Les clients venaient surtout de bouche à oreille. L'attractivité était donc limitée. Un site internet était alors nécessaire pour se faire connaître d'un public plus large, facilitant les personnes éloignées ou les personnes en situation de handicap grâce à la future livraison à domicile et ainsi, mettant en avant les opérations promotionnelles et permettant aux clients de réserver en ligne.</p>
+                        <div class="project-tags">
+                            <span class="tag">Symfony</span>
+                            <span class="tag">MySQL/SQL</span>
+                            <span class="tag">Bootstrap</span>
+                            <span class="tag">HTML/CSS</span>
+                            <span class="tag">JavaScript/jQuery</span>
+                            <span class="tag">PHP</span>
                         </div>
+                        <a href="https://www.lemondedeludopus.fr/" target="_blank" class="project-link">Voir le projet</a>
                     </div>
                 </div>
-            </div>
+            </section>
+
+            <section class="project-section" data-categories="symfony,php">
+                <div class="project-background" style="background-image: url('{{ asset('Images/lh.png') }}');"></div>
+                <div class="project-content">
+                    <div class="project-details">
+                        <h2 class="project-title">Lhannz</h2>
+                        <p class="project-description">Site e-commerce pour tableaux sur-mesure. Intégration du formulaire de commande, interface clean, back-end sécurisé. Configurateur personnalisé pour les toiles. J'ai conçu le site internet d'une micro-entreprise spécialisée dans la vente de tableaux uniques faits à la main, personnalisés selon les préférences de chaque client. Ces œuvres d'art allient habilement toile et résine, témoignant d'un travail minutieux et d'une grande attention portée aux détails. La fabrication demande généralement entre 10 et 15 jours. Avec une livraison dans toute la France, vous permettant ainsi de profiter de votre création dans le confort de votre maison. De plus, les clients ont la liberté de choisir parmi une vaste sélection de tailles et de couleurs, offrant ainsi une expérience personnalisée.</p>
+                        <div class="project-tags">
+                            <span class="tag">Symfony</span>
+                            <span class="tag">MySQL/SQL</span>
+                            <span class="tag">Bootstrap</span>
+                            <span class="tag">HTML/CSS</span>
+                            <span class="tag">JavaScript/jQuery</span>
+                            <span class="tag">PHP</span>
+                        </div>
+                        {# <a href="#" class="project-link">Voir le projet</a> #}
+                    </div>
+                </div>
+            </section>
+
+            <section class="project-section" data-categories="symfony,php">
+                <div class="project-background" style="background-image: url('{{ asset('Images/mms.png') }}');"></div>
+                <div class="project-content">
+                    <div class="project-details">
+                        <h2 class="project-title">Mobile Multimedia Services</h2>
+                        <p class="project-description">J'ai conçu un site vitrine pour Mobile Multimedia Services, une boutique de réparation de matériel électronique. Le site intègre un système de devis en ligne avec formulaires dynamiques, permettant aux clients d’obtenir rapidement un devis personnalisé au format PDF. Il est entièrement responsive pour une utilisation mobile fluide. Le gérant peut gérer les demandes depuis une interface dédiée, accepter ou refuser les devis, fixer des dates et tarifs. Les clients peuvent laisser des avis, consulter les horaires et accéder facilement à toutes les infos utiles. Ce site digitalise et simplifie la gestion quotidienne de la boutique.</p>
+                        <div class="project-tags">
+                            <span class="tag">Symfony</span>
+                            <span class="tag">MySQL/SQL</span>
+                            <span class="tag">Bootstrap</span>
+                            <span class="tag">HTML/CSS</span>
+                            <span class="tag">JavaScript/jQuery</span>
+                            <span class="tag">PHP</span>
+                        </div>
+                        {# <a href="#" class="project-link">Voir le projet</a> #}
+                    </div>
+                </div>
+            </section>
+
+            <section class="project-section" data-categories="symfony,javascript">
+                <div class="project-background" style="background-image: url('{{ asset('Images/ic.png') }}');"></div>
+                <div class="project-content">
+                    <div class="project-details">
+                        <h2 class="project-title">Imaginary Conception</h2>
+                        <p class="project-description">Bienvenue sur Imaginary Conception, ce site est mon portfolio personnel où je rassemble toutes mes créations. Ce site est à la fois une vitrine de mon travail en développement web et un espace dédié à mes jeux vidéo. Vous y trouverez des descriptions détaillées de mes projets, des liens d'achat pour mes jeux, ainsi que mes informations de contact. Que ce soit pour découvrir mes réalisations ou échanger avec moi, tout commence ici.</p>
+                        <div class="project-tags">
+                            <span class="tag">Symfony</span>
+                            <span class="tag">MySQL/SQL</span>
+                            <span class="tag">Bootstrap</span>
+                            <span class="tag">HTML/CSS</span>
+                            <span class="tag">JavaScript/jQuery</span>
+                            <span class="tag">PHP</span>
+                        </div>
+                        <a href="https://www.imaginaryconception.com/" target="_blank" class="project-link">Voir le projet</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="project-section" data-categories="symfony,javascript">
+                <div class="project-background" style="background-image: url('{{ asset('Images/vg.png') }}');"></div>
+                <div class="project-content">
+                    <div class="project-details">
+                        <h2 class="project-title">Varg31</h2>
+                        <p class="project-description">J'ai conçu le site d'un streamer français afin d'accompagner le développement de sa chaîne. Il intègre un système de propositions de contenu, un flux en direct, un planning hebdomadaire et bien plus encore !</p>
+                        <div class="project-tags">
+                            <span class="tag">Symfony</span>
+                            <span class="tag">MySQL/SQL</span>
+                            <span class="tag">Bootstrap</span>
+                            <span class="tag">HTML/CSS</span>
+                            <span class="tag">JavaScript/jQuery</span>
+                            <span class="tag">PHP</span>
+                        </div>
+                        {# <a href="#" class="project-link">Voir le projet</a> #}
+                    </div>
+                </div>
+            </section>
+
+            <section class="project-section" data-categories="unity,javascript">
+                <div class="project-background" style="background-image: url('{{ asset('Images/gamesimg.png') }}');"></div>
+                <div class="project-content">
+                    <div class="project-details">
+                        <h2 class="project-title">🎮 Développement de Jeux Vidéo</h2>
+                        <p class="project-description">Solo dev passionné, j'ai créé plusieurs jeux sur Steam, tous avec une vibe différente. Horror, stratégie, mystère… y'a du lourd.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="project-section" data-categories="unity,javascript">
+                <div class="project-background" style="background-image: url('{{ asset('Images/thanatophobia.png') }}');"></div>
+                <div class="project-content">
+                    <div class="project-details">
+                        <h2 class="project-title">Thanatophobia (2024)</h2>
+                        <p class="project-description">3 ans de développement. 11,79€. Ambiance pesante, énigmes, succès malgré bugs de jeunesse. Gestion complète d'un projet long, feedback Steam. Un jeu d'horreur multijoueur coopératif où la survie est ta seule priorité. Thanatophobia te plonge dans un environnement sombre et oppressant, où toi et ton équipe devez explorer, fuir une menace mortelle et réussir à vous échapper vivants. Pas de seconde chance : si tu te fais attraper, c'est terminé.</p>
+                        <div class="project-tags">
+                            <span class="tag">Unreal Engine</span>
+                            <span class="tag">C++</span>
+                        </div>
+                        <a href="https://store.steampowered.com/app/2566310/Thanatophobia/" target="_blank" class="project-link">Voir sur Steam</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="project-section" data-categories="unity,javascript">
+                <div class="project-background" style="background-image: url('{{ asset('Images/floorsofmadness.jpg') }}');"></div>
+                <div class="project-content">
+                    <div class="project-details">
+                        <h2 class="project-title">50 Floors of Madness (2024)</h2>
+                        <p class="project-description">Détection d'anomalies. 5 jours de développement. 4,99€. Jeu ultra rentable, rapide, super bien reçu. L'art du game loop simple mais efficace. Vous êtes un ancien patient d’un asile abandonné. Un jour, vous vous réveillez au 50ᵉ étage d'un bâtiment étrange, sans aucun souvenir de comment vous êtes arrivé là. Votre objectif est simple : descendre les étages un à un jusqu'à la sortie. Mais attention, en tant qu'ex-patient, votre esprit vous joue des tours. Des hallucinations troublent votre perception, et seules votre mémoire et votre sens de l'observation pourront vous aider à repérer les anomalies. Descendre n'a jamais été aussi déroutant…</p>
+                        <div class="project-tags">
+                            <span class="tag">Unreal Engine</span>
+                            <span class="tag">C++</span>
+                        </div>
+                        <a href="https://store.steampowered.com/app/3043840/50_Floors_of_Madness/" target="_blank" class="project-link">Voir sur Steam</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="project-section" data-categories="unity,javascript">
+                <div class="project-background" style="background-image: url('{{ asset('Images/HBLogo.png') }}');"></div>
+                <div class="project-content">
+                    <div class="project-details">
+                        <h2 class="project-title">Hidden Bloodhunt (2024)</h2>
+                        <p class="project-description">Stratégie / trahison. 1 an de développement. 4,99€. Plonge dans un jeu multijoueur où la paranoïa est reine. Deux rôles : innocent ou traître. Les innocents doivent coopérer pour réparer les générateurs et survivre, tout en gardant un œil sur leurs alliés... car certains ne le sont peut-être pas. Les traîtres, eux, éliminent discrètement un par un, en semant la confusion pour ne jamais se faire griller. Chaque choix peut te sauver ou te condamner. Observation, manipulation, stratégie. Dans Hidden Bloodhunt, chaque seconde peut être la dernière.</p>
+                        <div class="project-tags">
+                            <span class="tag">Unreal Engine</span>
+                            <span class="tag">C++</span>
+                        </div>
+                        <a href="https://store.steampowered.com/app/3323130/Hidden_Bloodhunt/" target="_blank" class="project-link">Voir sur Steam</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="project-section" data-categories="unity,javascript">
+                <div class="project-background" style="background-image: url('{{ asset('Images/breakingthegrip.png') }}');"></div>
+                <div class="project-content">
+                    <div class="project-details">
+                        <h2 class="project-title">Breaking the Grip (2025)</h2>
+                        <p class="project-description">Horreur multijoueur asymétrique. 1 mois de développement. 6,99€. Jeu dynamique, fun à jouer, projet maîtrisé. Un jeu multijoueur asymétrique où l'horreur prend racine dans la stratégie. Les survivants doivent s'unir pour compléter un rituel et bannir l'esprit… avant que la folie ne les consume. L'esprit, lui, traque, manipule, et brise les esprits un à un, jusqu'à les faire sombrer. Tension constante, choix décisifs, coopération vitale : Breaking the Grip, c'est une lutte mentale où seul le plus rusé l'emporte. Qui cédera… et qui brisera l'emprise ?</p>
+                        <div class="project-tags">
+                            <span class="tag">Unreal Engine</span>
+                            <span class="tag">C++</span>
+                        </div>
+                        <a href="https://store.steampowered.com/app/3592220/Breaking_the_Grip/" target="_blank" class="project-link">Voir sur Steam</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="project-section" data-categories="contact">
+                <div class="project-background" style="background-image: url('{{ asset('Images/bg.png') }}');"></div>
+                <div class="project-content">
+                    <div class="project-details">
+                        <h2 class="project-title">Et maintenant ?</h2>
+                        <p class="project-description">Tu veux un site web à ton image ? Ou peut-être que tu veux créer une expérience interactive unique ? Je suis dispo pour bosser sur ton projet, partout dans le monde 🌍</p>
+                        <a href="{{ path('contact') }}" class="project-link">📩 Me contacter</a>
+                    </div>
+                </div>
+            </section>
         </div>
-    </div>
-
-    <style>
-        .project-card {
-            transition: transform 0.3s ease;
-        }
-        .project-card:hover {
-            transform: translateY(-5px);
-        }
-        .stack-tags .badge {
-            font-size: 0.8rem;
-        }
-    </style>
-{% endblock %}
+    </body>
+</html>
