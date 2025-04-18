@@ -987,7 +987,7 @@ a:hover {
     margin-top: 5rem !important;
 }
 
-body::-webkit-scrollbar {
+/* body::-webkit-scrollbar {
     width: 1.5rem;
 }
 
@@ -1007,7 +1007,7 @@ body::-webkit-scrollbar-thumb {
 
 body::-webkit-scrollbar-thumb:hover {
     background-color: rgba(0, 0, 0, 0.900);
-}
+} */
 
 h1 {
     font-size: 4.8rem;
