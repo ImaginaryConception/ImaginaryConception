@@ -3,6 +3,10 @@
 {% block title %}Get a quote{% endblock %}
 
 {% block body %}
+{% block javascripts %}
+    <script src="{{ asset('JS/quote-simulator.js') }}"></script>
+    <script src="{{ asset('JS/moodboard-generator.js') }}"></script>
+{% endblock %}
 <style>
     /* Global Styles */
     * {
@@ -198,6 +202,34 @@ input[type="checkbox"] {
     display: inline-block;
     cursor: pointer;
 }
+
+/* Modal Styling */
+.modal-content {
+    background-color: #fff;
+    color: #333;
+}
+
+.modal-header {
+    background-color: #007BFF;
+    color: white;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.lead {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007BFF;
+}
+
+#estimationDetails li {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
 </style>
 
 <div class="container mt-5">
@@ -236,9 +268,107 @@ input[type="checkbox"] {
 
         {{ form_errors( quote_form ) }}
 
-        {# {{ form_row( quote_form.save ) }} #}
+        <div class="d-flex justify-content-between gap-3 mb-4 mt-4">
+            <button type="button" class="btn btn-secondary flex-grow-1" id="simulateButton">Simuler le devis</button>
+            <button type="button" class="btn btn-info flex-grow-1" id="moodboardButton">Générer un Moodboard</button>
+            {{ form_widget(quote_form.save, {'attr': {'class': 'btn btn-primary flex-grow-1'}}) }}
+        </div>
 
         {{ form_end( quote_form ) }}
+
+        <!-- Modal pour afficher les résultats de la simulation -->
+        <div class="modal fade" id="simulationModal" tabindex="-1" aria-labelledby="simulationModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="simulationModalLabel">Estimation du projet</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="simulationResults">
+                            <div class="mb-3">
+                                <h6>Coût estimé :</h6>
+                                <p id="estimatedCost" class="lead"></p>
+                            </div>
+                            <div class="mb-3">
+                                <h6>Délai estimé :</h6>
+                                <p id="estimatedTime" class="lead"></p>
+                            </div>
+                            <div class="mb-3">
+                                <h6>Détails :</h6>
+                                <ul id="estimationDetails" class="list-unstyled"></ul>
+                            </div>
+                            <div class="mb-3">
+                                <p class="text-muted small fst-italic mt-2">Les estimations affichées sont indicatives et peuvent varier selon les détails réels du projet.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal pour le générateur de moodboard -->
+        <div class="modal fade" id="moodboardModal" tabindex="-1" aria-labelledby="moodboardModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="moodboardModalLabel">Générateur de Moodboard</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <h6>Style graphique</h6>
+                                <div class="btn-group-vertical w-100" role="group" id="styleOptions">
+                                    <input type="radio" class="btn-check" name="styleOption" id="style1" value="moderne" checked>
+                                    <label class="btn btn-outline-primary" for="style1">Moderne & Minimaliste</label>
+                                    <input type="radio" class="btn-check" name="styleOption" id="style2" value="classique">
+                                    <label class="btn btn-outline-primary" for="style2">Classique & Élégant</label>
+                                    <input type="radio" class="btn-check" name="styleOption" id="style3" value="creativ">
+                                    <label class="btn btn-outline-primary" for="style3">Créatif & Audacieux</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <h6>Préférences d'animation</h6>
+                                <div class="btn-group-vertical w-100" role="group" id="animationOptions">
+                                    <input type="radio" class="btn-check" name="animationOption" id="anim1" value="subtile" checked>
+                                    <label class="btn btn-outline-primary" for="anim1">Subtiles & Fluides</label>
+                                    <input type="radio" class="btn-check" name="animationOption" id="anim2" value="dynamique">
+                                    <label class="btn btn-outline-primary" for="anim2">Dynamiques & Énergiques</label>
+                                    <input type="radio" class="btn-check" name="animationOption" id="anim3" value="minimal">
+                                    <label class="btn btn-outline-primary" for="anim3">Minimales</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <h6>Résultats</h6>
+                            <div id="moodboardResults">
+                                <div class="mb-3">
+                                    <h6 class="text-muted">Palette de couleurs</h6>
+                                    <div id="colorPalette" class="d-flex gap-2"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <h6 class="text-muted">Typographie suggérée</h6>
+                                    <div id="fontSuggestions"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <h6 class="text-muted">Exemples de sections</h6>
+                                    <div id="sectionExamples"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <h6 class="text-muted">Aperçu Landing Page</h6>
+                                    <div id="landingPagePreview" class="border rounded p-3" style="min-height: 300px; background-color: #fff;">
+                                        <div class="preview-header mb-3"></div>
+                                        <div class="preview-hero mb-3"></div>
+                                        <div class="preview-features"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 </div>

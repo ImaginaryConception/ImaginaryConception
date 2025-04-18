@@ -1,0 +1,172 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Avis Clients{% endblock %}
+
+{% block body %}
+<style>
+    :root {
+      --primary: #4f46e5;
+      --bg: #f9fafb;
+      --text: #111827;
+      --card-bg: white;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+        color: #fff;
+        min-height: 100vh;
+    }
+
+    .section {
+      max-width: 900px;
+      margin: auto;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .bubbles {
+      position: relative;
+      height: 400px;
+      overflow: hidden;
+    }
+
+    .bubble {
+      position: absolute;
+      background: var(--card-bg);
+      padding: 1rem;
+      color: black !important;
+      border-radius: 1rem;
+      box-shadow: 0 5px 15px var(--shadow);
+      animation: float 12s infinite ease-in-out;
+      opacity: 0.9;
+      width: 250px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      white-space: normal;
+    }
+
+    .bubble:nth-child(1) {
+      top: 100%; left: 10%; animation-delay: 0s;
+    }
+    .bubble:nth-child(2) {
+      top: 100%; left: 50%; animation-delay: 2s;
+    }
+    .bubble:nth-child(3) {
+      top: 100%; left: 75%; animation-delay: 4s;
+    }
+    .bubble:nth-child(4) {
+      top: 100%; left: 30%; animation-delay: 6s;
+    }
+
+    @keyframes float {
+      0%   { transform: translateY(0) scale(1); opacity: 1; }
+      50%  { opacity: 0.6; }
+      100% { transform: translateY(-120vh) scale(1.1); opacity: 0; }
+    }
+
+    .btn {
+      background: var(--primary);
+      color: ;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 999px;
+      cursor: pointer;
+      margin-top: 2rem;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background: #3730a3;
+    }
+
+    .reviews-list {
+      display: none;
+      margin-top: 3rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    .review-card {
+      background: var(--card-bg);
+      color: black !important;
+      padding: 1.2rem;
+      border-radius: 1rem;
+      box-shadow: 0 5px 10px var(--shadow);
+      text-align: left;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      white-space: normal;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <section class="section">
+    <h1>Ce que disent nos clients</h1>
+    <div class="bubbles">
+      {% for review in reviews %}
+        <div class="bubble">{{ review.content }}</div>
+      {% endfor %}
+    </div>
+
+    <div class="reviews-list" id="reviewsList">
+      {% for review in reviews %}
+        <div class="review-card">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h3 class="h5 mb-0">{{ review.name }}</h3>
+            <div class="text-muted">{{ review.createdAt|date('d/m/Y') }}</div>
+          </div>
+          <div class="mb-2">
+            {% for i in 1..5 %}
+              {% if i <= review.rating %}
+                <i class="fas fa-star text-warning"></i>
+              {% else %}
+                <i class="far fa-star text-warning"></i>
+              {% endif %}
+            {% endfor %}
+          </div>
+          <p class="mb-0">{{ review.content }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if app.user %}
+        <div id="add_review_form" class="mt-6 review-form bg-none bg-opacity-50 p-4 rounded-3 shadow-sm mb-5" data-aos="fade-up" data-aos-delay="200">
+            {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+            <div class="mb-3">
+                {{ form_widget(form.content, {'attr': {'class': 'form-control bg-dark text-light', 'placeholder': 'Partagez votre expérience...'}}) }}
+            </div>
+            {{ form_errors(form) }}
+            {# <div class="text-end">
+                {{ form_widget(form.save, {'attr': {'class': 'btn-primary mb-3 hover-scale'}}) }}
+            </div> #}
+            {{ form_end(form) }}
+        </div>
+        {% else %}
+        <div class="alert alert-primary text-center mb-5" role="alert" data-aos="fade-up" data-aos-delay="200">
+            <i class="fas fa-info-circle me-2"></i>
+            Vous devez être <a href="{{ path('login') }}" class="alert-link">connecté</a> pour laisser un avis!
+        </div>
+        {% endif %}
+
+    </section>
+{% endblock %}

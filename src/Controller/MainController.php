@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Game;
 use App\Entity\User;
+use App\Entity\Review;
 use App\Entity\Comment;
 use App\Entity\Website;
+use App\Form\ReviewType;
 use App\Form\AddGameFormType;
 use App\Form\ContactFormType;
 use App\Form\AddCommentFormType;
@@ -23,11 +25,11 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MainController extends AbstractController
 {
@@ -46,6 +48,29 @@ class MainController extends AbstractController
 
         return $this->render('main/home.html.twig', [
             'games' => $games,
+        ]);
+    }
+
+    #[Route('/avis/', name: 'avis')]
+    public function avis(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $review = new Review();
+        $form = $this->createForm(ReviewType::class, $review);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($review);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Merci pour votre avis !');
+            return $this->redirectToRoute('avis');
+        }
+
+        $reviews = $entityManager->getRepository(Review::class)->findLatestReviews();
+
+        return $this->render('main/avis_clients.html.twig', [
+            'form' => $form->createView(),
+            'reviews' => $reviews
         ]);
     }
 
