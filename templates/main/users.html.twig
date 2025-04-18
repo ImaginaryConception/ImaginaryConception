@@ -73,7 +73,7 @@
         align-items: center;
         color: #fff;
         background-color: #3a3a3a;
-        padding: 10px 20px;
+        padding: 0.3rem;
         border-radius: 5px;
         font-size: 14px;
         text-decoration: none;
@@ -133,6 +133,13 @@
         .action-btn:last-child {
             margin-bottom: 0;
         }
+    }
+    .complete-btn {
+        background-color: #9c27b0;
+    }
+
+    .complete-btn:hover {
+        background-color: #7b1fa2;
     }
 </style>
 
@@ -234,10 +241,10 @@
                         {% endif %}
                     </div>
 
-                    <div class="user-label">Accès Board Privé</div>
+                    {# <div class="user-label">Accès Board Privé</div>
                     <div class="user-value text-light">
                         {% if user.hasPrivateBoardAccess %}Oui{% else %}Non{% endif %}
-                    </div>
+                    </div> #}
                 </div>
 
                 <div class="user-actions">
@@ -250,20 +257,31 @@
                     </a>
 
                     {% if is_granted('ROLE_ADMIN') %}
-                    {% if not user.hasPrivateBoardAccess %}
-                        <button type="button" class="action-btn toggle-btn" data-bs-toggle="modal" data-bs-target="#createWebsiteModal" data-user-id="{{ user.id }}">
-                            <i class="fas fa-key me-2"></i>Donner accès
-                        </button>
-                    {% else %}
-                        <div class="d-flex gap-2">
-                            <button type="button" class="action-btn update-btn" data-bs-toggle="modal" data-bs-target="#updateStageModal" data-user-id="{{ user.id }}">
-                                <i class="fas fa-tasks me-2"></i>Mettre à jour l'étape
-                            </button>
-                            <a class="action-btn toggle-btn" href="{{ path('toggle_private_board_access', {'id': user.id, csrf_token: csrf_token('toggle_private_board_access_' ~ user.id)}) }}">
-                                <i class="fas fa-key me-2"></i>Retirer accès
-                            </a>
+                        {% set has_active_project = false %}
+                        {% set active_website = null %}
+                        {% for website in user.websites %}
+                            {% if not website.completed %}
+                                {% set has_active_project = true %}
+                                {% set active_website = website %}
+                            {% endif %}
+                        {% endfor %}
+
+                        <div class="d-flex gap-2 flex-wrap">
+                            {% if not has_active_project %}
+                                <button type="button" class="action-btn toggle-btn" data-bs-toggle="modal" data-bs-target="#createWebsiteModal" data-user-id="{{ user.id }}">
+                                    <i class="fas fa-plus me-2"></i>Créer un projet web
+                                </button>
+                            {% endif %}
+
+                            {% if has_active_project and active_website %}
+                                <button type="button" class="action-btn update-btn" data-bs-toggle="modal" data-bs-target="#updateStageModal" data-user-id="{{ user.id }}" data-website-id="{{ active_website.id }}" data-current-stage="{{ active_website.currentStage }}">
+                                    <i class="fas fa-tasks me-2"></i>Mettre à jour l'étape
+                                </button>
+                                <a class="action-btn complete-btn" href="{{ path('complete_project', {'id': active_website.id, csrf_token: csrf_token('complete_project_' ~ active_website.id)}) }}">
+                                    <i class="fas fa-check me-2"></i>Marquer comme terminé
+                                </a>
+                            {% endif %}
                         </div>
-                    {% endif %}
                     {% endif %}
                 </div>
             </div>
@@ -299,6 +317,7 @@
                         </select>
                     </div>
                     <input type="hidden" name="userId" id="updateUserId" value="">
+                    <input type="hidden" name="websiteId" id="updateWebsiteId" value="">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token('update_stage') }}">
                 </form>
             </div>
@@ -322,13 +341,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Mettre à jour l'ID de l'utilisateur lors de l'ouverture du modal de mise à jour
+    // Mettre à jour l'ID de l'utilisateur et du projet lors de l'ouverture du modal de mise à jour
     const updateModal = document.getElementById('updateStageModal');
     if (updateModal) {
         updateModal.addEventListener('show.bs.modal', function(event) {
             const button = event.relatedTarget;
             const userId = button.getAttribute('data-user-id');
+            const websiteId = button.getAttribute('data-website-id');
             document.getElementById('updateUserId').value = userId;
+            document.getElementById('updateWebsiteId').value = websiteId;
         });
     }
 });

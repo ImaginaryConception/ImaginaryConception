@@ -74,6 +74,9 @@ class Website
     #[ORM\Column(type: 'string', length: 50, nullable: false)]
     private $currentStage = 'initial';
 
+    #[ORM\Column(type: 'boolean', nullable: false)]
+    private $completed = false;
+
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'websites')]
     #[ORM\JoinColumn(nullable: true)]
     private ?User $user = null;
@@ -139,6 +142,17 @@ class Website
     public function setCurrentStage(string $currentStage): self
     {
         $this->currentStage = $currentStage;
+        return $this;
+    }
+
+    public function isCompleted(): ?bool
+    {
+        return $this->completed;
+    }
+
+    public function setCompleted(bool $completed): self
+    {
+        $this->completed = $completed;
         return $this;
     }
 

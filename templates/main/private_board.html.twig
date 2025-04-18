@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Board Privé{% endblock %}
+{% block title %}Dashboard{% endblock %}
 
 {% block body %}
 <div class="dashboard-container">
-    <h1 class="dashboard-title">Tableau de bord privé</h1>
+    <h1 class="dashboard-title">Tableau de bord</h1>
 
     <div class="project-cards">
         {% for website in websites %}
-            <div class="glass-card project-card">
+            <div class="glass-card project-card" data-project-id="{{ website.id }}" data-email="{{ website.email }}" data-current-stage="{{ website.currentStage }}" onclick="selectProject(this, {{ website.id }}, {{ website.completed }}, {{ website.currentStage }})">
                 <div class="card-header">
                     <h3 class="company-name">{{ website.companyName ?? 'Projet Web' }}</h3>
                     <span class="project-type">{{ website.type }}</span>
@@ -26,6 +26,10 @@
                         <div class="info-item">
                             <i class="fas fa-file"></i>
                             <span>{{ website.estimatedPages }} pages</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>{{ website.completed ? 'Terminé' : 'En cours' }}</span>
                         </div>
                     </div>
 
@@ -55,9 +59,8 @@
                 </div>
             </div>
         {% else %}
-            <div class="empty-state">
-                <i class="fas fa-folder-open"></i>
-                <p>Aucun projet web en cours</p>
+            <div class="empty-state mx-auto">
+                <p class="text-light"><i class="fas fa-folder-open me-2"></i>Aucun projet web en cours</p>
             </div>
         {% endfor %}
     </div>
@@ -65,39 +68,39 @@
     {% if websites|length > 0 %}
     {% set website = websites|first %}
     <!-- Détails du devis -->
-    <div class="glass-card quote-details">
+    <div class="glass-card quote-details" id="quote-details" style="display: none;">
         <h2 class="section-title">Détails du Projet</h2>
         <div class="quote-grid">
             <div class="quote-info">
                 <div class="info-label"><i class="fas fa-user"></i> Client</div>
-                <div class="info-value">{{ website.firstname }} {{ website.lastname }}</div>
+                <div class="info-value" id="client-name"></div>
             </div>
             <div class="quote-info">
                 <div class="info-label"><i class="fas fa-envelope"></i> Email</div>
-                <div class="info-value">{{ website.email }}</div>
+                <div class="info-value" id="client-email"></div>
             </div>
             <div class="quote-info">
                 <div class="info-label"><i class="fas fa-laptop"></i> Type de Site</div>
-                <div class="info-value">{{ website.type }}</div>
+                <div class="info-value" id="site-type"></div>
             </div>
             <div class="quote-info">
                 <div class="info-label"><i class="fas fa-euro-sign"></i> Budget</div>
-                <div class="info-value">{{ website.estimatedBudget }}€</div>
+                <div class="info-value" id="budget"></div>
             </div>
             <div class="quote-info">
                 <div class="info-label"><i class="fas fa-calendar"></i> Date Limite</div>
-                <div class="info-value">{{ website.deadline|date('d/m/Y') }}</div>
+                <div class="info-value" id="deadline"></div>
             </div>
             <div class="quote-info">
                 <div class="info-label"><i class="fas fa-info-circle"></i> Description</div>
-                <div class="info-value">{{ website.additionalInfo }}</div>
+                <div class="info-value" id="description"></div>
             </div>
         </div>
     </div>
     {% endif %}
 
     <!-- Timeline -->
-    <div class="timeline-container glass-card">
+    <div class="timeline-container glass-card" id="timeline-container" style="display: none;">
         <h2 class="section-title">Progression du Projet</h2>
         <div class="timeline">
             {% set stages = [
@@ -126,6 +129,84 @@
         </div>
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add click event listeners to all project cards
+    document.querySelectorAll('.project-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            const projectId = this.getAttribute('data-project-id');
+            const isCompleted = this.querySelector('.info-item:nth-child(4) span').textContent.includes('Terminé');
+            const currentStage = parseInt(this.getAttribute('data-current-stage')) || 1;
+            selectProject(this, projectId, isCompleted, currentStage);
+        });
+    });
+});
+
+function selectProject(element, projectId, isCompleted, currentStage) {
+    try {
+        // Remove active class from all cards
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.classList.remove('active-card');
+        });
+
+        // Add active class to selected card
+        element.classList.add('active-card');
+
+        // Show timeline and quote details containers
+        const timelineContainer = document.getElementById('timeline-container');
+        const quoteDetails = document.getElementById('quote-details');
+
+        if (timelineContainer) {
+            timelineContainer.style.display = 'block';
+            timelineContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+        if (quoteDetails) quoteDetails.style.display = 'block';
+
+        // Update project details
+        updateProjectDetails(element);
+        updateTimeline(isCompleted, currentStage);
+
+    } catch (error) {
+        console.error('Erreur lors de la sélection du projet:', error);
+    }
+}
+
+function updateProjectDetails(card) {
+    const updateElement = (id, selector, fallback = 'Non spécifié') => {
+        const element = document.getElementById(id);
+        if (element) {
+            const source = selector.startsWith('data-') ?
+                card.getAttribute(selector) :
+                card.querySelector(selector)?.textContent.trim();
+            element.textContent = source || fallback;
+        }
+    };
+
+    updateElement('client-name', '.company-name');
+    updateElement('client-email', 'data-email');
+    updateElement('site-type', '.project-type');
+    updateElement('budget', '.info-item:nth-child(1) span', '0€');
+    updateElement('deadline', '.info-item:nth-child(2) span');
+    updateElement('description', '.additional-info p', 'Aucune description');
+}
+
+function updateTimeline(isCompleted, currentStage) {
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    timelineItems.forEach((item, index) => {
+        item.classList.remove('completed', 'active');
+
+        if (isCompleted) {
+            item.classList.add('completed');
+        } else if (currentStage > 0) {
+            if (index < currentStage - 1) {
+                item.classList.add('completed');
+            } else if (index === currentStage - 1) {
+                item.classList.add('active');
+            }
+        }
+    });
+}
+</script>
 <style>
         /* Styles de base */
         * {
@@ -178,6 +259,25 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .project-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .project-card.active-card {
+            border: 2px solid #4CAF50;
+            box-shadow: 0 8px 32px rgba(76, 175, 80, 0.3);
+        }
+
+        .project-card[data-completed="true"] {
+            border-color: #4CAF50;
         }
 
         .project-card .card-header {

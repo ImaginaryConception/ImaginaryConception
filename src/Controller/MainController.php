@@ -175,12 +175,18 @@ class MainController extends AbstractController
         }
 
         $userId = $request->request->get('userId');
+        $websiteId = $request->request->get('websiteId');
         $stage = $request->request->get('stage');
 
-        $website = $entityManager->getRepository(Website::class)->findOneBy(['user' => $userId]);
+        $website = $entityManager->getRepository(Website::class)->find($websiteId);
 
-        if (!$website) {
+        if (!$website || $website->getUser()->getId() != $userId) {
             $this->addFlash('error', 'Projet non trouvé');
+            return $this->redirectToRoute('users');
+        }
+
+        if ($website->isCompleted()) {
+            $this->addFlash('error', 'Impossible de modifier un projet terminé');
             return $this->redirectToRoute('users');
         }
 
@@ -188,6 +194,29 @@ class MainController extends AbstractController
         $entityManager->flush();
 
         $this->addFlash('success', 'Étape du projet mise à jour avec succès');
+        return $this->redirectToRoute('users');
+    }
+
+    #[Route('/complete-project/{id}', name: 'complete_project')]
+    #[ParamConverter('website', options: ['mapping' => ['id' => 'id']])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function completeProject(Request $request, Website $website, EntityManagerInterface $entityManager): Response
+    {
+        if (!$this->isCsrfTokenValid('complete_project_' . $website->getId(), $request->query->get('csrf_token'))) {
+            $this->addFlash('error', 'Token CSRF invalide');
+            return $this->redirectToRoute('users');
+        }
+
+        if (!$website) {
+            $this->addFlash('error', 'Projet non trouvé');
+            return $this->redirectToRoute('users');
+        }
+
+        $website->setCurrentStage(7); // Étape finale : Suivi / Maintenance
+        $website->setCompleted(true);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Projet marqué comme terminé avec succès');
         return $this->redirectToRoute('users');
     }
 
@@ -379,10 +408,10 @@ class MainController extends AbstractController
         }
 
         $user = $this->getUser();
-        if (!$user->getHasPrivateBoardAccess()) {
-            $this->addFlash('error', 'Vous n\'avez pas accès au tableau de bord privé!');
-            return $this->redirectToRoute('home');
-        }
+        // if (!$user->getHasPrivateBoardAccess()) {
+        //     $this->addFlash('error', 'Vous n\'avez pas accès au tableau de bord privé!');
+        //     return $this->redirectToRoute('home');
+        // }
 
         $repository = $doctrine->getRepository(Website::class);
         $websites = $repository->findBy(['user' => $user]);
