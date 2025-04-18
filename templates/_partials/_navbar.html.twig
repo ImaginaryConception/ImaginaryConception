@@ -16,7 +16,7 @@
 
 			<div class="offcanvas offcanvas-start bg-black" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
 
-				<div class="offcanvas-header-2 bg-black mt-5">
+				<div class="bg-black mt-5">
 					<button type="button" class="close-style ms-3 me-2 fs-3" data-bs-dismiss="offcanvas" aria-label="Close">
 						<i class="fa-solid fa-x"></i>
 					</button>
@@ -38,6 +38,9 @@
 						</li>
 						<li class="nav-item mb-4">
 							<a class="link{{ route == 'realisations' ? ' nav-active' }}" href="{{ path('realisations') }}">Portfolio</a>
+						</li>
+						<li class="nav-item mb-4">
+							<a class="link{{ route == 'private_board' ? ' nav-active' }}" href="{{ path('private_board') }}">Dashboard</a>
 						</li>
 						<li class="nav-item mb-4">
 							<a class="link{{ route == 'avis' ? ' nav-active' }}" href="{{ path('avis') }}">Avis</a>
@@ -126,6 +129,9 @@
 					</li>
 					<li class="nav-item me-4">
 						<a class="link{{ route == 'realisations' ? ' nav-active' }}" href="{{ path('realisations') }}">Portfolio</a>
+					</li>
+					<li class="nav-item me-4">
+						<a class="link{{ route == 'private_board' ? ' nav-active' }}" href="{{ path('private_board') }}">Dashboard</a>
 					</li>
 					<li class="nav-item me-4">
 						<a class="link{{ route == 'avis' ? ' nav-active' }}" href="{{ path('avis') }}">Avis</a>

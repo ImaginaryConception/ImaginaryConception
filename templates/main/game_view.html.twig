@@ -43,19 +43,6 @@
 								<a class="btn btn-danger btn-lg hover-scale" target="_blank" href="{{ game.buyLink }}">
 									<i class="fa-solid fa-arrow-up-right-from-square me-2"></i>Buy
 								</a>
-
-								{% if game.title == "Thanatophobia" %}
-									<a id="seemore" class="btn btn-outline-danger btn-lg hover-scale" onclick="overlay()">
-										See more
-									</a>
-									<div class="overlay d-none position-absolute top-50 start-50 translate-middle bg-dark p-4 rounded-3 shadow">
-										<div class="d-flex gap-3 align-items-center">
-											<a class="btn btn-sm btn-light" href="{{ path('thanatophobia') }}">English</a>
-											<div class="text-danger">|</div>
-											<a class="btn btn-sm btn-light" href="{{ path('thanatophobia_fr') }}">Français</a>
-										</div>
-									</div>
-								{% endif %}
 							{% endif %}
 
 							{% if is_granted('ROLE_ADMIN') %}

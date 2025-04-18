@@ -191,11 +191,11 @@ class WebsiteRequestFormType extends AbstractType
                     'Autre' => 'other',
                 ],
                 'label_attr' => [
-                    'class' => 'text-light text-center',
+                    'class' => 'text-light d-none text-center',
                 ],
                 'attr' => [
                     'novalidate' => 'novalidate',
-                    'class' => 'text-center text-light',
+                    'class' => 'text-center d-none text-light',
                 ],
                 'expanded' => true,
                 'multiple' => true,

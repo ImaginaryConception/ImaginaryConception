@@ -28,6 +28,13 @@
     mix-blend-mode: difference;
 }
 
+/* Masquer le curseur personnalisé sur mobile */
+@media (max-width: 768px) {
+    .custom-cursor {
+        display: none !important;
+    }
+}
+
 /* Animations au scroll */
 /* [data-aos] {
     opacity: 0;
