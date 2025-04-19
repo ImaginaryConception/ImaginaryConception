@@ -3,6 +3,33 @@
 {% block title %}Contact{% endblock %}
 
 {% block body %}
+	<style>
+		.platform-link {
+			transition: transform 0.3s ease;
+			display: inline-block;
+		}
+		.platform-link:hover {
+			transform: translateY(-5px);
+		}
+		.platform-logo {
+			width: 100%;
+			max-width: 80px;
+			height: auto;
+			aspect-ratio: 1;
+			padding: 10px;
+			color: white;
+			transition: all 0.3s ease;
+		}
+		.platform-link:hover .platform-logo {
+			color: #ff0000;
+		}
+		@media (max-width: 768px) {
+			.platform-logo {
+				max-width: 60px;
+				padding: 8px;
+			}
+		}
+	</style>
 	<div class="container text-white">
         <div class="row justify-content-center">
             <div class="col-md-6 mt-6">
@@ -17,7 +44,22 @@
                     </div>
                 </div>
 
-                <div class="text-center">
+                <div class="platforms-section mt-4">
+                    <h3 class="text-center mb-4">Mes plateformes de vente</h3>
+                    <div class="d-flex justify-content-center gap-4 flex-wrap">
+                        <a href="https://comeup.com/fr/service/470690/creer-ton-site-web-pro-rapide-responsive-et-optimise" target="_blank" class="platform-link" data-bs-toggle="tooltip" title="ComeUp">
+                            <img src="{{ asset('Images/ComeUp.jpg') }}" alt="ComeUp" class="platform-logo">
+                        </a>
+                        <a href="https://www.fiverr.com/algriedz/create-your-ideal-website" target="_blank" class="platform-link" data-bs-toggle="tooltip" title="Fiverr">
+                            <img src="{{ asset('Images/Fiverr.png') }}" alt="Fiverr" class="platform-logo">
+                        </a>
+                        <a href="https://www.malt.fr/profile/anishamouche" target="_blank" class="platform-link" data-bs-toggle="tooltip" title="Malt">
+                            <img src="{{ asset('Images/malt.png') }}" alt="Malt" class="platform-logo">
+                        </a>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
                     <a href="{{ path('website') }}" class="btn btn-light btn-lg"><i class="fas fa-file-signature me-2"></i>Demander un devis</a>
                 </div>
 
