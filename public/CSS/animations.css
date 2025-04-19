@@ -202,6 +202,16 @@ body {
     overflow-x: hidden;
 }
 
+@media screen and (max-width: 768px) {
+    body {
+        background: linear-gradient(90deg, #000, #2c0707, #1b0404, #2c0707);
+        background-size: 400% 400%;
+        animation: gradient 15s ease infinite;
+        position: relative;
+        overflow-x: hidden;
+    }
+}
+
 .code-particle {
     position: fixed;
     color: rgba(255, 255, 255, 0.5);

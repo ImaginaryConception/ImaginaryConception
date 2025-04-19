@@ -1,0 +1,22 @@
+/* Désactiver les animations AOS sur mobile */
+@media screen and (max-width: 768px) {
+    [data-aos] {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+
+    [data-aos].aos-animate {
+        transform: none !important;
+    }
+
+    /* Réinitialiser toutes les animations spécifiques */
+    [data-aos="fade-up"],
+    [data-aos="fade-down"],
+    [data-aos="fade-right"],
+    [data-aos="fade-left"],
+    [data-aos="zoom-in"] {
+        transform: none !important;
+        opacity: 1 !important;
+    }
+}
