@@ -8,6 +8,7 @@ use App\Entity\Review;
 use App\Entity\Comment;
 use App\Entity\Website;
 use App\Form\ReviewType;
+use Stripe\StripeClient;
 use App\Form\AddGameFormType;
 use App\Form\ContactFormType;
 use App\Form\AddCommentFormType;
@@ -30,6 +31,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class MainController extends AbstractController
 {
@@ -152,6 +155,48 @@ class MainController extends AbstractController
         ]);
     }
 
+    #[Route('/success', name: 'success')]
+    public function success()
+    {
+        return $this->render('main/success.html.twig');
+    }
+
+    #[Route('/error', name: 'error')]
+    public function error()
+    {
+        return $this->render('main/error.html.twig');
+    }
+
+    #[Route('/create-checkout-session/{id}', name: 'checkout')]
+    #[ParamConverter('website', options: ['mapping' => ['id' => 'id']])]
+    public function checkout(Website $website)
+    {
+        if (!$website) {
+            throw $this->createNotFoundException('Projet non trouvé');
+        }
+
+        $estimatedPrice = $website->getEstimatedBudget();
+
+        $stripe = new StripeClient($_ENV['STRIPE_SECRET_KEY']);
+        $checkout_session = $stripe->checkout->sessions->create([
+            'line_items' => [[
+              'price_data' => [
+                'currency' => 'eur',
+                'product_data' => [
+                  'name' => 'Projet web',
+                ],
+                'unit_amount' => $estimatedPrice * 100,
+              ],
+              'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => $this->generateUrl('success', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'cancel_url' => $this->generateUrl('error', [], UrlGeneratorInterface::ABSOLUTE_URL),
+          ]);
+
+          return new JsonResponse([ 'id' => $checkout_session->id ]);
+    }
+
     #[Route('/contact/', name: 'contact')]
     public function contact(Request $request, MailerInterface $mailer): Response
     {
@@ -166,8 +211,8 @@ class MainController extends AbstractController
 
             $email = (new TemplatedEmail())
                 ->from($contact_form['email']->getData())
-                ->to('support@imaginary-conception.com')
-                ->subject('Imaginary-Conception Contact: ' . $contact_form['object']->getData())
+                ->to('support@imaginaryconception.com', 'anishamouche@gmail.com')
+                ->subject('Imaginary Conception Contact: ' . $contact_form['object']->getData())
                 ->textTemplate('emails/contact.txt.twig')
                 ->htmlTemplate('emails/contact.html.twig')
                 ->context([

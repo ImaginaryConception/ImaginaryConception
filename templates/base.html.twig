@@ -18,6 +18,7 @@
         <script src="{{ asset(('JS/script.js')) }}" defer></script>
         <script src="{{ asset(('JS/animations.js')) }}" defer></script>
         <script src="{{ asset(('JS/chat.js')) }}" defer></script>
+        <script src="https://js.stripe.com/v3/"></script>
         {% block js %}{% endblock %}
     </head>
     <body>
@@ -31,6 +32,7 @@
         <div class="container">
 
             {% block body %}{% endblock %}
+
         </div>
 
         <script>window.aichatbotApiKey="c6336530-debb-4a6f-939c-267af94cef6c"; window.aichatbotProviderId="f9e9c5e4-6d1a-4b8c-8d3f-3f9e9c5e46d1";</script><script src="https://script.chatlab.com/aichatbot.js" id="c6336530-debb-4a6f-939c-267af94cef6c" defer></script>

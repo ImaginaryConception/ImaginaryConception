@@ -77,6 +77,9 @@ class Website
     #[ORM\Column(type: 'boolean', nullable: false)]
     private $completed = false;
 
+    #[ORM\Column(type: 'boolean', nullable: false)]
+    private $paid = false;
+
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'websites')]
     #[ORM\JoinColumn(nullable: true)]
     private ?User $user = null;
@@ -153,6 +156,17 @@ class Website
     public function setCompleted(bool $completed): self
     {
         $this->completed = $completed;
+        return $this;
+    }
+
+    public function isPaid(): ?bool
+    {
+        return $this->paid;
+    }
+
+    public function setPaid(bool $paid): self
+    {
+        $this->paid = $paid;
         return $this;
     }
 

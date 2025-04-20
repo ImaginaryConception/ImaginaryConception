@@ -17,6 +17,7 @@
         "php-imap/php-imap": "^2.0",
         "sensio/framework-extra-bundle": "^6.2",
         "stof/doctrine-extensions-bundle": "^1.13",
+        "stripe/stripe-php": "^17.1",
         "symfony/asset": "6.1.*",
         "symfony/console": "6.1.*",
         "symfony/doctrine-messenger": "6.1.*",

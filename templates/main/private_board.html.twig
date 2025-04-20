@@ -2,6 +2,17 @@
 
 {% block title %}Dashboard{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="{{ asset('JS/script.js') }}"></script>
+    <script src="{{ asset('JS/chat.js') }}"></script>
+{% endblock %}
+
 {% block body %}
 <div class="dashboard-container">
     <h1 class="dashboard-title">Tableau de bord</h1>
@@ -15,10 +26,10 @@
                 </div>
                 <div class="card-body">
                     <div class="info-grid">
-                        <div class="info-item">
+                        <button class="checkout-button" class="info-item" onclick="event.stopPropagation(); handlePayment({{ website.id }}, {{ website.estimatedBudget }});" style="cursor: pointer; background: #008000;">
                             <i class="fas fa-euro-sign"></i>
-                            <span>{{ website.estimatedBudget }}€</span>
-                        </div>
+                            <span>Payer {{ website.estimatedBudget }}€</span>
+                        </button>
                         <div class="info-item">
                             <i class="fas fa-calendar"></i>
                             <span>{{ website.deadline|date('d/m/Y') }}</span>
@@ -130,6 +141,31 @@
     </div>
 </div>
 <script>
+async function handlePayment(websiteId, amount) {
+    try {
+        const response = await fetch(`/create-checkout-session/${websiteId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        
+        const session = await response.json();
+        
+        const result = await stripe.redirectToCheckout({
+            sessionId: session.id
+        });
+        
+        if (result.error) {
+            console.error(result.error);
+            alert('Une erreur est survenue lors du paiement. Veuillez réessayer.');
+        }
+    } catch (error) {
+        console.error('Erreur:', error);
+        alert('Une erreur est survenue lors du paiement. Veuillez réessayer.');
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Add click event listeners to all project cards
     document.querySelectorAll('.project-card').forEach(card => {
@@ -206,6 +242,31 @@ function updateTimeline(isCompleted, currentStage) {
         }
     });
 }
+
+var stripe = Stripe('pk_live_51RFiudA7CsFRi9CAcpkOFuhyIgPqeF2QDfKLNVIYQIfFkpvTEjnN0JSsFQnDeiZEQ3UeCTNP8yxToJAJpBfc9tqz00HViwZY2m');
+var checkoutButtons = document.querySelectorAll('.checkout-button'); // Sélectionner tous les boutons avec la classe 'checkout-button'
+
+checkoutButtons.forEach(function (checkoutButton) {
+    checkoutButton.addEventListener('click', function () {
+        console.log("Bouton cliqué");
+        fetch('/create-checkout-session', {
+            method: 'POST',
+        })
+        .then(response => response.json())
+        .then(session => {
+            return stripe.redirectToCheckout({ sessionId: session.id });
+        })
+        .then(function (result) {
+            if (result.error) {
+                alert(result.error.message);
+            }
+        })
+        .catch(function (error) {
+            console.error('Error:', error);
+        });
+    });
+});
+
 </script>
 <style>
         /* Styles de base */
@@ -313,6 +374,22 @@ function updateTimeline(isCompleted, currentStage) {
             background: rgba(255, 255, 255, 0.03);
             border-radius: 12px;
             transition: transform 0.3s ease;
+            text-decoration: none;
+            outline: none;
+            border: none;
+            color: #fff;
+        }
+
+        .checkout-button {
+            text-align: center !important;
+            padding: 1rem !important;
+            background: #008000 !important;
+            border-radius: 12px !important;
+            transition: transform 0.3s ease !important;
+            text-decoration: none !important;
+            outline: none !important;
+            border: none !important;
+            color: #fff !important;
         }
 
         .info-item:hover {

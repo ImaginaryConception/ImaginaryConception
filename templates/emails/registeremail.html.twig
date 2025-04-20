@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Un utilisateur vous a contacté</title>
+    <title>Bienvenue sur [Nom de ton site]</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -41,17 +41,6 @@
 
         .email-body p {
             margin-bottom: 10px;
-        }
-
-        .contact-info {
-            background-color: #f8f8f8;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-
-        .contact-info p {
-            margin: 0;
         }
 
         .cta-button {
@@ -97,24 +86,17 @@
 <body>
     <div class="email-container">
         <div class="email-header">
-            <h1>Un utilisateur vous a contacté !</h1>
+            <h1>Bienvenue sur Imaginary Conception !</h1>
         </div>
 
         <div class="email-body">
-            <p>Bonjour,</p>
-            <p>Vous avez un nouveau message de la part d'un utilisateur de votre site.</p>
+            <p>Bonjour !</p>
+            <p>Nous sommes ravis de vous accueillir sur notre plateforme ! Vous êtes maintenant prêt à explorer toutes les fonctionnalités que nous avons à offrir pour créer votre projet web, nous sommes là pour vous accompagner à chaque étape.</p>
+            <p>Pour commencer, cliquez sur le bouton ci-dessous pour accéder à votre tableau de bord et gérer vos projets.</p>
 
-            <div class="contact-info">
-                <h3>Informations de l'utilisateur :</h3>
-                <p><strong>Email :</strong> {{ contact_form_email }}</p>
-                <p><strong>Objet :</strong> {{ contact_form_object }}</p>
-                <p><strong>Message :</strong></p>
-                <p>"{{ contact_form_message }}"</p>
-            </div>
+            <a href="https://www.imaginaryconception.com/private-board/" class="cta-button">Accéder à mon tableau de bord</a>
 
-            <p>Vous pouvez répondre directement à cet utilisateur en utilisant son email ci-dessus.</p>
-
-            <a href="mailto:{{ contact_form_email }}" class="cta-button">Répondre à cet utilisateur</a>
+            <p>Si vous avez des questions, n'hésitez pas à consulter notre ou à nous contacter.</p>
         </div>
     </div>
 </body>
