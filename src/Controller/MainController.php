@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Stripe\Stripe;
 use App\Entity\Game;
 use App\Entity\User;
 use App\Entity\Review;
@@ -11,6 +12,7 @@ use App\Form\ReviewType;
 use Stripe\StripeClient;
 use App\Form\AddGameFormType;
 use App\Form\ContactFormType;
+use Doctrine\ORM\EntityManager;
 use App\Form\AddCommentFormType;
 use App\Form\EditProfilFormType;
 use App\Form\ContactUserFormType;
@@ -25,14 +27,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class MainController extends AbstractController
 {
@@ -167,34 +170,38 @@ class MainController extends AbstractController
         return $this->render('main/error.html.twig');
     }
 
-    #[Route('/create-checkout-session/{id}', name: 'checkout')]
-    #[ParamConverter('website', options: ['mapping' => ['id' => 'id']])]
-    public function checkout(Website $website)
+    #[Route('/create-stripe-session/{project}', name: 'pay')]
+    public function stripeCheckout(EntityManagerInterface $em, $project)
     {
-        if (!$website) {
-            throw $this->createNotFoundException('Projet non trouvé');
+        $project = $em->getRepository(Website::class)->findOneBy(['id' => $project]);
+
+        if (!$project) {
+            $this->addFlash('error', 'Le projet n\'a pas été trouvé.');
+            return $this->redirectToRoute('private_board');
         }
 
-        $estimatedPrice = $website->getEstimatedBudget();
-
-        $stripe = new StripeClient($_ENV['STRIPE_SECRET_KEY']);
-        $checkout_session = $stripe->checkout->sessions->create([
-            'line_items' => [[
-              'price_data' => [
+        $paymentStripe[] = [
+            'price_data' => [
                 'currency' => 'eur',
                 'product_data' => [
-                  'name' => 'Projet web',
+                    'name' => $project->getCompanyName(),
                 ],
-                'unit_amount' => $estimatedPrice * 100,
-              ],
-              'quantity' => 1,
-            ]],
-            'mode' => 'payment',
-            'success_url' => $this->generateUrl('success', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            'cancel_url' => $this->generateUrl('error', [], UrlGeneratorInterface::ABSOLUTE_URL),
-          ]);
+                'unit_amount' => $project->getEstimatedBudget() * 100,
+            ],
+            'quantity' => 1,
+        ];
 
-          return new JsonResponse([ 'id' => $checkout_session->id ]);
+        $stripePrivateKey = new StripeClient($_ENV['STRIPE_SECRET_KEY']);
+        // Stripe::setApiKey($stripePrivateKey);
+
+        $checkout_session = $stripePrivateKey->checkout->sessions->create([
+            'line_items' => $paymentStripe,
+            'mode' => 'payment',
+           'success_url' => $this->generateUrl('success', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'cancel_url' => $this->generateUrl('error', [], UrlGeneratorInterface::ABSOLUTE_URL),
+        ]);
+
+        return new RedirectResponse($checkout_session->url);
     }
 
     #[Route('/contact/', name: 'contact')]

@@ -19,17 +19,17 @@
 
     <div class="project-cards">
         {% for website in websites %}
-            <div class="glass-card project-card" data-project-id="{{ website.id }}" data-email="{{ website.email }}" data-current-stage="{{ website.currentStage }}" onclick="selectProject(this, {{ website.id }}, {{ website.completed }}, {{ website.currentStage }})">
+            <div class="glass-card project-card" data-project-id="{{ website.id }}" data-email="{{ website.email }}" data-current-stage="{{ website.currentStage }}" onclick="selectProject(this, '{{ website.id }}', '{{ website.completed }}', '{{ website.currentStage }}')">
                 <div class="card-header">
                     <h3 class="company-name">{{ website.companyName ?? 'Projet Web' }}</h3>
                     <span class="project-type">{{ website.type }}</span>
                 </div>
                 <div class="card-body">
                     <div class="info-grid">
-                        <button class="checkout-button" class="info-item" onclick="event.stopPropagation(); handlePayment({{ website.id }}, {{ website.estimatedBudget }});" style="cursor: pointer; background: #008000;">
+                        <a class="info-item text-light" onclick="event.stopPropagation()" style="cursor: pointer; background: #008000" href="{{ path('pay', {'project': website.id }) }}">
                             <i class="fas fa-euro-sign"></i>
                             <span>Payer {{ website.estimatedBudget }}€</span>
-                        </button>
+                        </a>
                         <div class="info-item">
                             <i class="fas fa-calendar"></i>
                             <span>{{ website.deadline|date('d/m/Y') }}</span>
@@ -94,10 +94,10 @@
                 <div class="info-label"><i class="fas fa-laptop"></i> Type de Site</div>
                 <div class="info-value" id="site-type"></div>
             </div>
-            <div class="quote-info">
+            {# <div class="quote-info">
                 <div class="info-label"><i class="fas fa-euro-sign"></i> Budget</div>
-                <div class="info-value" id="budget"></div>
-            </div>
+                <div class="info-value">{{ website.estimatedBudget }}€</div>
+            </div> #}
             <div class="quote-info">
                 <div class="info-label"><i class="fas fa-calendar"></i> Date Limite</div>
                 <div class="info-value" id="deadline"></div>
@@ -141,31 +141,6 @@
     </div>
 </div>
 <script>
-async function handlePayment(websiteId, amount) {
-    try {
-        const response = await fetch(`/create-checkout-session/${websiteId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-        
-        const session = await response.json();
-        
-        const result = await stripe.redirectToCheckout({
-            sessionId: session.id
-        });
-        
-        if (result.error) {
-            console.error(result.error);
-            alert('Une erreur est survenue lors du paiement. Veuillez réessayer.');
-        }
-    } catch (error) {
-        console.error('Erreur:', error);
-        alert('Une erreur est survenue lors du paiement. Veuillez réessayer.');
-    }
-}
-
 document.addEventListener('DOMContentLoaded', function() {
     // Add click event listeners to all project cards
     document.querySelectorAll('.project-card').forEach(card => {
@@ -242,30 +217,6 @@ function updateTimeline(isCompleted, currentStage) {
         }
     });
 }
-
-var stripe = Stripe('pk_live_51RFiudA7CsFRi9CAcpkOFuhyIgPqeF2QDfKLNVIYQIfFkpvTEjnN0JSsFQnDeiZEQ3UeCTNP8yxToJAJpBfc9tqz00HViwZY2m');
-var checkoutButtons = document.querySelectorAll('.checkout-button'); // Sélectionner tous les boutons avec la classe 'checkout-button'
-
-checkoutButtons.forEach(function (checkoutButton) {
-    checkoutButton.addEventListener('click', function () {
-        console.log("Bouton cliqué");
-        fetch('/create-checkout-session', {
-            method: 'POST',
-        })
-        .then(response => response.json())
-        .then(session => {
-            return stripe.redirectToCheckout({ sessionId: session.id });
-        })
-        .then(function (result) {
-            if (result.error) {
-                alert(result.error.message);
-            }
-        })
-        .catch(function (error) {
-            console.error('Error:', error);
-        });
-    });
-});
 
 </script>
 <style>
@@ -362,13 +313,14 @@ checkoutButtons.forEach(function (checkoutButton) {
         }
 
         .info-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            display: flex;
+            flex-direction: column;
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
 
         .info-item {
+            width: 100%;
             text-align: center;
             padding: 1rem;
             background: rgba(255, 255, 255, 0.03);
@@ -465,29 +417,39 @@ checkoutButtons.forEach(function (checkoutButton) {
             padding: 1.2rem;
             border-radius: 12px;
             transition: all 0.3s ease;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-width: 100%;
         }
 
-        .quote-info:hover {
-            background: rgba(255, 255, 255, 0.05);
-            transform: translateY(-3px);
+        @media screen and (max-width: 768px) {
+            .quote-grid {
+                grid-template-columns: 1fr;
+                padding: 0.5rem;
+            }
+            
+            .quote-info {
+                margin-bottom: 1rem;
+            }
         }
 
         .info-label {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: rgba(255, 255, 255, 0.6);
-            margin-bottom: 0.5rem;
             font-size: 0.9rem;
-        }
-
-        .info-label i {
-            color: #4a9eff;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0.3rem;
         }
 
         .info-value {
             color: rgba(255, 255, 255, 0.9);
             font-size: 1.1rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 100%;
+            line-height: 1.4;
         }
 
         .section-title {

@@ -196,7 +196,7 @@
 
 body {
     background: linear-gradient(90deg, #000, #2c0707, #1b0404, #2c0707);
-    background-size: 400% 400%;
+    background-size: 400% 400% !important;
     animation: gradient 15s ease infinite;
     position: relative;
     overflow-x: hidden;

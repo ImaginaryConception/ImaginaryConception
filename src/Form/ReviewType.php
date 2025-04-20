@@ -22,16 +22,17 @@ class ReviewType extends AbstractType
                 'required' => true,
                 'attr' => [
                     'class' => 'form-control',
-                    'placeholder' => 'Entrez votre nom *'
+                    'placeholder' => 'Entrez votre nom (et votre entreprise si possible) *'
                 ]
             ])
             ->add('rating', IntegerType::class, [
                 'label' => 'Note',
+                'required' => false,
                 'label_attr' => [
-                    'class' => 'me-2 fw-bold',
+                    'class' => 'me-2 fw-bold d-none',
                 ],
                 'attr' => [
-                    'class' => 'rating-input',
+                    'class' => 'rating-input d-none',
                     'min' => 1,
                     'max' => 5
                 ]
