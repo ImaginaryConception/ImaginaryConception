@@ -195,8 +195,11 @@
 }
 
 body {
+    background: -webkit-linear-gradient(90deg, #000, #2c0707, #1b0404, #2c0707);
     background: linear-gradient(90deg, #000, #2c0707, #1b0404, #2c0707);
+    -webkit-background-size: 400% 400% !important;
     background-size: 400% 400% !important;
+    -webkit-animation: gradient 15s ease infinite;
     animation: gradient 15s ease infinite;
     position: relative;
     overflow-x: hidden;
@@ -204,11 +207,25 @@ body {
 
 @media screen and (max-width: 768px) {
     body {
-        background: linear-gradient(90deg, #000, #2c0707, #1b0404, #2c0707);
-        background-size: 400% 400%;
-        animation: gradient 15s ease infinite;
-        position: relative;
+        /* background: -webkit-linear-gradient(90deg, #000, #2c0707, #1b0404, #2c0707) !important; */
+        /* background: linear-gradient(90deg, #000, #2c0707, #1b0404, #2c0707) !important; */
+        background-color: #2c0707 !important;
+        -webkit-background-size: 400% 400% !important;
+        background-size: 400% 400% !important;
+        -webkit-animation: gradient 15s ease infinite !important;
+        animation: gradient 15s ease infinite !important;
+        min-height: 100vh;
+        width: 100%;
+        position: relative !important;
         overflow-x: hidden;
+    }
+
+    .code-particle {
+        position: absolute;
+    }
+
+    .custom-cursor {
+        position: absolute;
     }
 }
 

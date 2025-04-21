@@ -1475,15 +1475,6 @@ li{
 	}
 }
 
-
-@media screen and (max-width: 1200px) {
-
-    body{
-        background-color: #000;
-    }
-
-}
-
 .bg_1{
     background: linear-gradient(90deg, rgba(0, 0, 0, 1) 25%, rgba(255, 0, 0, 1) 100%);
     transition: all ease 1s;
