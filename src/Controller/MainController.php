@@ -65,6 +65,9 @@ class MainController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($this->getUser()) {
+                $review->setUser($this->getUser());
+            }
             $entityManager->persist($review);
             $entityManager->flush();
 
