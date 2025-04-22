@@ -78,7 +78,13 @@ class Website
     private $completed = false;
 
     #[ORM\Column(type: 'boolean', nullable: false)]
-    private $paid = false;
+    private $depositPaid = false;
+
+    #[ORM\Column(type: 'boolean', nullable: false)]
+    private $finalPaymentPaid = false;
+
+    #[ORM\Column(type: 'integer', nullable: false)]
+    private $depositAmount = 0;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'websites')]
     #[ORM\JoinColumn(nullable: true)]
@@ -159,14 +165,36 @@ class Website
         return $this;
     }
 
-    public function isPaid(): ?bool
+    public function isDepositPaid(): ?bool
     {
-        return $this->paid;
+        return $this->depositPaid;
     }
 
-    public function setPaid(bool $paid): self
+    public function setDepositPaid(bool $depositPaid): self
     {
-        $this->paid = $paid;
+        $this->depositPaid = $depositPaid;
+        return $this;
+    }
+
+    public function isFinalPaymentPaid(): ?bool
+    {
+        return $this->finalPaymentPaid;
+    }
+
+    public function setFinalPaymentPaid(bool $finalPaymentPaid): self
+    {
+        $this->finalPaymentPaid = $finalPaymentPaid;
+        return $this;
+    }
+
+    public function getDepositAmount(): ?int
+    {
+        return $this->depositAmount;
+    }
+
+    public function setDepositAmount(int $depositAmount): self
+    {
+        $this->depositAmount = $depositAmount;
         return $this;
     }
 

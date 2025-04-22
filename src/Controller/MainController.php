@@ -143,6 +143,10 @@ class MainController extends AbstractController
                 }
                 $quote->setUser($this->getUser()); // Associer l'utilisateur connecté
 
+                // Calculer le montant de la caution (50% du budget estimé)
+                $depositAmount = (int)($quote->getEstimatedBudget() * 0.5);
+                $quote->setDepositAmount($depositAmount);
+
                 // Sauvegarde en base de données
                 $entityManager = $doctrine->getManager();
                 $entityManager->persist($quote);
@@ -161,20 +165,14 @@ class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/success', name: 'success')]
-    public function success()
-    {
-        return $this->render('main/success.html.twig');
-    }
-
     #[Route('/error', name: 'error')]
     public function error()
     {
         return $this->render('main/error.html.twig');
     }
 
-    #[Route('/create-stripe-session/{project}', name: 'pay')]
-    public function stripeCheckout(EntityManagerInterface $em, $project)
+    #[Route('/create-stripe-session/{project}/{type}', name: 'pay')]
+    public function stripeCheckout(EntityManagerInterface $em, $project, $type)
     {
         $project = $em->getRepository(Website::class)->findOneBy(['id' => $project]);
 
@@ -183,28 +181,120 @@ class MainController extends AbstractController
             return $this->redirectToRoute('private_board');
         }
 
+        // Déterminer le montant en fonction du type de paiement
+        $amount = 0;
+        $paymentName = '';
+
+        if ($type === 'deposit') {
+            if ($project->isDepositPaid()) {
+                $this->addFlash('error', 'La caution a déjà été payée.');
+                return $this->redirectToRoute('private_board');
+            }
+            $amount = $project->getDepositAmount();
+            $paymentName = 'Caution - ' . $project->getCompanyName();
+        } elseif ($type === 'final') {
+            if (!$project->isDepositPaid()) {
+                $this->addFlash('error', 'Veuillez d\'abord payer la caution.');
+                return $this->redirectToRoute('private_board');
+            }
+            if ($project->isFinalPaymentPaid()) {
+                $this->addFlash('error', 'Le solde final a déjà été payé.');
+                return $this->redirectToRoute('private_board');
+            }
+            $amount = $project->getEstimatedBudget() - ($project->getDepositAmount());
+            $paymentName = 'Solde final - ' . $project->getCompanyName();
+        } else {
+            $this->addFlash('error', 'Type de paiement invalide.');
+            return $this->redirectToRoute('private_board');
+        }
+
         $paymentStripe[] = [
             'price_data' => [
                 'currency' => 'eur',
                 'product_data' => [
-                    'name' => $project->getCompanyName(),
+                    'name' => $paymentName,
                 ],
-                'unit_amount' => $project->getEstimatedBudget() * 100,
+                'unit_amount' => $amount * 100,
             ],
             'quantity' => 1,
         ];
 
         $stripePrivateKey = new StripeClient($_ENV['STRIPE_SECRET_KEY']);
-        // Stripe::setApiKey($stripePrivateKey);
 
         $checkout_session = $stripePrivateKey->checkout->sessions->create([
             'line_items' => $paymentStripe,
             'mode' => 'payment',
-           'success_url' => $this->generateUrl('success', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'success_url' => $this->generateUrl('success', ['project' => $project->getId(), 'type' => $type], UrlGeneratorInterface::ABSOLUTE_URL),
             'cancel_url' => $this->generateUrl('error', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'metadata' => [
+                'project_id' => $project->getId(),
+                'payment_type' => $type
+            ]
         ]);
 
         return new RedirectResponse($checkout_session->url);
+    }
+
+    #[Route('/webhook/stripe', name: 'stripe_webhook', methods: ['POST'])]
+    public function stripeWebhook(Request $request, EntityManagerInterface $em): Response
+    {
+        $stripePrivateKey = new StripeClient($_ENV['STRIPE_SECRET_KEY']);
+        $endpoint_secret = $_ENV['STRIPE_WEBHOOK_SECRET'];
+
+        $payload = @file_get_contents('php://input');
+        $sig_header = $request->headers->get('stripe-signature');
+
+        try {
+            $event = \Stripe\Webhook::constructEvent(
+                $payload, $sig_header, $endpoint_secret
+            );
+        } catch(\UnexpectedValueException $e) {
+            return new Response('Webhook Error: ' . $e->getMessage(), 400);
+        } catch(\Stripe\Exception\SignatureVerificationException $e) {
+            return new Response('Webhook Error: ' . $e->getMessage(), 400);
+        }
+
+        if ($event->type === 'checkout.session.completed') {
+            $session = $event->data->object;
+            $projectId = $session->metadata->project_id;
+            $paymentType = $session->metadata->payment_type;
+
+            $project = $em->getRepository(Website::class)->find($projectId);
+            if (!$project) {
+                return new Response('Project not found', 404);
+            }
+
+            if ($paymentType === 'deposit') {
+                $project->setDepositPaid(true);
+            } elseif ($paymentType === 'final') {
+                $project->setFinalPaymentPaid(true);
+            }
+
+            $em->flush();
+        }
+
+        return new Response('Webhook handled', 200);
+    }
+
+    #[Route('/success', name: 'success')]
+    public function success(Request $request, EntityManagerInterface $em)
+    {
+        $projectId = $request->query->get('project');
+        $paymentType = $request->query->get('type');
+
+        if ($projectId && $paymentType) {
+            $project = $em->getRepository(Website::class)->find($projectId);
+            if ($project) {
+                if ($paymentType === 'deposit') {
+                    $project->setDepositPaid(true);
+                } elseif ($paymentType === 'final') {
+                    $project->setFinalPaymentPaid(true);
+                }
+                $em->flush();
+            }
+        }
+
+        return $this->render('main/success.html.twig');
     }
 
     #[Route('/contact/', name: 'contact')]
@@ -282,10 +372,10 @@ class MainController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function completeProject(Request $request, Website $website, EntityManagerInterface $entityManager): Response
     {
-        if (!$this->isCsrfTokenValid('complete_project_' . $website->getId(), $request->query->get('csrf_token'))) {
-            $this->addFlash('error', 'Token CSRF invalide');
-            return $this->redirectToRoute('users');
-        }
+        // if (!$this->isCsrfTokenValid('complete_project_' . $website->getId(), $request->query->get('csrf_token'))) {
+        //     $this->addFlash('error', 'Token CSRF invalide');
+        //     return $this->redirectToRoute('users');
+        // }
 
         if (!$website) {
             $this->addFlash('error', 'Projet non trouvé');
@@ -742,6 +832,7 @@ class MainController extends AbstractController
             ->setCompanyName($request->request->get('companyName'))
             ->setType($request->request->get('type'))
             ->setEstimatedBudget((float)$request->request->get('estimatedBudget'))
+            ->setDepositAmount((float)$request->request->get('depositAmount'))
             ->setDeadline(new \DateTime($request->request->get('deadline')))
             ->setEstimatedPages((int)$request->request->get('estimatedPages'))
             ->setExistingWebsite($request->request->get('existingWebsite'))

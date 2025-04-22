@@ -17,7 +17,7 @@
 <div class="dashboard-container">
     <h1 class="dashboard-title">Tableau de bord</h1>
 
-    <div class="project-cards">
+    <div class="project-cards d-flex justify-content-center">
         {% for website in websites %}
             <div class="glass-card project-card" data-project-id="{{ website.id }}" data-email="{{ website.email }}" data-current-stage="{{ website.currentStage }}" onclick="selectProject(this, '{{ website.id }}', '{{ website.completed }}', '{{ website.currentStage }}')">
                 <div class="card-header">
@@ -26,10 +26,22 @@
                 </div>
                 <div class="card-body">
                     <div class="info-grid">
-                        <a class="info-item text-light" onclick="event.stopPropagation()" style="cursor: pointer; background: #008000" href="{{ path('pay', {'project': website.id }) }}">
+                        {% if not website.depositPaid %}
+                        <a class="info-item text-light" onclick="event.stopPropagation()" style="cursor: pointer; background: #008000" href="{{ path('pay', {'project': website.id, 'type': 'deposit'}) }}">
                             <i class="fas fa-euro-sign"></i>
-                            <span>Payer {{ website.estimatedBudget }}€</span>
+                            <span>Payer la caution ({{ website.depositAmount }}€)</span>
                         </a>
+                        {% elseif not website.finalPaymentPaid %}
+                        <a class="info-item text-light" onclick="event.stopPropagation()" style="cursor: pointer; background: #008000" href="{{ path('pay', {'project': website.id, 'type': 'final'}) }}">
+                            <i class="fas fa-euro-sign"></i>
+                            <span>Payer le solde ({{ website.estimatedBudget - website.depositAmount }}€)</span>
+                        </a>
+                        {% else %}
+                        <div class="info-item text-light" style="background: #4CAF50">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Projet entièrement payé</span>
+                        </div>
+                        {% endif %}
                         <div class="info-item">
                             <i class="fas fa-calendar"></i>
                             <span>{{ website.deadline|date('d/m/Y') }}</span>
@@ -70,8 +82,8 @@
                 </div>
             </div>
         {% else %}
-            <div class="empty-state mx-auto">
-                <p class="text-light"><i class="fas fa-folder-open me-2"></i>Aucun projet web en cours</p>
+            <div class="empty-state mx-auto d-flex justify-content-center">
+                <p class="text-light text-center"><i class="fas fa-folder-open me-2"></i>Aucun projet web en cours</p>
             </div>
         {% endfor %}
     </div>

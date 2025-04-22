@@ -68,49 +68,100 @@
         border-top: 1px solid #444;
     }
 
+    /* Project Group */
+    .project-group {
+        padding: 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), transparent);
+        margin-bottom: 15px;
+        border-radius: 8px;
+    }
+
+    .project-group:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+
     .action-btn {
-        display: flex;
+        display: inline-flex;
         align-items: center;
+        justify-content: center;
         color: #fff;
-        background-color: #3a3a3a;
-        padding: 0.3rem;
-        border-radius: 5px;
+        background: linear-gradient(135deg, #2c2c2c 0%, #3a3a3a 100%);
+        padding: 0.8rem 1.2rem;
+        border-radius: 8px;
         font-size: 14px;
+        font-weight: 600;
         text-decoration: none;
-        transition: background-color 0.3s ease, transform 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        min-width: 120px;
+        gap: 8px;
     }
 
     .action-btn i {
-        margin-right: 8px;
+        font-size: 16px;
+        transition: transform 0.3s ease;
     }
 
     .action-btn:hover {
-        background-color: #585858;
         transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .action-btn:hover i {
+        transform: scale(1.1);
     }
 
     .delete-btn {
-        background-color: #ff4d4d;
+        background: linear-gradient(135deg, #ff4d4d 0%, #ff3333 100%);
+        border-color: rgba(255, 77, 77, 0.3);
     }
 
     .delete-btn:hover {
-        background-color: #ff3333;
+        background: linear-gradient(135deg, #ff3333 0%, #ff1a1a 100%);
+        box-shadow: 0 4px 12px rgba(255, 77, 77, 0.3);
     }
 
     .contact-btn {
-        background-color: #4d90fe;
+        background: linear-gradient(135deg, #4d90fe 0%, #357ABD 100%);
+        border-color: rgba(77, 144, 254, 0.3);
     }
 
     .contact-btn:hover {
-        background-color: #3b80e1;
+        background: linear-gradient(135deg, #357ABD 0%, #2868A9 100%);
+        box-shadow: 0 4px 12px rgba(77, 144, 254, 0.3);
     }
 
     .toggle-btn {
-        background-color: #4caf50;
+        background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+        border-color: rgba(76, 175, 80, 0.3);
     }
 
     .toggle-btn:hover {
-        background-color: #45a049;
+        background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
+        box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+    }
+
+    .complete-btn {
+        background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+        border-color: rgba(156, 39, 176, 0.3);
+    }
+
+    .complete-btn:hover {
+        background: linear-gradient(135deg, #7b1fa2 0%, #6a1b9a 100%);
+        box-shadow: 0 4px 12px rgba(156, 39, 176, 0.3);
+    }
+
+    .update-btn {
+        background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+        border-color: rgba(255, 152, 0, 0.3);
+    }
+
+    .update-btn:hover {
+        background: linear-gradient(135deg, #f57c00 0%, #ef6c00 100%);
+        box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
     }
 
     /* Mobile responsiveness */
@@ -121,25 +172,20 @@
 
         .user-actions {
             flex-direction: column;
-            align-items: center;
+            align-items: stretch;
+            gap: 12px;
         }
 
         .action-btn {
             width: 100%;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
-        .action-btn:last-child {
             margin-bottom: 0;
+            padding: 1rem;
         }
-    }
-    .complete-btn {
-        background-color: #9c27b0;
-    }
 
-    .complete-btn:hover {
-        background-color: #7b1fa2;
+        .d-flex.gap-2 {
+            flex-direction: column;
+            gap: 12px !important;
+        }
     }
 </style>
 
@@ -183,9 +229,19 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="estimatedBudget" class="form-label">Budget estimé (€)</label>
+                        <label for="estimatedBudget" class="form-label">Budget total estimé (€)</label>
                         <input type="number" class="form-control bg-dark text-light" id="estimatedBudget" name="estimatedBudget" required>
                     </div>
+                    <div class="mb-3">
+                        <label for="depositAmount" class="form-label">Montant de la caution (50% du budget)</label>
+                        <input type="number" class="form-control bg-dark text-light" id="depositAmount" name="depositAmount" required>
+                    </div>
+                    <script>
+                        document.getElementById('estimatedBudget').addEventListener('input', function() {
+                            const budget = parseInt(this.value) || 0;
+                            document.getElementById('depositAmount').value = Math.floor(budget * 0.5);
+                        });
+                    </script>
                     <div class="mb-3">
                         <label for="deadline" class="form-label">Date limite</label>
                         <input type="date" class="form-control bg-dark text-light" id="deadline" name="deadline">
@@ -248,39 +304,42 @@
                 </div>
 
                 <div class="user-actions">
-                    <a class="action-btn delete-btn" href="{{ path('delete_user', {'id': user.id, csrf_token: csrf_token('delete_user_' ~ user.id ) }) }}">
-                        <i class="fas fa-trash-alt me-2"></i>Delete
-                    </a>
-
-                    <a class="action-btn contact-btn" href="{{ path('contact_user', {'id': user.id, csrf_token: csrf_token('contact_user_' ~ user.id ) }) }}">
-                        <i class="fas fa-envelope me-2"></i>Contact
-                    </a>
 
                     {% if is_granted('ROLE_ADMIN') %}
                         {% set has_active_project = false %}
                         {% set active_website = null %}
+                        {% set active_websites = [] %}
                         {% for website in user.websites %}
                             {% if not website.completed %}
-                                {% set has_active_project = true %}
-                                {% set active_website = website %}
+                                {% set active_websites = active_websites|merge([website]) %}
                             {% endif %}
                         {% endfor %}
 
                         <div class="d-flex gap-2 flex-wrap">
-                            {% if not has_active_project %}
-                                <button type="button" class="action-btn toggle-btn" data-bs-toggle="modal" data-bs-target="#createWebsiteModal" data-user-id="{{ user.id }}">
+                            <div class="project-group">
+                                <a class="action-btn delete-btn mb-3" href="{{ path('delete_user', {'id': user.id, csrf_token: csrf_token('delete_user_' ~ user.id ) }) }}">
+                                    <i class="fas fa-trash-alt me-2"></i>Delete
+                                </a>
+
+                                <a class="action-btn contact-btn mb-3" href="{{ path('contact_user', {'id': user.id, csrf_token: csrf_token('contact_user_' ~ user.id ) }) }}">
+                                    <i class="fas fa-envelope me-2"></i>Contact
+                                </a>
+
+                                <button type="button" class="action-btn toggle-btn mb-3" data-bs-toggle="modal" data-bs-target="#createWebsiteModal" data-user-id="{{ user.id }}">
                                     <i class="fas fa-plus me-2"></i>Créer un projet web
                                 </button>
-                            {% endif %}
+                            </div>
 
-                            {% if has_active_project and active_website %}
-                                <button type="button" class="action-btn update-btn" data-bs-toggle="modal" data-bs-target="#updateStageModal" data-user-id="{{ user.id }}" data-website-id="{{ active_website.id }}" data-current-stage="{{ active_website.currentStage }}">
-                                    <i class="fas fa-tasks me-2"></i>Mettre à jour l'étape
+                            {% for active_website in active_websites %}
+                            <div class="project-group">
+                                <button type="button" class="mb-2 action-btn update-btn" data-bs-toggle="modal" data-bs-target="#updateStageModal" data-user-id="{{ user.id }}" data-website-id="{{ active_website.id }}" data-current-stage="{{ active_website.currentStage }}">
+                                    <i class="fas fa-tasks me-2"></i>Mettre à jour l'étape - {{ active_website.companyName ?? 'Projet ' ~ loop.index }}
                                 </button>
-                                <a class="action-btn complete-btn" href="{{ path('complete_project', {'id': active_website.id, csrf_token: csrf_token('complete_project_' ~ active_website.id)}) }}">
+                                <button type="button" class="action-btn complete-btn" data-bs-toggle="modal" data-bs-target="#completeProjectModal" data-user-id="{{ user.id }}" data-website-id="{{ active_website.id }}" data-company-name="{{ active_website.companyName ?? 'Projet ' ~ loop.index }}">
                                     <i class="fas fa-check me-2"></i>Marquer comme terminé
-                                </a>
-                            {% endif %}
+                                </button>
+                            </div>
+                            {% endfor %}
                         </div>
                     {% endif %}
                 </div>
@@ -291,6 +350,33 @@
             <p class="text-light">No users to display.</p>
         </div>
         {% endfor %}
+    </div>
+</div>
+
+<!-- Modal pour marquer un projet comme terminé -->
+<div class="modal fade" id="completeProjectModal" tabindex="-1" aria-labelledby="completeProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title" id="completeProjectModalLabel">Marquer le projet comme terminé</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="project-info mb-4">
+                    <h6 class="text-light mb-3">Détails du projet</h6>
+                    <p class="mb-2">Projet : <span id="projectName" class="text-info"></span></p>
+                </div>
+                <p class="text-warning">Êtes-vous sûr de vouloir marquer ce projet comme terminé ?</p>
+                <form id="completeProjectForm" method="POST">
+                    <input type="hidden" name="_token" value="{{ csrf_token('complete_project') }}">
+                    <input type="hidden" name="websiteId" id="completeWebsiteId" value="">
+                </form>
+            </div>
+            <div class="modal-footer border-secondary">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="submit" form="completeProjectForm" class="btn btn-success">Confirmer</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -350,6 +436,24 @@ document.addEventListener('DOMContentLoaded', function() {
             const websiteId = button.getAttribute('data-website-id');
             document.getElementById('updateUserId').value = userId;
             document.getElementById('updateWebsiteId').value = websiteId;
+        });
+    }
+
+    // Gérer le modal de confirmation pour marquer un projet comme terminé
+    const completeModal = document.getElementById('completeProjectModal');
+    if (completeModal) {
+        completeModal.addEventListener('show.bs.modal', function(event) {
+            const button = event.relatedTarget;
+            const websiteId = button.getAttribute('data-website-id');
+            const companyName = button.getAttribute('data-company-name');
+            
+            // Mettre à jour les informations du projet
+            document.getElementById('projectName').textContent = companyName;
+            document.getElementById('completeWebsiteId').value = websiteId;
+            
+            // Mettre à jour l'URL du formulaire
+            const form = document.getElementById('completeProjectForm');
+            form.action = '{{ path("complete_project", {"id": "WEBSITE_ID"}) }}'.replace('WEBSITE_ID', websiteId);
         });
     }
 });
