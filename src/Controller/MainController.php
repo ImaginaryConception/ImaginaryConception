@@ -578,13 +578,9 @@ class MainController extends AbstractController
         }
 
         $user = $this->getUser();
-        // if (!$user->getHasPrivateBoardAccess()) {
-        //     $this->addFlash('error', 'Vous n\'avez pas accès au tableau de bord privé!');
-        //     return $this->redirectToRoute('home');
-        // }
 
         $repository = $doctrine->getRepository(Website::class);
-        $websites = $repository->findBy(['user' => $user]);
+        $websites = $repository->findBy(['user' => $user, 'source' => 'admin']);
 
         return $this->render('main/private_board.html.twig', [
             'websites' => $websites,
@@ -842,7 +838,8 @@ class MainController extends AbstractController
             ->setUser($user)
             ->setCreatedAt(new \DateTime())
             ->setStatus('pending')
-            ->setLogo(false);
+            ->setLogo(false)
+            ->setSource('admin');
 
         $user->setHasPrivateBoardAccess(true);
 

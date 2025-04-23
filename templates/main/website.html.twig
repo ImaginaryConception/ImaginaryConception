@@ -122,16 +122,16 @@
         margin: 0 0.8rem 0 0;
         cursor: pointer;
         transform-origin: left;
-        transition: transform 0.2s ease;
+        /* transition: transform 0.2s ease; */
     }
 
-    input[type="checkbox"]:hover {
+    /* input[type="checkbox"]:hover {
         transform: scale(1.2);
     }
 
     input[type="checkbox"]:checked {
         animation: checkmark 0.3s ease-in-out;
-    }
+    } */
 
     @keyframes checkmark {
         0% { transform: scale(1); }
@@ -160,6 +160,11 @@
         label, input, button, select, textarea {
             font-size: 0.9rem;
         }
+
+        #website_request_form_specificFunctions{
+            display: flex;
+            flex-direction: column;
+        }
     }
 
     form label {
@@ -169,12 +174,12 @@
     /* Aligning checkbox and label side by side */
     #website_request_form_specificFunctions input[type="checkbox"] {
         margin-right: 10px;
-        margin-bottom: 0; /* To remove extra space between checkbox and label */
+        margin-bottom: 0;
     }
 
     #website_request_form_specificFunctions label {
         display: inline-block;
-        margin-left: 5px; /* Small space between checkbox and label */
+        margin-left: 5px;
         cursor: pointer;
         margin-right: 50px;
     }
@@ -188,12 +193,12 @@
 }
 
 /* Checkbox Input Styling */
-input[type="checkbox"] {
+/* input[type="checkbox"] {
     width: auto;
-    margin-right: 0.8rem; /* Espacement à droite de la case */
+    margin-right: 0.8rem;
     cursor: pointer;
     transition: transform 0.2s ease;
-}
+} */
 
 /* Custom label Styling */
 .form-check label {
@@ -258,13 +263,17 @@ input[type="checkbox"] {
 
         {{ form_row( quote_form.likedWebsites ) }}
 
-        {# {{ form_row( quote_form.specificFunctions ) }} #}
+        {{ form_row( quote_form.specificFunctions ) }}
 
         {{ form_row( quote_form.deadline ) }}
 
         {{ form_row( quote_form.estimatedBudget ) }}
 
         {{ form_row( quote_form.additionalInfo ) }}
+
+        <div class="mb-3">
+            {{ form_widget(quote_form.recaptcha) }}
+        </div>
 
         {{ form_errors( quote_form ) }}
 

@@ -167,6 +167,9 @@
             {{ form_widget(form.content, {'attr': {'class': 'form-control bg-dark text-light', 'placeholder': 'Partagez votre expérience...'}}) }}
         </div>
         <div class="mb-3">
+            {{ form_widget(form.name, {'attr': {'class': 'form-control bg-dark text-light', 'placeholder': 'Partagez votre expérience...'}}) }}
+        </div>
+        <div class="mb-3">
             <div class="mb-3">
                 <div class="star-rating">
                     {% for i in 1..5 %}
@@ -247,7 +250,10 @@
             </script>
         </div>
         <div class="mb-3">
-            {{ form_widget(form.name, {'attr': {'class': 'form-control bg-dark text-light', 'placeholder': 'Entrez votre nom (et votre entreprise si possible) *'}}) }}
+            {{ form_widget(form.recaptcha) }}
+        </div>
+        <div class="mb-3">
+            {{ form_widget(form.save, {'attr': {'class': 'form-control bg-dark text-light', 'placeholder': 'Partagez votre expérience...'}}) }}
         </div>
         {{ form_errors(form) }}
         {{ form_end(form) }}

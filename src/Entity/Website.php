@@ -86,6 +86,9 @@ class Website
     #[ORM\Column(type: 'integer', nullable: false)]
     private $depositAmount = 0;
 
+    #[ORM\Column(type: 'string', length: 50, nullable: false)]
+    private $source = 'public';
+
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'websites')]
     #[ORM\JoinColumn(nullable: true)]
     private ?User $user = null;
@@ -195,6 +198,17 @@ class Website
     public function setDepositAmount(int $depositAmount): self
     {
         $this->depositAmount = $depositAmount;
+        return $this;
+    }
+
+    public function getSource(): string
+    {
+        return $this->source;
+    }
+
+    public function setSource(string $source): self
+    {
+        $this->source = $source;
         return $this;
     }
 

@@ -30,6 +30,7 @@ class WebsiteRequestFormType extends AbstractType
         $builder
             ->add('firstname', TextType::class, [
                 'label' => false,
+                'required' => true,
                 'attr' => [
                     'placeholder' => 'Prénom *',
                     'class' => 'text-black',
@@ -48,6 +49,7 @@ class WebsiteRequestFormType extends AbstractType
             ])
             ->add('lastname', TextType::class, [
                 'label' => false,
+                'required' => true,
                 'attr' => [
                     'placeholder' => 'Nom *',
                     'class' => 'text-black',
@@ -66,6 +68,7 @@ class WebsiteRequestFormType extends AbstractType
             ])
             ->add('email', EmailType::class, [
                 'label' => false,
+                'required' => true,
                 'attr' => [
                     'placeholder' => 'Adresse e-mail *',
                     'class' => 'text-black',
@@ -81,8 +84,9 @@ class WebsiteRequestFormType extends AbstractType
             ])
             ->add('phone', TelType::class, [
                 'label' => false,
+                'required' => true,
                 'attr' => [
-                    'placeholder' => 'Numéro de téléphone (facultatif)',
+                    'placeholder' => 'Numéro de téléphone *',
                     'class' => 'text-black',
                 ],
                 'required' => false,
@@ -90,7 +94,10 @@ class WebsiteRequestFormType extends AbstractType
                     new Regex([
                         'pattern' => '/^\d+$/', // Seulement des chiffres
                         'message' => 'Veuillez entrer un numéro de téléphone valide (uniquement des chiffres).'
-                    ])
+                    ]),
+                    new NotBlank([
+                        'message' => 'Veuillez renseigner votre numéro de téléphone.'
+                    ]),
                 ],
             ])
             ->add('companyName', TextType::class, [
@@ -191,11 +198,11 @@ class WebsiteRequestFormType extends AbstractType
                     'Autre' => 'other',
                 ],
                 'label_attr' => [
-                    'class' => 'text-light d-none text-center',
+                    'class' => 'text-light text-center d-none d-md-block',
                 ],
                 'attr' => [
                     'novalidate' => 'novalidate',
-                    'class' => 'text-center d-none text-light',
+                    'class' => 'text-center text-light',
                 ],
                 'expanded' => true,
                 'multiple' => true,
@@ -207,7 +214,7 @@ class WebsiteRequestFormType extends AbstractType
                 'required' => false,
                 'html5' => true,
                 'attr' => [
-                    'placeholder' => 'Deadline souhaitée',
+                    'placeholder' => 'Deadline souhaitée (falcultatif)',
                     'class' => 'text-black',
                 ],
             ])
