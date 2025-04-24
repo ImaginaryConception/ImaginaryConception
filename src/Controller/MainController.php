@@ -495,6 +495,18 @@ class MainController extends AbstractController
         return $this->redirectToRoute('users');
     }
 
+    #[Route('/toggle-website-visibility/{id}', name: 'toggle_website_visibility')]
+    #[ParamConverter('website', options: ['mapping' => ['id' => 'id']])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function toggleWebsiteVisibility(Website $website, EntityManagerInterface $entityManager): Response
+    {
+        $website->setSource($website->getSource() === 'admin' ? 'public' : 'admin');
+        $entityManager->flush();
+
+        $this->addFlash('success', 'La visibilité du devis a été mise à jour avec succès.');
+        return $this->redirectToRoute('requested_website');
+    }
+
     #[Route('/delete-user/{id}/', name: 'delete_user', priority: 10)]
     #[ParamConverter('user', options: ['mapping' => ['id' => 'id']])]
     #[IsGranted('ROLE_ADMIN')]

@@ -101,8 +101,10 @@
                                     <strong>Visibilité:</strong><br>
                                     {% if website.source == 'admin' %}
                                         <span class="badge bg-success">Visible</span>
+                                        <a href="{{ path('toggle_website_visibility', {'id': website.id}) }}" class="btn btn-sm btn-outline-danger ms-2">Rendre invisible</a>
                                     {% else %}
                                         <span class="badge bg-danger">Non visible</span>
+                                        <a href="{{ path('toggle_website_visibility', {'id': website.id}) }}" class="btn btn-sm btn-outline-success ms-2">Rendre visible</a>
                                     {% endif %}
                                 </div>
                             {% endif %}

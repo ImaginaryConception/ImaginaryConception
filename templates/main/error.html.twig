@@ -5,14 +5,12 @@
 {% block body %}
 <div class="mt-6 min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-red-200 via-white to-red-100 p-6 animate-fade-in">
     <div class="bg-transparent shadow-2xl rounded-2xl p-10 text-center max-w-md w-full animate-slide-up">
-        <div class="mb-6">
-            <svg class="w-20 h-20 mx-auto text-light animate-pop" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-        </div>
-        <h1 class="text-3xl font-bold text-light mb-4">Échec du paiement</h1>
+        <svg class="w-10 h-10 mx-auto text-light animate-pop" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        <p class="text-3xl fs-1 font-bold text-light mb-4">Échec du paiement</p>
         <p class="text-light mb-6">Oups... La transaction n'a pas pu être effectuée. Vérifiez vos infos et réessayez.</p>
-        {# <a href="/checkout" class="inline-block px-6 py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition duration-300">Réessayer</a> #}
+        <a href="{{ path('private_board') }}" class="link2 w-50 mx-auto register5">Retour au tableau de bord</a>
     </div>
 </div>
 
