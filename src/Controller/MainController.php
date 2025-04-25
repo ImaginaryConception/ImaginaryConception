@@ -621,8 +621,8 @@ class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/{title}/{id}/', name: 'game_view')]
-    #[ParamConverter('game', options: ['mapping' => ['title' => 'title']])]
+    #[Route('/game/{id}/', name: 'game_view')]
+    #[ParamConverter('game', options: ['mapping' => ['id' => 'id']])]
     public function gameView(Game $game, Request $request, ManagerRegistry $doctrine): Response
     {
 

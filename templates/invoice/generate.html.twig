@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Générer une facture{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card bg-dark text-light border-light">
+                <div class="card-header">
+                    <h1 class="h3 mb-0 text-center">Générer une facture</h1>
+                </div>
+                <div class="card-body">
+                    {{ form_start(invoiceForm, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+                    
+                    {# Client Information #}
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">Informations du client</h2>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                {{ form_row(invoiceForm.clientName, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(invoiceForm.clientEmail, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                            </div>
+                            <div class="col-12">
+                                {{ form_row(invoiceForm.clientAddress, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(invoiceForm.clientSiret, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Invoice Information #}
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">Informations de la facture</h2>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                {{ form_row(invoiceForm.invoiceDate, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(invoiceForm.invoiceNumber, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                            </div>
+                            <div class="col-12">
+                                {{ form_row(invoiceForm.invoiceTitle, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Service Details #}
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">Détails du service</h2>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                {{ form_row(invoiceForm.serviceDescription, {'attr': {'class': 'form-control bg-dark text-light border-light', 'rows': '4'}}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(invoiceForm.quantity, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(invoiceForm.unitPrice, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Payment Terms #}
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">Conditions de paiement</h2>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                {{ form_row(invoiceForm.paymentTerms, {'attr': {'class': 'form-control bg-dark text-light border-light', 'rows': '3'}}) }}
+                            </div>
+                            <div class="col-12">
+                                {{ form_row(invoiceForm.latePenalty, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg px-5">Générer la facture</button>
+                    </div>
+
+                    {{ form_end(invoiceForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    // Form validation
+    (function () {
+        'use strict'
+        var forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>
+{% endblock %}

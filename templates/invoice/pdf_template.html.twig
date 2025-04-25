@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice {{ invoice.number }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 40px;
+        }
+
+        .header {
+            margin-bottom: 40px;
+        }
+
+        .company-info {
+            float: left;
+            width: 50%;
+        }
+
+        .invoice-info {
+            float: right;
+            width: 40%;
+            text-align: right;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        .client-info {
+            margin: 40px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f5f5f5;
+        }
+
+        .total-section {
+            margin-top: 30px;
+            text-align: right;
+        }
+
+        .payment-terms {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="company-info">
+            <h2>{{ company.name }}</h2>
+            <p>{{ company.company }}</p>
+            <p>SIRET: {{ company.siret }}</p>
+            <p>{{ company.email }}</p>
+            <p>Status: {{ company.status }}</p>
+        </div>
+        <div class="invoice-info">
+            <h1>INVOICE</h1>
+            <p>Invoice Number: {{ invoice.number }}</p>
+            <p>Date: {{ invoice.date|date('d/m/Y') }}</p>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="client-info">
+        <h3>Bill To:</h3>
+        <p>{{ client.name }}</p>
+        <p>{{ client.address }}</p>
+        {% if client.siret %}
+            <p>SIRET: {{ client.siret }}</p>
+        {% endif %}
+        <p>{{ client.email }}</p>
+    </div>
+
+    <h3>{{ invoice.title }}</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ invoice.description }}</td>
+                <td>{{ invoice.quantity }}</td>
+                <td>€{{ invoice.unitPrice|number_format(2, '.', ',') }}</td>
+                <td>€{{ invoice.totalHT|number_format(2, '.', ',') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="total-section">
+        <p><strong>Total (excl. VAT):</strong> €{{ invoice.totalHT|number_format(2, '.', ',') }}</p>
+        <p><em>{{ company.vat_notice }}</em></p>
+    </div>
+
+    <div class="payment-terms">
+        <h4>Payment Terms</h4>
+        <p>
+            {% if invoice.paymentTerms == 'immediate' %}
+                Immediate Payment
+            {% elseif invoice.paymentTerms == 'upon_receipt' %}
+                Payment Upon Receipt
+            {% else %}
+                50% Upfront / 50% Upon Delivery
+            {% endif %}
+        </p>
+        {% if invoice.latePenalty %}
+            <p>Late Payment Penalty: A 10% penalty will be applied for payments not received within 30 days.</p>
+        {% endif %}
+    </div>
+
+    <div class="footer">
+        <p>Thank you for your business!</p>
+        <p>{{ company.status }} registered under SIRET {{ company.siret }} – {{ company.company }} – {{ 'now'|date('Y') }}</p>
+    </div>
+</body>
+</html>

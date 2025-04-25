@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Quote - {{ project.type }}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 40px;
+        }
+
+        .header {
+            border-bottom: 2px solid #0d6efd;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .company-info {
+            float: left;
+            width: 50%;
+        }
+
+        .quote-info {
+            float: right;
+            width: 50%;
+            text-align: right;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        .client-info {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .project-details {
+            margin: 30px 0;
+        }
+
+        .features-list {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+
+        .features-list li {
+            margin-bottom: 10px;
+            color: #495057;
+        }
+
+        .price-section {
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            text-align: right;
+        }
+
+        .total-price {
+            font-size: 24px;
+            color: #0d6efd;
+            font-weight: bold;
+        }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 12px;
+            color: #6c757d;
+            text-align: center;
+        }
+
+        .highlight {
+            color: #0d6efd;
+            font-weight: bold;
+        }
+
+        .section-title {
+            color: #0d6efd;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="company-info">
+            <h2>{{ company.company }}</h2>
+            <p>{{ company.name }}<br>
+            SIRET: {{ company.siret }}<br>
+            {{ company.email }}</p>
+        </div>
+        <div class="quote-info">
+            <h1>QUOTE</h1>
+            <p>Date: {{ date|date('m/d/Y') }}</p>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="client-info">
+        <h3 class="section-title">Client Information</h3>
+        <p><strong>Name:</strong> {{ client.name }}<br>
+        <strong>Email:</strong> {{ client.email }}<br>
+        <strong>Phone:</strong> {{ client.phone }}</p>
+    </div>
+
+    <div class="project-details">
+        <h3 class="section-title">Project Details</h3>
+        <p><strong>Website Type:</strong> {% if project.type == 'Site vitrine' %}Showcase Website{% elseif project.type == 'Autre' %}Other{% endif %}<br>
+        <strong>Number of Pages:</strong> {{ project.pages }}<br>
+        <strong>Graphic Charter:</strong> {% if project.hasGraphicCharter %}Included{% else %}Not included{% endif %}<br>
+        <strong>Expected Delivery Date:</strong> {{ project.deadline|date('m/d/Y') }}</p>
+
+        {% if project.specificFunctions|length > 0 %}
+        <p><strong>Specific Features:</strong></p>
+        <ul>
+            {% for function in project.specificFunctions %}
+                <li>{{ function }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+    <div class="features-section">
+        <h3 class="section-title">{{ project.selectedPlan|title }} Package</h3>
+        {% if project.selectedPlan != 'custom' %}
+            <ul class="features-list">
+                {% for feature in project.planFeatures %}
+                    <li>{{ feature }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="custom-features">
+                {{ project.customInclusions|nl2br }}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="price-section">
+        <h3>Total Price</h3>
+        <p class="total-price">€{{ project.totalPrice|number_format(2, '.', ',') }}</p>
+        <p>{{ company.vat_notice }}</p>
+    </div>
+
+    {% if project.additionalInfo %}
+    <div class="additional-info">
+        <h3 class="section-title">Additional Information</h3>
+        <p>{{ project.additionalInfo|nl2br }}</p>
+    </div>
+    {% endif %}
+
+    <div class="footer">
+        <p>This quote is valid for 30 days from the date of issue.<br>
+        Signing this quote implies acceptance of the general terms and conditions of sale.</p>
+        <p>{{ company.company }} - {{ company.status }}</p>
+    </div>
+</body>
+</html>
