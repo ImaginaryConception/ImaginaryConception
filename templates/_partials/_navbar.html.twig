@@ -97,6 +97,10 @@
 							</li>
 
 							<li class="nav-item mb-4">
+								<a class="link{{ route == 'contract_generate' ? ' nav-active' }}" href="{{ path('contract_generate') }}">Generate a contract</a>
+							</li>
+
+							<li class="nav-item mb-4">
 								<a class="link{{ route == 'add_game' ? ' nav-active' }}" href="{{ path('add_game') }}">Add game</a>
 							</li>
 						</ul>
@@ -150,6 +154,10 @@
 
 					<li class="nav-item me-4">
 						<a class="link{{ route == 'users' ? ' nav-active' }}" href="{{ path('users') }}">Users</a>
+					</li>
+
+					<li class="nav-item me-4">
+						<a class="link{{ route == 'contract_generate' ? ' nav-active' }}" href="{{ path('contract_generate') }}">Generate a contract</a>
 					</li>
 
 					<li class="nav-item">

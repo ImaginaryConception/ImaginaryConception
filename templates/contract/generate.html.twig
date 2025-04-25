@@ -1,0 +1,137 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Générer un contrat - Imaginary Conception{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card bg-dark text-light border-light">
+                <div class="card-header">
+                    <h1 class="h3 mb-0 text-center">Générer un contrat</h1>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+                    
+                    {# Client Information #}
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">Informations du client</h2>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                {{ form_row(form.clientName, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.clientEmail, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                            </div>
+                            <div class="col-12">
+                                {{ form_row(form.clientAddress, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.clientSiret, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Project Information #}
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">Informations du projet</h2>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                {{ form_row(form.projectSubject, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                            </div>
+                            <div class="col-12">
+                                {{ form_row(form.projectInclusions, {'attr': {'class': 'form-control bg-dark text-light border-light', 'rows': '4'}}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.selectedPlan, {'attr': {'class': 'form-select bg-dark text-light border-light'}}) }}
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check form-switch mt-4">
+                                    {{ form_widget(form.monthlyMaintenance, {'attr': {'class': 'form-check-input'}}) }}
+                                    {{ form_label(form.monthlyMaintenance, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Duration and Deadline #}
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">Durée et échéances</h2>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                {{ form_row(form.startDate, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form_row(form.estimatedDuration, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form_row(form.deliveryDeadline, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Payment Information #}
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">Informations de paiement</h2>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                {{ form_row(form.totalPrice, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.paymentMethod, {'attr': {'class': 'form-select bg-dark text-light border-light'}}) }}
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check form-switch">
+                                    {{ form_widget(form.fullPayment, {'attr': {'class': 'form-check-input'}}) }}
+                                    {{ form_label(form.fullPayment, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                {{ form_row(form.bankDetails, {'attr': {'class': 'form-control bg-dark text-light border-light', 'rows': '2'}}) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Deliverables #}
+                    <div class="mb-4">
+                        <h2 class="h4 mb-3">Livrables</h2>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                {{ form_row(form.deliverables, {'attr': {'class': 'form-control bg-dark text-light border-light', 'rows': '4'}}) }}
+                            </div>
+                            <div class="col-12">
+                                {{ form_row(form.exclusions, {'attr': {'class': 'form-control bg-dark text-light border-light', 'rows': '4'}}) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg px-5">Générer le contrat</button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    // Form validation
+    (function () {
+        'use strict'
+        var forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>
+{% endblock %}

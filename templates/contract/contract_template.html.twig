@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Web Development Service Agreement</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 40px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .signature-section {
+            margin-top: 50px;
+            page-break-inside: avoid;
+        }
+        .signature-box {
+            border-top: 1px solid #000;
+            margin-top: 50px;
+            padding-top: 10px;
+            width: 300px;
+        }
+        .company-info {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>WEB DEVELOPMENT SERVICE AGREEMENT</h1>
+        <p>Date: {{ date|date('F d, Y') }}</p>
+    </div>
+
+    <div class="company-info">
+        <h2>SERVICE PROVIDER</h2>
+        <p>
+            {{ company.name }}<br>
+            {{ company.company }}<br>
+            SIRET: {{ company.siret }}<br>
+            Email: {{ company.email }}
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>CLIENT INFORMATION</h2>
+        <p>
+            Name/Company: {{ data.clientName }}<br>
+            Address: {{ data.clientAddress }}<br>
+            Email: {{ data.clientEmail }}<br>
+            {% if data.clientSiret %}SIRET/Registration: {{ data.clientSiret }}{% endif %}
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>1. PROJECT SCOPE</h2>
+        <p><strong>Subject:</strong> {{ data.projectSubject }}</p>
+        <p><strong>Selected Plan:</strong> {{ data.selectedPlan }}</p>
+        <h3>1.1 Inclusions</h3>
+        <p>{{ data.projectInclusions|nl2br }}</p>
+        <h3>1.2 Monthly Maintenance</h3>
+        <p>Monthly maintenance service is {% if data.monthlyMaintenance %}included{% else %}not included{% endif %} in this agreement.</p>
+    </div>
+
+    <div class="section">
+        <h2>2. PROJECT TIMELINE</h2>
+        <p>
+            <strong>Start Date:</strong> {{ data.startDate|date('F d, Y') }}<br>
+            <strong>Estimated Duration:</strong> {{ data.estimatedDuration }}<br>
+            <strong>Delivery Deadline:</strong> {{ data.deliveryDeadline|date('F d, Y') }}
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>3. DELIVERABLES</h2>
+        <h3>3.1 Included Deliverables</h3>
+        <p>{{ data.deliverables|nl2br }}</p>
+        <h3>3.2 Exclusions</h3>
+        <p>{{ data.exclusions|nl2br }}</p>
+    </div>
+
+    <div class="section">
+        <h2>4. PAYMENT TERMS</h2>
+        <p>
+            <strong>Total Project Cost:</strong> €{{ data.totalPrice }}<br>
+            <strong>Payment Method:</strong> {{ data.paymentMethod }}<br>
+            <strong>Payment Structure:</strong> {% if data.fullPayment %}100% upfront payment{% else %}Payment in installments{% endif %}
+        </p>
+        <h3>4.1 Banking Details</h3>
+        <p>{{ data.bankDetails|nl2br }}</p>
+    </div>
+
+    <div class="section">
+        <h2>5. GENERAL TERMS</h2>
+        <p>5.1 This agreement is governed by French law.</p>
+        <p>5.2 Any modifications to this agreement must be made in writing and agreed upon by both parties.</p>
+        <p>5.3 The Service Provider retains intellectual property rights until full payment is received.</p>
+        <p>5.4 Confidentiality of business information will be maintained by both parties.</p>
+    </div>
+
+    <div class="signature-section">
+        <h2>6. SIGNATURES</h2>
+        <div style="display: flex; justify-content: space-between;">
+            <div class="signature-box">
+                <p>Service Provider:<br>{{ company.name }}<br>Date: {{ date|date('d/m/Y') }}</p>
+            </div>
+            <div class="signature-box">
+                <p>Client:<br>{{ data.clientName }}<br>Date: {{ date|date('d/m/Y') }}</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
