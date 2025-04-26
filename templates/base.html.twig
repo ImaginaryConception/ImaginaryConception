@@ -8,7 +8,10 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}{% endblock %} - Imaginary Conception</title>
+        <title>{% block title %}{% endblock %} - Imaginary Conception | Développement Web & Création de Jeux Vidéo</title>
+        <meta name="description" content="{% block meta_description %}Studio de développement web et création de jeux vidéo. Solutions sur mesure, sites vitrines, e-commerce et jeux indépendants.{% endblock %}">
+        <meta name="keywords" content="développement web, création de site internet, création de jeux vidéo, site vitrine, site e-commerce, jeu indépendant, freelance développeur web, studio de jeux vidéo">
+        <link rel="canonical" href="{{ app.request.schemeAndHttpHost }}{{ app.request.requestUri }}">
         <link rel="stylesheet" href="{{ asset('CSS/bootstrap.min.css') }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
         <link rel="stylesheet" href="{{ asset('CSS/styles.css') }}">

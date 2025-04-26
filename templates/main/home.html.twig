@@ -8,7 +8,8 @@
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Home - Imaginary Conception</title>
+		<title>Imaginary Conception | Développement Web & Création de Jeux Vidéo</title>
+		<meta name="description" content="Studio de développement spécialisé dans la création de sites web sur mesure et de jeux vidéo innovants. Expertise en sites vitrines, e-commerce et jeux indépendants.">
 		<link rel="stylesheet" href="{{ asset('CSS/bootstrap.min.css') }}">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 		<link rel="stylesheet" href="{{ asset('CSS/styles.css') }}">
@@ -48,18 +49,18 @@
                     <nav class="custom-nav mt-4 p-0">
                         <div class="nav-buttons-container">
                             <a href="{{ path('games') }}" class="nav-button register2" data-aos="fade-up">
-                                <div class="nav-button-bg games-bg"></div>
+                                <div class="nav-button-bg games-bg" role="img" aria-label="Section jeux vidéo"></div>
                                 <span class="nav-button-content">Games</span>
                                 <p class="nav-button-description">Découvrez nos jeux vidéo innovants</p>
                             </a>
                             <a href="{{ path('services') }}" class="nav-button register3" data-aos="fade-up" data-aos-delay="200">
-                                <div class="nav-button-bg web-bg"></div>
+                                <div class="nav-button-bg web-bg" role="img" aria-label="Section développement web"></div>
                                 <span class="nav-button-content">Web development</span>
                                 <p class="nav-button-description">Solutions web sur mesure pour votre entreprise</p>
                                 <p class="nav-button-description mt-3 btn-light btn-lg">Découvrir nos services</p>
                             </a>
                             <a href="{{ path('realisations') }}" class="nav-button register4 mb-4" data-aos="fade-up" data-aos-delay="400">
-                                <div class="nav-button-bg portfolio-bg"></div>
+                                <div class="nav-button-bg portfolio-bg" role="img" aria-label="Section portfolio"></div>
                                 <span class="nav-button-content">Portfolio</span>
                                 <p class="nav-button-description">Explorez nos réalisations</p>
                             </a>

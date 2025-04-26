@@ -1,10 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Games{% endblock %}
+{% block title %}Jeux Vidéo Indépendants | Studio de Création de Jeux - Imaginary Conception{% endblock %}
+
+{% block meta_description %}Découvrez notre collection de jeux vidéo indépendants innovants. Studio de création de jeux passionné par le développement de jeux uniques et immersifs.{% endblock %}
 
 {% block body %}
     <div class="container mt-5">
-        <h1 class="text-center text-light mb-5">Nos Jeux</h1>
+        <h1 class="text-center text-light mb-5">Nos Créations de Jeux Vidéo Indépendants</h1>
 
         {% if games is not empty %}
             <div class="text-center mb-4">
@@ -17,7 +19,7 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="card h-100 bg-transparent text-light border-danger game-card" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
                         <div class="card-img-wrapper">
-                            <img src="{{ asset('Images/Jeux/' ~ game.image) }}" class="card-img-top" alt="{{ game.title }}">
+                            <img src="{{ asset('Images/Jeux/' ~ game.image) }}" class="card-img-top" alt="{{ game.title }} - Jeu vidéo indépendant par Imaginary Conception" loading="lazy">
                         </div>
                         <div class="card-body">
                             <h2 class="h4 card-title text-danger mb-3">{{ game.title }}</h2>
