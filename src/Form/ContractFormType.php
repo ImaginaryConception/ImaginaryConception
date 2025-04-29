@@ -21,15 +21,15 @@ class ContractFormType extends AbstractType
             // Client Information
             ->add('clientName', TextType::class, [
                 'label' => 'Nom complet / Raison sociale',
-                'required' => true,
+                'required' => false,
             ])
             ->add('clientAddress', TextType::class, [
                 'label' => 'Adresse postale / Siège social',
-                'required' => true,
+                'required' => false,
             ])
             ->add('clientEmail', EmailType::class, [
                 'label' => 'Email de contact',
-                'required' => true,
+                'required' => false,
             ])
             ->add('clientSiret', TextType::class, [
                 'label' => 'N° SIRET ou équivalent',
@@ -39,11 +39,11 @@ class ContractFormType extends AbstractType
             // Project Information
             ->add('projectSubject', TextType::class, [
                 'label' => 'Objet du projet',
-                'required' => true,
+                'required' => false,
             ])
             ->add('projectInclusions', TextareaType::class, [
                 'label' => 'Éléments inclus',
-                'required' => true,
+                'required' => false,
             ])
             ->add('selectedPlan', ChoiceType::class, [
                 'label' => 'Plan choisi',
@@ -52,7 +52,7 @@ class ContractFormType extends AbstractType
                     'Pack Business' => 'business',
                     'Pack Premium' => 'premium',
                 ],
-                'required' => true,
+                'required' => false,
             ])
             ->add('monthlyMaintenance', CheckboxType::class, [
                 'label' => 'Maintenance mensuelle',
@@ -63,50 +63,40 @@ class ContractFormType extends AbstractType
             ->add('startDate', DateType::class, [
                 'label' => 'Date de début',
                 'widget' => 'single_text',
-                'required' => true,
+                'required' => false,
             ])
             ->add('estimatedDuration', TextType::class, [
                 'label' => 'Durée estimée',
-                'required' => true,
+                'required' => false,
             ])
             ->add('deliveryDeadline', DateType::class, [
                 'label' => 'Date de livraison',
                 'widget' => 'single_text',
-                'required' => true,
+                'required' => false,
             ])
 
             // Payment Information
             ->add('totalPrice', NumberType::class, [
                 'label' => 'Prix total (€)',
-                'required' => true,
+                'required' => false,
             ])
             ->add('fullPayment', CheckboxType::class, [
                 'label' => 'Paiement 100%',
-                'required' => true,
+                'required' => false,
             ])
             ->add('paymentMethod', ChoiceType::class, [
                 'label' => 'Mode de paiement',
                 'choices' => [
-                    'Virement bancaire' => 'bank_transfer',
-                    'PayPal' => 'paypal',
-                    'Carte bancaire' => 'credit_card',
+                    'Virement bancaire' => 'Bank transfer',
+                    'PayPal' => 'PayPal',
+                    'Carte bancaire' => 'Bank card',
                 ],
-                'required' => true,
+                'required' => false,
             ])
             ->add('bankDetails', TextareaType::class, [
                 'label' => 'RIB',
-                'required' => true,
+                'required' => false,
                 'data' => 'IBAN: FR76 XXXX XXXX XXXX XXXX XXXX XXX\nBIC: XXXXXXXX', // À remplacer par vos vraies coordonnées bancaires
-            ])
-
-            // Deliverables
-            ->add('deliverables', TextareaType::class, [
-                'label' => 'Livrables',
-                'required' => true,
-            ])
-            ->add('exclusions', TextareaType::class, [
-                'label' => 'Éléments non inclus',
-                'required' => true,
             ])
         ;
     }

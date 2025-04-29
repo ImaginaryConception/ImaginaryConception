@@ -104,9 +104,11 @@
 
     <div class="client-info">
         <h3 class="section-title">Informations Client</h3>
-        <p><strong>Nom:</strong> {{ client.name }}<br>
-        <strong>Email:</strong> {{ client.email }}<br>
-        <strong>Téléphone:</strong> {{ client.phone }}</p>
+        <p>
+        {% if client.name is not empty %}<strong>Nom:</strong> {{ client.name }}<br>{% endif %}
+        {% if client.email is not empty %}<strong>Email:</strong> {{ client.email }}<br>{% endif %}
+        {% if client.phone is not empty %}<strong>Téléphone:</strong> {{ client.phone }}<br>{% endif %}
+        </p>
     </div>
 
     <div class="project-details">

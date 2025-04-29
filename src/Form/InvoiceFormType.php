@@ -21,15 +21,15 @@ class InvoiceFormType extends AbstractType
             // Client Information
             ->add('clientName', TextType::class, [
                 'label' => 'Full Name / Company Name',
-                'required' => true,
+                'required' => false,
             ])
             ->add('clientAddress', TextareaType::class, [
                 'label' => 'Postal Address / Registered Office',
-                'required' => true,
+                'required' => false,
             ])
             ->add('clientEmail', EmailType::class, [
                 'label' => 'Contact Email',
-                'required' => true,
+                'required' => false,
             ])
             ->add('clientSiret', TextType::class, [
                 'label' => 'SIRET Number (if applicable)',
@@ -40,32 +40,32 @@ class InvoiceFormType extends AbstractType
             ->add('invoiceDate', DateType::class, [
                 'label' => 'Invoice Date',
                 'widget' => 'single_text',
-                'required' => true,
+                'required' => false,
             ])
             ->add('invoiceNumber', TextType::class, [
                 'label' => 'Invoice Number',
-                'required' => true,
+                'required' => false,
             ])
             ->add('invoiceTitle', TextType::class, [
                 'label' => 'Subject / Title',
-                'required' => true,
+                'required' => false,
             ])
             
             // Service Details
             ->add('serviceDescription', TextareaType::class, [
                 'label' => 'Service Description',
-                'required' => true,
+                'required' => false,
             ])
             ->add('quantity', NumberType::class, [
                 'label' => 'Quantity',
-                'required' => true,
+                'required' => false,
                 'scale' => 0,
                 'attr' => ['min' => 1],
             ])
             ->add('unitPrice', MoneyType::class, [
                 'label' => 'Unit Price (excl. VAT)',
                 'currency' => 'EUR',
-                'required' => true,
+                'required' => false,
             ])
             
             // Payment Terms
@@ -76,7 +76,7 @@ class InvoiceFormType extends AbstractType
                     'Upon Receipt' => 'upon_receipt',
                     '50% Upfront / 50% Upon Delivery' => 'split',
                 ],
-                'required' => true,
+                'required' => false,
             ])
             ->add('latePenalty', ChoiceType::class, [
                 'label' => 'Include Late Payment Penalty',
@@ -84,7 +84,7 @@ class InvoiceFormType extends AbstractType
                     'Yes' => true,
                     'No' => false,
                 ],
-                'required' => true,
+                'required' => false,
             ])
         ;
     }

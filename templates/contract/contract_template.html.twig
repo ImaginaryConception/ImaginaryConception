@@ -40,10 +40,10 @@
     <div class="section">
         <h3>CLIENT INFORMATION</h3>
         <p>
-            Name/Company: {{ data.clientName }}<br>
-            Address: {{ data.clientAddress }}<br>
-            Email: {{ data.clientEmail }}<br>
-            {% if data.clientSiret %}SIRET/Registration: {{ data.clientSiret }}{% endif %}
+            {% if data.clientName is not empty %}Name/Company: {{ data.clientName }}<br>{% endif %}
+            {% if data.clientAddress is not empty %}Address: {{ data.clientAddress }}<br>{% endif %}
+            {% if data.clientEmail is not empty %}Email: {{ data.clientEmail }}<br>{% endif %}
+            {% if data.clientSiret is not empty %}SIRET/Registration: {{ data.clientSiret }}<br>{% endif %}
         </p>
     </div>
 
@@ -64,14 +64,6 @@
             <strong>Estimated Duration:</strong> {{ data.estimatedDuration }}<br>
             <strong>Delivery Deadline:</strong> {{ data.deliveryDeadline|date('F d, Y') }}
         </p>
-    </div>
-
-    <div class="section">
-        <h3>3. DELIVERABLES</h3>
-        <h4>3.1 Included Deliverables</h4>
-        <p>{{ data.deliverables|nl2br }}</p>
-        <h4>3.2 Exclusions</h4>
-        <p>{{ data.exclusions|nl2br }}</p>
     </div>
 
     <div class="section">

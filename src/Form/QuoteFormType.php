@@ -22,15 +22,15 @@ class QuoteFormType extends AbstractType
             // Client Information
             ->add('clientName', TextType::class, [
                 'label' => 'Prénom et nom du client / Raison sociale',
-                'required' => true,
+                'required' => false,
             ])
             ->add('clientEmail', EmailType::class, [
                 'label' => 'Adresse e-mail du client',
-                'required' => true,
+                'required' => false,
             ])
             ->add('clientPhone', TelType::class, [
                 'label' => 'Numéro de téléphone du client',
-                'required' => true,
+                'required' => false,
             ])
 
             // Project Information
@@ -43,11 +43,11 @@ class QuoteFormType extends AbstractType
                     'Blog' => 'Blog',
                     'Autre' => 'Autre',
                 ],
-                'required' => true,
+                'required' => false,
             ])
             ->add('estimatedPages', NumberType::class, [
                 'label' => 'Nombre de pages estimées',
-                'required' => true,
+                'required' => false,
                 'attr' => ['min' => 1],
             ])
             ->add('graphicCharter', CheckboxType::class, [
@@ -61,11 +61,11 @@ class QuoteFormType extends AbstractType
             ->add('deadline', DateType::class, [
                 'label' => 'Deadline',
                 'widget' => 'single_text',
-                'required' => true,
+                'required' => false,
             ])
             ->add('totalPrice', NumberType::class, [
                 'label' => 'Prix total',
-                'required' => true,
+                'required' => false,
                 'attr' => ['min' => 0],
             ])
             ->add('selectedPlan', ChoiceType::class, [
@@ -76,7 +76,7 @@ class QuoteFormType extends AbstractType
                     'Premium' => 'premium',
                     'Custom' => 'custom',
                 ],
-                'required' => true,
+                'required' => false,
             ])
             ->add('customInclusions', TextareaType::class, [
                 'label' => 'Inclusions personnalisées (pour plan Custom uniquement)',

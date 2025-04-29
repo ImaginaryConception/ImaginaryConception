@@ -161,7 +161,7 @@
       {% endfor %}
     </div>
 
-    <div id="add_review_form" class="mt-6 review-form bg-none bg-opacity-50 p-4 rounded-3 shadow-sm mb-5" data-aos="fade-up" data-aos-delay="200">
+    <div id="add_review_form" class="mt-2 review-form bg-none bg-opacity-50 p-4 rounded-3 shadow-sm mb-5" data-aos="fade-up" data-aos-delay="200">
         {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
         <div class="mb-3">
             {{ form_widget(form.content, {'attr': {'class': 'form-control bg-dark text-light', 'placeholder': 'Partagez votre expérience...'}}) }}
@@ -257,6 +257,10 @@
         </div>
         {{ form_errors(form) }}
         {{ form_end(form) }}
+        <p class="fw-bold text-center fs-3">ou</p>
+      <div class="trustpilot-widget" data-locale="fr-FR" data-template-id="56278e9abfbbba0bdcd568bc" data-businessunit-id="6810e2f341b8d97d5a158eda" data-style-height="52px" data-style-width="100%">
+        <a href="https://fr.trustpilot.com/review/imaginaryconception.com" target="_blank" rel="noopener">Trustpilot</a>
+      </div>
     </div>
 
     </section>

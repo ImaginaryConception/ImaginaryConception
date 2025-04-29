@@ -93,12 +93,10 @@
 
     <div class="client-info">
         <h3>Bill To:</h3>
-        <p>{{ client.name }}</p>
-        <p>{{ client.address }}</p>
-        {% if client.siret %}
-            <p>SIRET: {{ client.siret }}</p>
-        {% endif %}
-        <p>{{ client.email }}</p>
+        {% if client.name is not empty %}<p>{{ client.name }}</p>{% endif %}
+        {% if client.address is not empty %}<p>{{ client.address }}</p>{% endif %}
+        {% if client.siret is not empty %}<p>SIRET: {{ client.siret }}</p>{% endif %}
+        {% if client.email is not empty %}<p>{{ client.email }}</p>{% endif %}
     </div>
 
     <h3>{{ invoice.title }}</h3>
