@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation de paiement</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .email-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .email-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .email-header h1 {
+            color: #333;
+            font-size: 28px;
+            margin: 0;
+        }
+
+        .email-body {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .email-body p {
+            margin-bottom: 10px;
+        }
+
+        .payment-info {
+            background-color: #f8f8f8;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .payment-info p {
+            margin: 0;
+        }
+
+        .email-footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+        }
+
+        @media screen and (max-width: 600px) {
+            .email-container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-header">
+            <h1>Confirmation de paiement - {{ payment_type == 'deposit' ? 'Caution' : 'Solde final' }}</h1>
+        </div>
+
+        <div class="email-body">
+            <p>Bonjour {{ project.firstname }},</p>
+            <p>Nous vous confirmons la réception de votre paiement pour le projet "{{ project.companyName }}".</p>
+
+            <div class="payment-info">
+                <h3>Détails du paiement :</h3>
+                <p><strong>Type de paiement :</strong> {{ payment_type == 'deposit' ? 'Caution' : 'Solde final' }}</p>
+                <p><strong>Montant payé :</strong> {{ amount }}€</p>
+
+                {% if payment_type == 'deposit' %}
+                    <p><strong>Solde restant :</strong> {{ project.estimatedBudget - project.depositAmount }}€</p>
+                {% endif %}
+            </div>
+
+            {% if payment_type == 'deposit' %}
+                <p>La caution a été enregistrée avec succès. Nous allons maintenant pouvoir commencer le développement de votre projet.</p>
+                <p>Le solde final de {{ project.estimatedBudget - project.depositAmount }}€ sera à régler une fois le projet terminé.</p>
+            {% else %}
+                <p>Le paiement du solde final a été enregistré avec succès. Votre projet est maintenant entièrement payé.</p>
+                <p>Nous vous remercions pour votre confiance.</p>
+            {% endif %}
+
+            <p>Si vous avez des questions, n'hésitez pas à nous contacter.</p>
+
+            <div class="email-footer">
+                <p>Cordialement,<br>L'équipe Imaginary Conception</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

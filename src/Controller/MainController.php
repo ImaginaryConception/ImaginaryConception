@@ -277,22 +277,46 @@ class MainController extends AbstractController
     }
 
     #[Route('/success', name: 'success')]
-    public function success(Request $request, EntityManagerInterface $em)
+    public function success(Request $request, EntityManagerInterface $em, MailerInterface $mailer)
     {
         $projectId = $request->query->get('project');
         $paymentType = $request->query->get('type');
 
-        if ($projectId && $paymentType) {
-            $project = $em->getRepository(Website::class)->find($projectId);
-            if ($project) {
-                if ($paymentType === 'deposit') {
-                    $project->setDepositPaid(true);
-                } elseif ($paymentType === 'final') {
-                    $project->setFinalPaymentPaid(true);
-                }
-                $em->flush();
-            }
+        if (!$projectId || !$paymentType) {
+            return $this->redirectToRoute('error');
         }
+
+        $project = $em->getRepository(Website::class)->find($projectId);
+        if (!$project) {
+            return $this->redirectToRoute('error');
+        }
+
+        $amount = 0;
+        if ($paymentType === 'deposit') {
+            $project->setDepositPaid(true);
+            $amount = $project->getDepositAmount();
+        } elseif ($paymentType === 'final') {
+            $project->setFinalPaymentPaid(true);
+            $amount = $project->getEstimatedBudget() - $project->getDepositAmount();
+        }
+        $em->flush();
+
+        $email = (new TemplatedEmail())
+            ->from('support@imaginaryconception.com')
+            ->to($project->getUser()->getEmail())
+            ->bcc('imaginaryconception.com+7d8eac2120@invite.trustpilot.com')
+            ->subject('Confirmation de votre paiement - ' . ($paymentType === 'deposit' ? 'Caution' : 'Solde final'))
+            ->textTemplate('emails/payment_confirmation.txt.twig')
+            ->htmlTemplate('emails/payment_confirmation.html.twig')
+            ->context([
+                'project' => $project,
+                'payment_type' => $paymentType,
+                'amount' => $amount
+            ])
+        ;
+
+        // Envoie l'email
+        $mailer->send($email);
 
         return $this->render('main/success.html.twig');
     }
@@ -408,9 +432,9 @@ class MainController extends AbstractController
             if ($contact_user_form->isSubmitted() && $contact_user_form->isValid()) {
 
                 $email = (new TemplatedEmail())
-                    ->from('support@imaginary-conception.com')
+                    ->from('support@imaginary conception.com')
                     ->to($user->getEmail(), 'anishamouche@gmail.com')
-                    ->subject('Imaginary-Conception Contact: ' . $contact_user_form['object']->getData())
+                    ->subject('Imaginary Conception Contact: ' . $contact_user_form['object']->getData())
                     ->textTemplate('emails/contact_user.txt.twig')
                     ->htmlTemplate('emails/contact_user.html.twig')
                     ->context([

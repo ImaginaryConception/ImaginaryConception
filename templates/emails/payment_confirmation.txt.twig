@@ -1,0 +1,23 @@
+Confirmation de paiement - {% if payment_type == 'deposit' %}Caution{% else %}Solde final{% endif %}
+
+Bonjour {{ project.firstname }},
+
+Nous vous confirmons la réception de votre paiement pour le projet "{{ project.companyName }}".
+
+Type de paiement : {% if payment_type == 'deposit' %}Caution{% else %}Solde final{% endif %}
+Montant payé : {{ amount }}€
+
+{% if payment_type == 'deposit' %}
+La caution a été enregistrée avec succès. Nous allons maintenant pouvoir commencer le développement de votre projet.
+
+Le solde final de {{ project.estimatedBudget - project.depositAmount }}€ sera à régler une fois le projet terminé.
+{% else %}
+Le paiement du solde final a été enregistré avec succès. Votre projet est maintenant entièrement payé.
+
+Nous vous remercions pour votre confiance.
+{% endif %}
+
+Si vous avez des questions, n'hésitez pas à nous contacter.
+
+Cordialement,
+L'équipe Imaginary Conception
