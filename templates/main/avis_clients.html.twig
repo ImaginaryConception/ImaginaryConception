@@ -160,108 +160,109 @@
         </div>
       {% endfor %}
     </div>
+    {% if is_granted('ROLE_ADMIN') %}
+      <div id="add_review_form" class="mt-2 review-form bg-none bg-opacity-50 p-4 rounded-3 shadow-sm mb-5" data-aos="fade-up" data-aos-delay="200">
+          {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+          <div class="mb-3">
+              {{ form_widget(form.content, {'attr': {'class': 'form-control bg-dark text-light', 'placeholder': 'Partagez votre expérience...'}}) }}
+          </div>
+          <div class="mb-3">
+              {{ form_widget(form.name, {'attr': {'class': 'form-control bg-dark text-light', 'placeholder': 'Partagez votre expérience...'}}) }}
+          </div>
+          <div class="mb-3">
+              <div class="mb-3">
+                  <div class="star-rating">
+                      {% for i in 1..5 %}
+                          <span class="star" data-value="{{ i }}" name="review[rating]">
+                              <i class="far fa-star"></i>
+                          </span>
+                      {% endfor %}
+                  </div>
+              </div>
+              <style>
+              .star-rating {
+                  display: flex;
+                  gap: 0.5rem;
+                  font-size: 1.5rem;
+              }
+              .star {
+                  cursor: pointer;
+                  color: #ffd700;
+                  transition: transform 0.2s;
+              }
+              .star:hover {
+                  transform: scale(1.2);
+              }
+              .star.active i {
+                  font-weight: 900;
+              }
+              </style>
+              <script>
+              document.addEventListener('DOMContentLoaded', function() {
+                  const stars = document.querySelectorAll('.star');
+                  const form = document.querySelector('form');
+                  let selectedRating = 0;
 
-    <div id="add_review_form" class="mt-2 review-form bg-none bg-opacity-50 p-4 rounded-3 shadow-sm mb-5" data-aos="fade-up" data-aos-delay="200">
-        {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
-        <div class="mb-3">
-            {{ form_widget(form.content, {'attr': {'class': 'form-control bg-dark text-light', 'placeholder': 'Partagez votre expérience...'}}) }}
-        </div>
-        <div class="mb-3">
-            {{ form_widget(form.name, {'attr': {'class': 'form-control bg-dark text-light', 'placeholder': 'Partagez votre expérience...'}}) }}
-        </div>
-        <div class="mb-3">
-            <div class="mb-3">
-                <div class="star-rating">
-                    {% for i in 1..5 %}
-                        <span class="star" data-value="{{ i }}" name="review[rating]">
-                            <i class="far fa-star"></i>
-                        </span>
-                    {% endfor %}
-                </div>
-            </div>
-            <style>
-            .star-rating {
-                display: flex;
-                gap: 0.5rem;
-                font-size: 1.5rem;
-            }
-            .star {
-                cursor: pointer;
-                color: #ffd700;
-                transition: transform 0.2s;
-            }
-            .star:hover {
-                transform: scale(1.2);
-            }
-            .star.active i {
-                font-weight: 900;
-            }
-            </style>
-            <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const stars = document.querySelectorAll('.star');
-                const form = document.querySelector('form');
-                let selectedRating = 0;
+                  stars.forEach(star => {
+                      star.addEventListener('click', () => {
+                          selectedRating = parseInt(star.dataset.value);
+                          updateStars(selectedRating);
+                      });
 
-                stars.forEach(star => {
-                    star.addEventListener('click', () => {
-                        selectedRating = parseInt(star.dataset.value);
-                        updateStars(selectedRating);
-                    });
+                      star.addEventListener('mouseover', () => {
+                          const value = parseInt(star.dataset.value);
+                          highlightStars(value);
+                      });
 
-                    star.addEventListener('mouseover', () => {
-                        const value = parseInt(star.dataset.value);
-                        highlightStars(value);
-                    });
+                      star.addEventListener('mouseout', () => {
+                          updateStars(selectedRating);
+                      });
+                  });
 
-                    star.addEventListener('mouseout', () => {
-                        updateStars(selectedRating);
-                    });
-                });
+                  form.addEventListener('submit', function(e) {
+                      e.preventDefault();
+                      const formData = new FormData(form);
+                      formData.set('review[rating]', selectedRating);
+                      fetch(form.action, {
+                          method: 'POST',
+                          body: formData
+                      }).then(response => {
+                          if (response.ok) {
+                              window.location.reload();
+                          }
+                      });
+                  });
 
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    const formData = new FormData(form);
-                    formData.set('review[rating]', selectedRating);
-                    fetch(form.action, {
-                        method: 'POST',
-                        body: formData
-                    }).then(response => {
-                        if (response.ok) {
-                            window.location.reload();
-                        }
-                    });
-                });
+                  function updateStars(value) {
+                      stars.forEach(star => {
+                          const starValue = parseInt(star.dataset.value);
+                          star.classList.toggle('active', starValue <= value);
+                      });
+                  }
 
-                function updateStars(value) {
-                    stars.forEach(star => {
-                        const starValue = parseInt(star.dataset.value);
-                        star.classList.toggle('active', starValue <= value);
-                    });
-                }
-
-                function highlightStars(value) {
-                    stars.forEach(star => {
-                        const starValue = parseInt(star.dataset.value);
-                        star.classList.toggle('active', starValue <= value);
-                    });
-                }
-            });
-            </script>
-        </div>
-        <div class="mb-3">
-            {{ form_widget(form.recaptcha) }}
-        </div>
-        <div class="mb-3">
-            {{ form_widget(form.save, {'attr': {'class': 'form-control bg-dark text-light', 'placeholder': 'Partagez votre expérience...'}}) }}
-        </div>
-        {{ form_errors(form) }}
-        {{ form_end(form) }}
-        <p class="fw-bold text-center fs-3">ou</p>
-      <div class="trustpilot-widget" data-locale="fr-FR" data-template-id="56278e9abfbbba0bdcd568bc" data-businessunit-id="6810e2f341b8d97d5a158eda" data-style-height="52px" data-style-width="100%">
+                  function highlightStars(value) {
+                      stars.forEach(star => {
+                          const starValue = parseInt(star.dataset.value);
+                          star.classList.toggle('active', starValue <= value);
+                      });
+                  }
+              });
+              </script>
+          </div>
+          <div class="mb-3">
+              {{ form_widget(form.recaptcha) }}
+          </div>
+          <div class="mb-3">
+              {{ form_widget(form.save, {'attr': {'class': 'form-control bg-dark text-light', 'placeholder': 'Partagez votre expérience...'}}) }}
+          </div>
+          {{ form_errors(form) }}
+          {{ form_end(form) }}
+          {# <p class="fw-bold text-center fs-3">ou</p> #}
+      </div>
+    {% endif %}
+      <div class="mt-6 trustpilot-widget" data-locale="fr-FR" data-template-id="56278e9abfbbba0bdcd568bc" data-businessunit-id="6810e2f341b8d97d5a158eda" data-style-height="52px" data-style-width="100%">
         <a href="https://fr.trustpilot.com/review/imaginaryconception.com" target="_blank" rel="noopener">Trustpilot</a>
       </div>
-    </div>
 
     </section>
 {% endblock %}

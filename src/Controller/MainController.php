@@ -432,7 +432,7 @@ class MainController extends AbstractController
             if ($contact_user_form->isSubmitted() && $contact_user_form->isValid()) {
 
                 $email = (new TemplatedEmail())
-                    ->from('support@imaginary conception.com')
+                    ->from('support@imaginaryconception.com')
                     ->to($user->getEmail(), 'anishamouche@gmail.com')
                     ->subject('Imaginary Conception Contact: ' . $contact_user_form['object']->getData())
                     ->textTemplate('emails/contact_user.txt.twig')
