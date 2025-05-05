@@ -1046,6 +1046,14 @@ h1 {
     transition: all 0.5s ease;
 }
 
+.sidebar-toggler {
+    z-index: 9998;
+}
+
+.sidebarmobile{
+    z-index: 9999;
+}
+
 #registration_form_email, #review_name, #review_rating, #registration_form_plainPassword_first, #add_game_form_title, #add_game_form_genre, #add_game_form_description, #add_game_form_buylink, #add_game_form_trailer, #add_game_form_price {
     margin-bottom: 1rem !important;
 }

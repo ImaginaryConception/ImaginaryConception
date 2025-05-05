@@ -21,21 +21,18 @@
         {% block js %}{% endblock %}
         <style>
             .fullpage-container {
-                height: 100vh;
-                overflow-y: scroll;
-                scroll-snap-type: y mandatory;
                 background-color: #000;
                 perspective: 1000px;
             }
 
             .project-section {
-                height: 100vh;
-                scroll-snap-align: start;
+                min-height: 100vh;
                 position: relative;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 overflow: hidden;
+                padding: 4rem 0;
             }
 
             .project-background {
@@ -304,22 +301,17 @@
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const sections = document.querySelectorAll('.project-section');
-                let currentSection = 0;
-                let isAnimating = false;
 
                 const observerOptions = {
                     root: null,
-                    threshold: 0.5,
-                    rootMargin: '0px'
+                    threshold: 0.2,
+                    rootMargin: '50px'
                 };
 
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
                             entry.target.classList.add('active');
-                            const index = Array.from(sections).indexOf(entry.target);
-                            currentSection = index;
-                            updateParallax(entry.target);
                         } else {
                             entry.target.classList.remove('active');
                         }
@@ -330,23 +322,17 @@
                     observer.observe(section);
                 });
 
-                function updateParallax(section) {
-                    const background = section.querySelector('.project-background');
-                    const content = section.querySelector('.project-content');
-                    const rect = section.getBoundingClientRect();
-                    const scrollProgress = -rect.top / (window.innerHeight - rect.height);
-
-                    background.style.transform = `scale(${1.1 + scrollProgress * 0.1})`;
-                    content.style.transform = `translateY(${scrollProgress * 30}px)`;
-                }
-
-                // Effet parallax léger
-                document.querySelector('.fullpage-container').addEventListener('scroll', function() {
+                // Effet parallax léger au scroll
+                window.addEventListener('scroll', function() {
                     sections.forEach(section => {
-                        const distance = section.getBoundingClientRect().top;
-                        const image = section.querySelector('.project-image');
-                        const movement = distance * 0.3;
-                        image.style.transform = `translateY(${movement}px)`;
+                        if (section.classList.contains('active')) {
+                            const rect = section.getBoundingClientRect();
+                            const scrollProgress = -rect.top / (window.innerHeight - rect.height);
+                            const background = section.querySelector('.project-background');
+                            if (background) {
+                                background.style.transform = `scale(${1.1 + Math.min(Math.max(scrollProgress * 0.1, -0.1), 0.1)})`;
+                            }
+                        }
                     });
                 });
             });
