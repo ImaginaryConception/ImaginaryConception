@@ -1,6 +1,6 @@
 {% set route = app.request.attributes.get('_route')%}
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
     <head>
         <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -19,6 +19,37 @@
         <script src="{{ asset(('JS/animations.js')) }}" defer></script>
         <script src="{{ asset('JS/realisations.js') }}" defer></script>
         {% block js %}{% endblock %}
+        <style>
+            .language-selector {
+                position: fixed;
+                top: 2rem;
+                right: 2rem;
+                z-index: 1000;
+                background: rgba(255, 255, 255, 0.1);
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                color: #fff;
+                padding: 0.5rem 1rem;
+                border-radius: 20px;
+                backdrop-filter: blur(5px);
+                transition: all 0.3s ease;
+                cursor: pointer;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .language-selector:hover {
+                background: rgba(255, 255, 255, 0.2);
+                border-color: rgba(255, 255, 255, 0.8);
+                transform: scale(1.1);
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            }
+
+            .language-selector i {
+                font-size: 1.2rem;
+            }
+        </style>
         <style>
             .fullpage-container {
                 background-color: #000;
@@ -299,6 +330,77 @@
         </style>
 
         <script>
+            // Translations object
+            const translations = {
+                en: {
+                    'webforgeai-desc': 'An innovative AI-powered web development platform that revolutionizes the way websites are created. This tool combines artificial intelligence with intuitive design to help developers and businesses create professional websites faster and more efficiently. Features include smart code generation and automated testing.',
+                    'web-dev-desc': 'Professional, high-performance websites designed with users and business in mind. Here are some client & personal projects.',
+                    'ludopus-desc': 'Bookstore website with reservation system. UX design, full development, Symfony backend + responsive frontend. Dynamic filter search engine. Le Monde de Lud\'Opus is a second-hand bookstore. Opened on 04/05/2022. The bookstore\'s geographical location made it difficult to attract potential customers. Only Instagram and Facebook were used for advertising. Customers mainly came through word of mouth. Attractiveness was therefore limited. A website was necessary to reach a wider audience, making it easier for distant people or people with disabilities thanks to future home delivery, highlighting promotional operations, and allowing customers to book online.',
+                    'lhannz-desc': 'E-commerce website for custom canvas art. Integration of order forms, clean interface, secure backend. Custom canvas configurator. I designed the website for a micro-enterprise specializing in the sale of unique handmade paintings, customized according to each client\'s preferences. These artworks skillfully combine canvas and resin, demonstrating meticulous work and great attention to detail. Manufacturing typically takes 10-15 days. With delivery throughout France, allowing you to enjoy your creation in the comfort of your home. Additionally, customers have the freedom to choose from a vast selection of sizes and colors, offering a personalized experience.',
+                    'mms-desc': 'I designed a showcase website for Mobile Multimedia Services, an electronic device repair shop. The site features an online quote system with dynamic forms, allowing customers to quickly obtain customized PDF quotes. It\'s fully responsive for smooth mobile use. The manager can handle requests from a dedicated interface, accept or reject quotes, set dates and rates. Customers can leave reviews, check opening hours, and easily access all useful information. This site digitalizes and simplifies the shop\'s daily management.',
+                    'ic-desc': 'Welcome to Imaginary Conception, this is my personal portfolio where I gather all my creations. This site serves as both a showcase for my web development work and a dedicated space for my video games. Here you\'ll find detailed descriptions of my projects, purchase links for my games, and my contact information. Whether you\'re here to discover my work or connect with me, everything starts here.',
+                    'view-project': 'View Project',
+                    'projects-intro': 'Each project is a new vision. Whether it\'s a custom website or a video game, I\'m fully committed to bringing unique, modern, and well-thought-out experiences to life. Scroll to discover my creations 👇',
+                    'varg31-desc': 'I designed a website for a French streamer to support the development of his channel. It includes a content suggestion system, live stream feed, weekly schedule and much more!',
+                    'games-dev-title': '🎮 Video Game Development',
+                    'games-dev-desc': 'Passionate solo dev, I\'ve created several games on Steam, each with a different vibe. Horror, strategy, mystery... there\'s something for everyone.',
+                    'thanatophobia-desc': '3 years of development. €11.79. Heavy atmosphere, puzzles, success despite early bugs. Complete management of a long project, Steam feedback. A cooperative multiplayer horror game where survival is your only priority. Thanatophobia plunges you into a dark and oppressive environment, where you and your team must explore, flee from a deadly threat and manage to escape alive. No second chance: if you get caught, it\'s over.',
+                    'floors-desc': 'Anomaly detection. 5 days of development. €4.99. Highly profitable game, fast-paced, very well received. The art of simple but effective game loop. You are a former patient of an abandoned asylum. One day, you wake up on the 50th floor of a strange building, with no memory of how you got there. Your goal is simple: go down the floors one by one until you reach the exit. But beware, as an ex-patient, your mind plays tricks on you. Hallucinations disturb your perception, and only your memory and observation skills can help you spot the anomalies. Going down has never been so confusing...',
+                    'bloodhunt-desc': 'Strategy / betrayal. 1 year of development. €4.99. Dive into a multiplayer game where paranoia reigns. Two roles: innocent or traitor. Innocents must cooperate to repair generators and survive, while keeping an eye on their allies... because some might not be what they seem. Traitors eliminate discreetly one by one, sowing confusion to never get caught. Every choice can save you or condemn you. Observation, manipulation, strategy. In Hidden Bloodhunt, every second could be your last.',
+                    'grip-desc': 'Asymmetric multiplayer horror. 1 month of development. €6.99. Dynamic game, fun to play, well-managed project. An asymmetric multiplayer game where horror takes root in strategy. Survivors must unite to complete a ritual and banish the spirit... before madness consumes them. The spirit tracks, manipulates, and breaks minds one by one, until they fall into darkness. Constant tension, decisive choices, vital cooperation: Breaking the Grip is a mental struggle where only the most cunning prevails. Who will give in... and who will break the grip?',
+                    'view-steam': 'View on Steam',
+                    'what-next': 'What\'s Next?',
+                    'contact-desc': 'Want a website that reflects your image? Or maybe you want to create a unique interactive experience? I\'m available to work on your project, anywhere in the world 🌍',
+                    'contact-me': '📩 Contact Me'
+                },
+                fr: {
+                    'webforgeai-desc': 'Une plateforme innovante de développement web alimentée par l\'IA qui révolutionne la façon dont les sites web sont créés. Cet outil combine l\'intelligence artificielle avec un design intuitif pour aider les développeurs et les entreprises à créer des sites web professionnels plus rapidement et plus efficacement. Les fonctionnalités incluent la génération intelligente de code et les tests automatisés.',
+                    'web-dev-desc': 'Sites web professionnels et performants conçus en pensant aux utilisateurs et aux entreprises. Voici quelques projets clients et personnels.',
+                    'ludopus-desc': 'Site web de librairie avec système de réservation. Design UX, développement complet, backend Symfony + frontend responsive. Moteur de recherche avec filtres dynamiques. Le Monde de Lud\'Opus est une librairie d\'occasion. Ouverte le 04/05/2022. La situation géographique de la librairie rendait difficile l\'attraction de clients potentiels. Seuls Instagram et Facebook étaient utilisés pour la publicité. Les clients venaient principalement par le bouche-à-oreille. L\'attractivité était donc limitée. Un site web était nécessaire pour toucher un public plus large, facilitant l\'accès aux personnes éloignées ou en situation de handicap grâce à la future livraison à domicile, mettant en avant les opérations promotionnelles et permettant aux clients de réserver en ligne.',
+                    'lhannz-desc': 'Site e-commerce pour tableaux sur-mesure. Intégration du formulaire de commande, interface clean, back-end sécurisé. Configurateur personnalisé pour les toiles. J\'ai conçu le site internet d\'une micro-entreprise spécialisée dans la vente de tableaux uniques faits à la main, personnalisés selon les préférences de chaque client. Ces œuvres d\'art allient habilement toile et résine, témoignant d\'un travail minutieux et d\'une grande attention portée aux détails. La fabrication demande généralement entre 10 et 15 jours. Avec une livraison dans toute la France, vous permettant ainsi de profiter de votre création dans le confort de votre maison. De plus, les clients ont la liberté de choisir parmi une vaste sélection de tailles et de couleurs, offrant ainsi une expérience personnalisée.',
+                    'mms-desc': 'J\'ai conçu un site vitrine pour Mobile Multimedia Services, une boutique de réparation de matériel électronique. Le site intègre un système de devis en ligne avec formulaires dynamiques, permettant aux clients d\'obtenir rapidement un devis personnalisé au format PDF. Il est entièrement responsive pour une utilisation mobile fluide. Le gérant peut gérer les demandes depuis une interface dédiée, accepter ou refuser les devis, fixer des dates et tarifs. Les clients peuvent laisser des avis, consulter les horaires et accéder facilement à toutes les infos utiles. Ce site digitalise et simplifie la gestion quotidienne de la boutique.',
+                    'ic-desc': 'Bienvenue sur Imaginary Conception, ce site est mon portfolio personnel où je rassemble toutes mes créations. Ce site est à la fois une vitrine de mon travail en développement web et un espace dédié à mes jeux vidéo. Vous y trouverez des descriptions détaillées de mes projets, des liens d\'achat pour mes jeux, ainsi que mes informations de contact. Que ce soit pour découvrir mes réalisations ou échanger avec moi, tout commence ici.',
+                    'view-project': 'Voir le projet',
+                    'projects-intro': 'Chaque projet est une nouvelle vision. Qu\'il s\'agisse d\'un site web sur mesure ou d\'un jeu vidéo, je m\'engage pleinement à donner vie à des expériences uniques, modernes et bien pensées. Faites défiler pour découvrir mes créations 👇',
+                    'varg31-desc': 'J\'ai conçu le site d\'un streamer français afin d\'accompagner le développement de sa chaîne. Il intègre un système de propositions de contenu, un flux en direct, un planning hebdomadaire et bien plus encore !',
+                    'games-dev-title': '🎮 Développement de Jeux Vidéo',
+                    'games-dev-desc': 'Solo dev passionné, j\'ai créé plusieurs jeux sur Steam, tous avec une vibe différente. Horror, stratégie, mystère… y\'a du lourd.',
+                    'thanatophobia-desc': '3 ans de développement. 11,79€. Ambiance pesante, énigmes, succès malgré bugs de jeunesse. Gestion complète d\'un projet long, feedback Steam. Un jeu d\'horreur multijoueur coopératif où la survie est ta seule priorité. Thanatophobia te plonge dans un environnement sombre et oppressant, où toi et ton équipe devez explorer, fuir une menace mortelle et réussir à vous échapper vivants. Pas de seconde chance : si tu te fais attraper, c\'est terminé.',
+                    'floors-desc': 'Détection d\'anomalies. 5 jours de développement. 4,99€. Jeu ultra rentable, rapide, super bien reçu. L\'art du game loop simple mais efficace. Vous êtes un ancien patient d\'un asile abandonné. Un jour, vous vous réveillez au 50ᵉ étage d\'un bâtiment étrange, sans aucun souvenir de comment vous êtes arrivé là. Votre objectif est simple : descendre les étages un à un jusqu\'à la sortie. Mais attention, en tant qu\'ex-patient, votre esprit vous joue des tours. Des hallucinations troublent votre perception, et seules votre mémoire et votre sens de l\'observation pourront vous aider à repérer les anomalies. Descendre n\'a jamais été aussi déroutant…',
+                    'bloodhunt-desc': 'Stratégie / trahison. 1 an de développement. 4,99€. Plonge dans un jeu multijoueur où la paranoïa est reine. Deux rôles : innocent ou traître. Les innocents doivent coopérer pour réparer les générateurs et survivre, tout en gardant un œil sur leurs alliés... car certains ne le sont peut-être pas. Les traîtres, eux, éliminent discrètement un par un, en semant la confusion pour ne jamais se faire griller. Chaque choix peut te sauver ou te condamner. Observation, manipulation, stratégie. Dans Hidden Bloodhunt, chaque seconde peut être la dernière.',
+                    'grip-desc': 'Horreur multijoueur asymétrique. 1 mois de développement. 6,99€. Jeu dynamique, fun à jouer, projet maîtrisé. Un jeu multijoueur asymétrique où l\'horreur prend racine dans la stratégie. Les survivants doivent s\'unir pour compléter un rituel et bannir l\'esprit… avant que la folie ne les consume. L\'esprit, lui, traque, manipule, et brise les esprits un à un, jusqu\'à les faire sombrer. Tension constante, choix décisifs, coopération vitale : Breaking the Grip, c\'est une lutte mentale où seul le plus rusé l\'emporte. Qui cédera… et qui brisera l\'emprise ?',
+                    'view-steam': 'Voir sur Steam',
+                    'what-next': 'Et maintenant ?',
+                    'contact-desc': 'Tu veux un site web à ton image ? Ou peut-être que tu veux créer une expérience interactive unique ? Je suis dispo pour bosser sur ton projet, partout dans le monde 🌍',
+                    'contact-me': '📩 Me contacter'
+                }
+            };
+
+            // Language toggle function
+            function toggleLanguage() {
+                const currentLang = document.getElementById('currentLang').textContent;
+                const newLang = currentLang === 'EN' ? 'FR' : 'EN';
+                const lang = newLang.toLowerCase();
+                
+                // Update language display
+                document.getElementById('currentLang').textContent = newLang;
+                
+                // Update all translations
+                document.querySelectorAll('[data-translate]').forEach(element => {
+                    const key = element.getAttribute('data-translate');
+                    if (translations[lang][key]) {
+                        element.textContent = translations[lang][key];
+                    }
+                });
+
+                // Update view project buttons
+                document.querySelectorAll('.project-link').forEach(link => {
+                    if (!link.hasAttribute('data-href')) {
+                        link.textContent = translations[lang]['view-project'];
+                    }
+                });
+            }
+
             document.addEventListener('DOMContentLoaded', function() {
                 const sections = document.querySelectorAll('.project-section');
 
@@ -339,17 +441,21 @@
         </script>
     </head>
     <body>
-        <a href="{{ path('home') }}" class="home-button" title="Retour à l'accueil">
+        <a href="{{ path('home') }}" class="home-button" title="Back to Home">
             <i class="fas fa-home"></i>
         </a>
+        <button class="language-selector" onclick="toggleLanguage()" title="Switch Language">
+            <i class="fas fa-globe"></i>
+            <span id="currentLang">EN</span>
+        </button>
         <div class="fullpage-container">
             <!-- Projet 1 -->
             <section class="project-section" data-categories="symfony,php">
                 <div class="project-background" style="background-image: url('{{ asset('Images/bg.png') }}');"></div>
                 <div class="project-content">
                     <div class="project-details">
-                        <h2 class="project-title">Mes Réalisations Web & Jeux Vidéo</h2>
-                        <p class="project-description">Chaque projet est une nouvelle vision. Que ce soit un site web sur-mesure ou un jeu vidéo, je m'investis à fond pour donner vie à des expériences uniques, modernes, et bien pensées. Scroll pour découvrir mes créations 👇</p>
+                        <h2 class="project-title">My Web & Video Game Projects</h2>
+                        <p class="project-description" data-translate="projects-intro">Each project is a new vision. Whether it's a custom website or a video game, I'm fully committed to bringing unique, modern, and well-thought-out experiences to life. Scroll to discover my creations 👇</p>
                     </div>
                 </div>
             </section>
@@ -358,8 +464,27 @@
                 <div class="project-background" style="background-image: url('{{ asset('Images/code.png') }}');"></div>
                 <div class="project-content">
                     <div class="project-details">
-                        <h2 class="project-title">🌐 Développement Web</h2>
-                        <p class="project-description">Des sites professionnels, performants, pensés pour les utilisateurs et le business. Voici quelques projets clients & perso.</p>
+                        <h2 class="project-title">🌐 Web Development</h2>
+                        <p class="project-description" data-translate="web-dev-desc">Professional, high-performance websites designed with users and business in mind. Here are some client & personal projects.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="project-section" data-categories="symfony,php,ai">
+                <div class="project-background" style="background-image: url('{{ asset('Images/webforgeai.jpeg') }}');"></div>
+                <div class="project-content">
+                    <div class="project-details">
+                        <h2 class="project-title">Web Forge AI</h2>
+                        <p class="project-description" data-translate="webforgeai-desc">An innovative AI-powered web development platform that revolutionizes the way websites are created. This tool combines artificial intelligence with intuitive design to help developers and businesses create professional websites faster and more efficiently. Features include smart code generation and automated testing.</p>
+                        <div class="project-tags">
+                            <span class="tag">Symfony</span>
+                            <span class="tag">AI</span>
+                            <span class="tag">MySQL/SQL</span>
+                            <span class="tag">Bootstrap/Tailwind CSS</span>
+                            <span class="tag">JavaScript</span>
+                            <span class="tag">PHP</span>
+                        </div>
+                        <p class="project-link">Project in progress</p>
                     </div>
                 </div>
             </section>
@@ -369,7 +494,7 @@
                 <div class="project-content">
                     <div class="project-details">
                         <h2 class="project-title">Le Monde de Lud'Opus</h2>
-                        <p class="project-description">Site de librairie avec système de réservation. UX design, développement complet, back Symfony + front responsive. Moteur de recherche par filtres dynamiques. Le Monde de Lud'Opus est une librairie d'occasion. Ouvert le 05/04/2022. La situation géographique de la librairie ne permettait pas d'attirer des clients potentiels. Seuls Instagram et Facebook ont été utilisés comme supports publicitaires. Les clients venaient surtout de bouche à oreille. L'attractivité était donc limitée. Un site internet était alors nécessaire pour se faire connaître d'un public plus large, facilitant les personnes éloignées ou les personnes en situation de handicap grâce à la future livraison à domicile et ainsi, mettant en avant les opérations promotionnelles et permettant aux clients de réserver en ligne.</p>
+                        <p class="project-description" data-translate="ludopus-desc">Bookstore website with reservation system. UX design, full development, Symfony backend + responsive frontend. Dynamic filter search engine. Le Monde de Lud'Opus is a second-hand bookstore. Opened on 04/05/2022. The bookstore's geographical location made it difficult to attract potential customers. Only Instagram and Facebook were used for advertising. Customers mainly came through word of mouth. Attractiveness was therefore limited. A website was necessary to reach a wider audience, making it easier for distant people or people with disabilities thanks to future home delivery, highlighting promotional operations, and allowing customers to book online.</p>
                         <div class="project-tags">
                             <span class="tag">Symfony</span>
                             <span class="tag">MySQL/SQL</span>
@@ -378,7 +503,7 @@
                             <span class="tag">JavaScript/jQuery</span>
                             <span class="tag">PHP</span>
                         </div>
-                        <a href="https://www.lemondedeludopus.fr/" target="_blank" class="project-link">Voir le projet</a>
+                        <a href="https://www.lemondedeludopus.fr/" target="_blank" class="project-link">View Project</a>
                     </div>
                 </div>
             </section>
@@ -388,7 +513,7 @@
                 <div class="project-content">
                     <div class="project-details">
                         <h2 class="project-title">Lhannz</h2>
-                        <p class="project-description">Site e-commerce pour tableaux sur-mesure. Intégration du formulaire de commande, interface clean, back-end sécurisé. Configurateur personnalisé pour les toiles. J'ai conçu le site internet d'une micro-entreprise spécialisée dans la vente de tableaux uniques faits à la main, personnalisés selon les préférences de chaque client. Ces œuvres d'art allient habilement toile et résine, témoignant d'un travail minutieux et d'une grande attention portée aux détails. La fabrication demande généralement entre 10 et 15 jours. Avec une livraison dans toute la France, vous permettant ainsi de profiter de votre création dans le confort de votre maison. De plus, les clients ont la liberté de choisir parmi une vaste sélection de tailles et de couleurs, offrant ainsi une expérience personnalisée.</p>
+                        <p class="project-description" data-translate="lhannz-desc">E-commerce website for custom canvas art. Integration of order forms, clean interface, secure backend. Custom canvas configurator. I designed the website for a micro-enterprise specializing in the sale of unique handmade paintings, customized according to each client's preferences. These artworks skillfully combine canvas and resin, demonstrating meticulous work and great attention to detail. Manufacturing typically takes 10-15 days. With delivery throughout France, allowing you to enjoy your creation in the comfort of your home. Additionally, customers have the freedom to choose from a vast selection of sizes and colors, offering a personalized experience.</p>
                         <div class="project-tags">
                             <span class="tag">Symfony</span>
                             <span class="tag">MySQL/SQL</span>
@@ -397,7 +522,7 @@
                             <span class="tag">JavaScript/jQuery</span>
                             <span class="tag">PHP</span>
                         </div>
-                        <a href="https://lhannz.fr/" target="_blank" class="project-link">Voir le projet</a>
+                        <a href="https://lhannz.fr/" target="_blank" class="project-link">View Project</a>
                     </div>
                 </div>
             </section>
@@ -407,7 +532,7 @@
                 <div class="project-content">
                     <div class="project-details">
                         <h2 class="project-title">Mobile Multimedia Services</h2>
-                        <p class="project-description">J'ai conçu un site vitrine pour Mobile Multimedia Services, une boutique de réparation de matériel électronique. Le site intègre un système de devis en ligne avec formulaires dynamiques, permettant aux clients d’obtenir rapidement un devis personnalisé au format PDF. Il est entièrement responsive pour une utilisation mobile fluide. Le gérant peut gérer les demandes depuis une interface dédiée, accepter ou refuser les devis, fixer des dates et tarifs. Les clients peuvent laisser des avis, consulter les horaires et accéder facilement à toutes les infos utiles. Ce site digitalise et simplifie la gestion quotidienne de la boutique.</p>
+                        <p class="project-description" data-translate="mms-desc">I designed a showcase website for Mobile Multimedia Services, an electronic device repair shop. The site features an online quote system with dynamic forms, allowing customers to quickly obtain customized PDF quotes. It's fully responsive for smooth mobile use. The manager can handle requests from a dedicated interface, accept or reject quotes, set dates and rates. Customers can leave reviews, check opening hours, and easily access all useful information. This site digitalizes and simplifies the shop's daily management.</p>
                         <div class="project-tags">
                             <span class="tag">Symfony</span>
                             <span class="tag">MySQL/SQL</span>
@@ -416,7 +541,7 @@
                             <span class="tag">JavaScript/jQuery</span>
                             <span class="tag">PHP</span>
                         </div>
-                        {# <a href="#" class="project-link">Voir le projet</a> #}
+                        {# <a href="#" class="project-link">View Project</a> #}
                     </div>
                 </div>
             </section>
@@ -426,7 +551,7 @@
                 <div class="project-content">
                     <div class="project-details">
                         <h2 class="project-title">Imaginary Conception</h2>
-                        <p class="project-description">Bienvenue sur Imaginary Conception, ce site est mon portfolio personnel où je rassemble toutes mes créations. Ce site est à la fois une vitrine de mon travail en développement web et un espace dédié à mes jeux vidéo. Vous y trouverez des descriptions détaillées de mes projets, des liens d'achat pour mes jeux, ainsi que mes informations de contact. Que ce soit pour découvrir mes réalisations ou échanger avec moi, tout commence ici.</p>
+                        <p class="project-description" data-translate="ic-desc">Welcome to Imaginary Conception, this is my personal portfolio where I gather all my creations. This site serves as both a showcase for my web development work and a dedicated space for my video games. Here you'll find detailed descriptions of my projects, purchase links for my games, and my contact information. Whether you're here to discover my work or connect with me, everything starts here.</p>
                         <div class="project-tags">
                             <span class="tag">Symfony</span>
                             <span class="tag">MySQL/SQL</span>
@@ -445,7 +570,7 @@
                 <div class="project-content">
                     <div class="project-details">
                         <h2 class="project-title">Varg31</h2>
-                        <p class="project-description">J'ai conçu le site d'un streamer français afin d'accompagner le développement de sa chaîne. Il intègre un système de propositions de contenu, un flux en direct, un planning hebdomadaire et bien plus encore !</p>
+                        <p class="project-description" data-translate="varg31-desc">J'ai conçu le site d'un streamer français afin d'accompagner le développement de sa chaîne. Il intègre un système de propositions de contenu, un flux en direct, un planning hebdomadaire et bien plus encore !</p>
                         <div class="project-tags">
                             <span class="tag">Symfony</span>
                             <span class="tag">MySQL/SQL</span>
@@ -463,8 +588,8 @@
                 <div class="project-background" style="background-image: url('{{ asset('Images/gamesimg.png') }}');"></div>
                 <div class="project-content">
                     <div class="project-details">
-                        <h2 class="project-title">🎮 Développement de Jeux Vidéo</h2>
-                        <p class="project-description">Solo dev passionné, j'ai créé plusieurs jeux sur Steam, tous avec une vibe différente. Horror, stratégie, mystère… y'a du lourd.</p>
+                        <h2 class="project-title" data-translate="games-dev-title">🎮 Développement de Jeux Vidéo</h2>
+                        <p class="project-description" data-translate="games-dev-desc">Solo dev passionné, j'ai créé plusieurs jeux sur Steam, tous avec une vibe différente. Horror, stratégie, mystère… y'a du lourd.</p>
                     </div>
                 </div>
             </section>
@@ -474,7 +599,7 @@
                 <div class="project-content">
                     <div class="project-details">
                         <h2 class="project-title">Thanatophobia (2024)</h2>
-                        <p class="project-description">3 ans de développement. 11,79€. Ambiance pesante, énigmes, succès malgré bugs de jeunesse. Gestion complète d'un projet long, feedback Steam. Un jeu d'horreur multijoueur coopératif où la survie est ta seule priorité. Thanatophobia te plonge dans un environnement sombre et oppressant, où toi et ton équipe devez explorer, fuir une menace mortelle et réussir à vous échapper vivants. Pas de seconde chance : si tu te fais attraper, c'est terminé.</p>
+                        <p class="project-description" data-translate="thanatophobia-desc">3 ans de développement. 11,79€. Ambiance pesante, énigmes, succès malgré bugs de jeunesse. Gestion complète d'un projet long, feedback Steam. Un jeu d'horreur multijoueur coopératif où la survie est ta seule priorité. Thanatophobia te plonge dans un environnement sombre et oppressant, où toi et ton équipe devez explorer, fuir une menace mortelle et réussir à vous échapper vivants. Pas de seconde chance : si tu te fais attraper, c'est terminé.</p>
                         <div class="project-tags">
                             <span class="tag">Unreal Engine</span>
                             <span class="tag">C++</span>
@@ -489,7 +614,7 @@
                 <div class="project-content">
                     <div class="project-details">
                         <h2 class="project-title">50 Floors of Madness (2024)</h2>
-                        <p class="project-description">Détection d'anomalies. 5 jours de développement. 4,99€. Jeu ultra rentable, rapide, super bien reçu. L'art du game loop simple mais efficace. Vous êtes un ancien patient d’un asile abandonné. Un jour, vous vous réveillez au 50ᵉ étage d'un bâtiment étrange, sans aucun souvenir de comment vous êtes arrivé là. Votre objectif est simple : descendre les étages un à un jusqu'à la sortie. Mais attention, en tant qu'ex-patient, votre esprit vous joue des tours. Des hallucinations troublent votre perception, et seules votre mémoire et votre sens de l'observation pourront vous aider à repérer les anomalies. Descendre n'a jamais été aussi déroutant…</p>
+                        <p class="project-description" data-translate="floors-desc">Détection d'anomalies. 5 jours de développement. 4,99€. Jeu ultra rentable, rapide, super bien reçu. L'art du game loop simple mais efficace. Vous êtes un ancien patient d'un asile abandonné. Un jour, vous vous réveillez au 50ᵉ étage d'un bâtiment étrange, sans aucun souvenir de comment vous êtes arrivé là. Votre objectif est simple : descendre les étages un à un jusqu'à la sortie. Mais attention, en tant qu'ex-patient, votre esprit vous joue des tours. Des hallucinations troublent votre perception, et seules votre mémoire et votre sens de l'observation pourront vous aider à repérer les anomalies. Descendre n'a jamais été aussi déroutant…</p>
                         <div class="project-tags">
                             <span class="tag">Unreal Engine</span>
                             <span class="tag">C++</span>
@@ -504,7 +629,7 @@
                 <div class="project-content">
                     <div class="project-details">
                         <h2 class="project-title">Hidden Bloodhunt (2024)</h2>
-                        <p class="project-description">Stratégie / trahison. 1 an de développement. 4,99€. Plonge dans un jeu multijoueur où la paranoïa est reine. Deux rôles : innocent ou traître. Les innocents doivent coopérer pour réparer les générateurs et survivre, tout en gardant un œil sur leurs alliés... car certains ne le sont peut-être pas. Les traîtres, eux, éliminent discrètement un par un, en semant la confusion pour ne jamais se faire griller. Chaque choix peut te sauver ou te condamner. Observation, manipulation, stratégie. Dans Hidden Bloodhunt, chaque seconde peut être la dernière.</p>
+                        <p class="project-description" data-translate="bloodhunt-desc">Stratégie / trahison. 1 an de développement. 4,99€. Plonge dans un jeu multijoueur où la paranoïa est reine. Deux rôles : innocent ou traître. Les innocents doivent coopérer pour réparer les générateurs et survivre, tout en gardant un œil sur leurs alliés... car certains ne le sont peut-être pas. Les traîtres, eux, éliminent discrètement un par un, en semant la confusion pour ne jamais se faire griller. Chaque choix peut te sauver ou te condamner. Observation, manipulation, stratégie. Dans Hidden Bloodhunt, chaque seconde peut être la dernière.</p>
                         <div class="project-tags">
                             <span class="tag">Unreal Engine</span>
                             <span class="tag">C++</span>
@@ -519,7 +644,7 @@
                 <div class="project-content">
                     <div class="project-details">
                         <h2 class="project-title">Breaking the Grip (2025)</h2>
-                        <p class="project-description">Horreur multijoueur asymétrique. 1 mois de développement. 6,99€. Jeu dynamique, fun à jouer, projet maîtrisé. Un jeu multijoueur asymétrique où l'horreur prend racine dans la stratégie. Les survivants doivent s'unir pour compléter un rituel et bannir l'esprit… avant que la folie ne les consume. L'esprit, lui, traque, manipule, et brise les esprits un à un, jusqu'à les faire sombrer. Tension constante, choix décisifs, coopération vitale : Breaking the Grip, c'est une lutte mentale où seul le plus rusé l'emporte. Qui cédera… et qui brisera l'emprise ?</p>
+                        <p class="project-description" data-translate="grip-desc">Horreur multijoueur asymétrique. 1 mois de développement. 6,99€. Jeu dynamique, fun à jouer, projet maîtrisé. Un jeu multijoueur asymétrique où l'horreur prend racine dans la stratégie. Les survivants doivent s'unir pour compléter un rituel et bannir l'esprit… avant que la folie ne les consume. L'esprit, lui, traque, manipule, et brise les esprits un à un, jusqu'à les faire sombrer. Tension constante, choix décisifs, coopération vitale : Breaking the Grip, c'est une lutte mentale où seul le plus rusé l'emporte. Qui cédera… et qui brisera l'emprise ?</p>
                         <div class="project-tags">
                             <span class="tag">Unreal Engine</span>
                             <span class="tag">C++</span>
@@ -533,9 +658,9 @@
                 <div class="project-background" style="background-image: url('{{ asset('Images/bg.png') }}');"></div>
                 <div class="project-content">
                     <div class="project-details">
-                        <h2 class="project-title">Et maintenant ?</h2>
-                        <p class="project-description">Tu veux un site web à ton image ? Ou peut-être que tu veux créer une expérience interactive unique ? Je suis dispo pour bosser sur ton projet, partout dans le monde 🌍</p>
-                        <a href="{{ path('contact') }}" class="project-link">📩 Me contacter</a>
+                        <h2 class="project-title" data-translate="what-next">Et maintenant ?</h2>
+                        <p class="project-description" data-translate="contact-desc">Tu veux un site web à ton image ? Ou peut-être que tu veux créer une expérience interactive unique ? Je suis dispo pour bosser sur ton projet, partout dans le monde 🌍</p>
+                        <a href="{{ path('contact') }}" class="project-link" data-translate="contact-me">📩 Me contacter</a>
                     </div>
                 </div>
             </section>
