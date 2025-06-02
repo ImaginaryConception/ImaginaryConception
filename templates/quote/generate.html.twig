@@ -6,7 +6,7 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-10">
-            <div class="card bg-dark text-light border-light">
+            <div class="card bg-dark text-white border-light">
                 <div class="card-header">
                     <h1 class="h3 mb-0 text-center">Générer un devis</h1>
                 </div>
@@ -19,13 +19,13 @@
                         <h2 class="h4 mb-3">Informations du client</h2>
                         <div class="row g-3">
                             <div class="col-md-6">
-                                {{ form_row(form.clientName, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                                {{ form_row(form.clientName, {'attr': {'class': 'form-control bg-dark text-white border-light'}}) }}
                             </div>
                             <div class="col-md-6">
-                                {{ form_row(form.clientEmail, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                                {{ form_row(form.clientEmail, {'attr': {'class': 'form-control bg-dark text-white border-light'}}) }}
                             </div>
                             <div class="col-md-6">
-                                {{ form_row(form.clientPhone, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                                {{ form_row(form.clientPhone, {'attr': {'class': 'form-control bg-dark text-white border-light'}}) }}
                             </div>
                         </div>
                     </div>
@@ -35,10 +35,10 @@
                         <h2 class="h4 mb-3">Informations du projet</h2>
                         <div class="row g-3">
                             <div class="col-md-6">
-                                {{ form_row(form.websiteType, {'attr': {'class': 'form-select bg-dark text-light border-light'}}) }}
+                                {{ form_row(form.websiteType, {'attr': {'class': 'form-select bg-dark text-white border-light'}}) }}
                             </div>
                             <div class="col-md-6">
-                                {{ form_row(form.estimatedPages, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                                {{ form_row(form.estimatedPages, {'attr': {'class': 'form-control bg-dark text-white border-light'}}) }}
                             </div>
                             <div class="col-12">
                                 <div class="form-check form-switch">
@@ -54,7 +54,7 @@
                         <h2 class="h4 mb-3">Fonctionnalités</h2>
                         <div class="row g-3">
                             <div class="col-12">
-                                {{ form_row(form.specificFunctions, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                                {{ form_row(form.specificFunctions, {'attr': {'class': 'form-control bg-dark text-white border-light'}}) }}
                             </div>
                         </div>
                     </div>
@@ -64,10 +64,10 @@
                         <h2 class="h4 mb-3">Échéance et tarification</h2>
                         <div class="row g-3">
                             <div class="col-md-6">
-                                {{ form_row(form.deadline, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                                {{ form_row(form.deadline, {'attr': {'class': 'form-control bg-dark text-white border-light'}}) }}
                             </div>
                             <div class="col-md-6">
-                                {{ form_row(form.totalPrice, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                                {{ form_row(form.totalPrice, {'attr': {'class': 'form-control bg-dark text-white border-light'}}) }}
                             </div>
                         </div>
                     </div>
@@ -77,10 +77,10 @@
                         <h2 class="h4 mb-3">Sélection du plan</h2>
                         <div class="row g-3">
                             <div class="col-12">
-                                {{ form_row(form.selectedPlan, {'attr': {'class': 'form-select bg-dark text-light border-light'}}) }}
+                                {{ form_row(form.selectedPlan, {'attr': {'class': 'form-select bg-dark text-white border-light'}}) }}
                             </div>
                             <div class="col-12 custom-inclusions">
-                                {{ form_row(form.customInclusions, {'attr': {'class': 'form-control bg-dark text-light border-light', 'rows': '4'}}) }}
+                                {{ form_row(form.customInclusions, {'attr': {'class': 'form-control bg-dark text-white border-light', 'rows': '4'}}) }}
                             </div>
                         </div>
                     </div>
@@ -90,7 +90,7 @@
                         <h2 class="h4 mb-3">Informations complémentaires</h2>
                         <div class="row g-3">
                             <div class="col-12">
-                                {{ form_row(form.additionalInfo, {'attr': {'class': 'form-control bg-dark text-light border-light', 'rows': '4'}}) }}
+                                {{ form_row(form.additionalInfo, {'attr': {'class': 'form-control bg-dark text-white border-light', 'rows': '4'}}) }}
                             </div>
                             <div class="col-12">
                                 <div class="form-check form-switch">

@@ -3,35 +3,58 @@
 {% block title %}Login{% endblock %}
 
 {% block body %}
-	<h1 class="text-center text-light mb-5">Connexion</h1>
-	<form method="post">
-
-		{% if app.user %}
-			<div class="mb-3">
-				Logged in as
-				{{ app.user.userIdentifier }},
-				<a href="{{ path('app_logout') }}">Logout</a>
-			</div>
-		{% endif %}
-
-        <div id="login_form" class="row mt-6 mx-auto">
-            <div class="mb-3">
-                <input type="email" value="{{ last_username }}" placeholder="E-mail address" name="email" id="inputEmail" autocomplete="email" autofocus>
+<div class="auth-container">
+    <h1 class="auth-title">Connexion</h1>
+    <form method="post">
+        {% if app.user %}
+            <div class="alert alert-info mb-3">
+                Connecté en tant que {{ app.user.userIdentifier }},
+                <a href="{{ path('app_logout') }}" class="auth-link">Se déconnecter</a>
             </div>
-            <div>
-                <input type="password" name="password" placeholder="Password" id="inputPassword" autocomplete="current-password">
+        {% endif %}
+
+        <div id="login_form">
+            <div class="form-group">
+                <input 
+                    type="email" 
+                    value="{{ last_username }}" 
+                    placeholder="Adresse e-mail" 
+                    name="email" 
+                    id="inputEmail" 
+                    class="form-control" 
+                    autocomplete="email" 
+                    required 
+                    autofocus
+                >
             </div>
-
-			<p class="text-light mt-3 text-center">You do not have an account? Sign up
-			<a href="{{ path('register') }}">here</a>.</p>
-
-			<a id="forgot-password" aria-current="page" href="{{ path('app_forgot_password_request') }}" class="text-center mb-3">Forgot your password?</a>
+            
+            <div class="form-group">
+                <input 
+                    type="password" 
+                    name="password" 
+                    placeholder="Mot de passe" 
+                    id="inputPassword" 
+                    class="form-control" 
+                    autocomplete="current-password" 
+                    required
+                >
+            </div>
 
             {% if error %}
-			    <div class="text-danger mb-4 text-center">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-		    {% endif %}
-		    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-		    <button type="submit" class="btn-save">Log in</button>
+                <div class="text-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            
+            <button type="submit" class="btn-save" style="color: white;">Se connecter</button>
+
+            <a id="forgot-password" href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a>
+
+            <p class="text-center form-text">
+                Vous n'avez pas de compte ? 
+                <a href="{{ path('register') }}" class="auth-link">Inscrivez-vous ici</a>
+            </p>
         </div>
-	</form>
+    </form>
+</div>
 {% endblock %}

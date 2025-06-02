@@ -1,28 +1,60 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register
-{% endblock %}
+{% block title %}Inscription{% endblock %}
 
 {% block body %}
-	<h1 class="text-center text-light mb-5">Inscription</h1>
-	<div id="register_form" class="row mt-6 mx-auto">
+<div class="auth-container">
+    <h1 class="auth-title mt-4">Inscription</h1>
+    
+    <div id="register_form">
+        {{ form_start(registrationForm) }}
+            <div class="form-group">
+                {{ form_label(registrationForm.email, 'Adresse e-mail') }}
+                {{ form_widget(registrationForm.email, {
+                    'attr': {
+                        'class': 'form-control',
+                        'placeholder': 'Votre adresse e-mail'
+                    }
+                }) }}
+                {{ form_errors(registrationForm.email) }}
+            </div>
 
-		{{ form_start(registrationForm) }}
+            <div class="form-group mb-4">
+                {{ form_label(registrationForm.plainPassword.first, 'Mot de passe') }}
+                {{ form_widget(registrationForm.plainPassword.first, {
+                    'attr': {
+                        'class': 'form-control mb-3',
+                        'placeholder': 'Choisissez un mot de passe sécurisé'
+                    }
+                }) }}
+                {{ form_errors(registrationForm.plainPassword.first) }}
 
-		{{ form_row(registrationForm.email) }}
+                {{ form_label(registrationForm.plainPassword.second, 'Confirmation du mot de passe') }}
+                {{ form_widget(registrationForm.plainPassword.second, {
+                    'attr': {
+                        'class': 'form-control',
+                        'placeholder': 'Confirmez votre mot de passe'
+                    }
+                }) }}
+                {{ form_errors(registrationForm.plainPassword.second) }}
+            </div>
 
-		{{ form_row(registrationForm.plainPassword) }}
+            <p class="form-text text-center">
+                En vous inscrivant, vous confirmez avoir lu et accepté les
+                <a href="{{ path('mentions_legales') }}" class="auth-link">Mentions Légales</a>.
+            </p>
 
-		<p class="text-light text-center mt-3">By registering, you confirm that you have read and accepted the
-			<a href="{{ path('mentions_legales') }}">Legal Notices</a>.</p>
+            <p class="form-text text-center mt-3">
+                Déjà inscrit ?
+                <a href="{{ path('login') }}" class="auth-link">Connectez-vous ici</a>
+            </p>
 
-		<p class="text-light text-center">Already registered? Login
-			<a href="{{ path('login') }}">here</a>.</p>
-
-		{{ form_errors(registrationForm) }}
-
-		{{ form_end(registrationForm) }}
-
-	</div>
-
+            {% if form_errors(registrationForm) %}
+                <div class="text-danger mt-3">
+                    {{ form_errors(registrationForm) }}
+                </div>
+            {% endif %}
+        {{ form_end(registrationForm) }}
+    </div>
+</div>
 {% endblock %}

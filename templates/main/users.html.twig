@@ -4,6 +4,18 @@
 
 {% block body %}
 <style>
+    :root {
+        --modal-bg: #1a1a1a;
+        --modal-header-bg: #2d2d2d;
+        --modal-border: rgba(255, 255, 255, 0.1);
+        --modal-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        --input-bg: #2d2d2d;
+        --input-border: #404040;
+        --input-focus-border: #666;
+        --input-focus-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+        --btn-hover-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
     /* Global styles */
     body {
         background-color: #121212;
@@ -60,6 +72,116 @@
     }
 
     /* Actions */
+    .modal {
+        background: rgba(0, 0, 0, 0.85) !important;
+        backdrop-filter: blur(10px);
+        height: 100vh;
+        overflow-y: auto;
+        padding: 2rem 0;
+    }
+
+    .modal-dialog {
+        transform: scale(0.7);
+        opacity: 0;
+        transition: all 0.3s ease-in-out;
+        position: relative;
+        z-index: 9999;
+    }
+
+    .modal.show .modal-dialog {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    .modal-content {
+        background-color: var(--modal-bg);
+        border-radius: 16px;
+        border: 1px solid var(--modal-border);
+        box-shadow: var(--modal-shadow);
+        backdrop-filter: blur(16px);
+        transform: translateY(20px);
+        transition: transform 0.3s ease-out;
+        position: relative;
+        z-index: 9999;
+    }
+
+    .modal.show .modal-content {
+        transform: translateY(0);
+    }
+
+    .modal-dialog {
+        max-width: 600px;
+        margin: 1.75rem auto;
+    }
+
+    .modal-header {
+        background-color: var(--modal-header-bg);
+        border-bottom: 1px solid var(--modal-border);
+        border-radius: 15px 15px 0 0;
+        padding: 1.25rem 1.5rem;
+    }
+
+    .modal-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #fff;
+    }
+
+    .btn-close {
+        background-color: transparent;
+        border: none;
+        padding: 0.5rem;
+        transition: transform 0.2s;
+    }
+
+    .btn-close:hover {
+        transform: rotate(90deg);
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+        color: #e0e0e0;
+    }
+
+    .modal-footer {
+        border-top: 1px solid var(--modal-border);
+        padding: 1rem 1.5rem;
+        border-radius: 0 0 15px 15px;
+    }
+
+    .modal .form-control, .modal .form-select {
+        background-color: var(--input-bg);
+        border: 1px solid var(--input-border);
+        color: #fff;
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .modal .form-control:focus, .modal .form-select:focus {
+        border-color: var(--input-focus-border);
+        box-shadow: var(--input-focus-shadow);
+        outline: none;
+    }
+
+    .modal .form-label {
+        color: #e0e0e0;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+
+    .modal .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .modal .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--btn-hover-shadow);
+    }
+
     .user-actions {
         display: flex;
         justify-content: space-between;
@@ -189,9 +311,9 @@
     }
 </style>
 
-<div class="modal fade" id="createWebsiteModal" tabindex="-1" aria-labelledby="createWebsiteModalLabel" aria-hidden="true">
+<div class="modal fade" data-bs-backdrop="false" id="createWebsiteModal" tabindex="-1" aria-labelledby="createWebsiteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content bg-dark text-light">
+        <div class="modal-content bg-dark text-white">
             <div class="modal-header border-secondary">
                 <h5 class="modal-title" id="createWebsiteModalLabel">Créer un nouveau projet web</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -200,27 +322,27 @@
                 <form id="websiteForm" method="POST" action="{{ path('create_website') }}">
                     <div class="mb-3">
                         <label for="firstname" class="form-label">Prénom</label>
-                        <input type="text" class="form-control bg-dark text-light" id="firstname" name="firstname" required>
+                        <input type="text" class="form-control bg-dark text-white" id="firstname" name="firstname" required>
                     </div>
                     <div class="mb-3">
                         <label for="lastname" class="form-label">Nom</label>
-                        <input type="text" class="form-control bg-dark text-light" id="lastname" name="lastname" required>
+                        <input type="text" class="form-control bg-dark text-white" id="lastname" name="lastname" required>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control bg-dark text-light" id="email" name="email" required>
+                        <input type="email" class="form-control bg-dark text-white" id="email" name="email" required>
                     </div>
                     <div class="mb-3">
                         <label for="phone" class="form-label">Téléphone</label>
-                        <input type="tel" class="form-control bg-dark text-light" id="phone" name="phone">
+                        <input type="tel" class="form-control bg-dark text-white" id="phone" name="phone">
                     </div>
                     <div class="mb-3">
                         <label for="companyName" class="form-label">Nom de l'entreprise</label>
-                        <input type="text" class="form-control bg-dark text-light" id="companyName" name="companyName">
+                        <input type="text" class="form-control bg-dark text-white" id="companyName" name="companyName">
                     </div>
                     <div class="mb-3">
                         <label for="type" class="form-label">Type de site</label>
-                        <select class="form-select bg-dark text-light" id="type" name="type" required>
+                        <select class="form-select bg-dark text-white" id="type" name="type" required>
                             <option value="vitrine">Site vitrine</option>
                             <option value="ecommerce">Site e-commerce</option>
                             <option value="blog">Blog</option>
@@ -230,11 +352,11 @@
                     </div>
                     <div class="mb-3">
                         <label for="estimatedBudget" class="form-label">Budget total estimé (€)</label>
-                        <input type="number" class="form-control bg-dark text-light" id="estimatedBudget" name="estimatedBudget" required>
+                        <input type="number" class="form-control bg-dark text-white" id="estimatedBudget" name="estimatedBudget" required>
                     </div>
                     <div class="mb-3">
                         <label for="depositAmount" class="form-label">Montant de la caution (50% du budget)</label>
-                        <input type="number" class="form-control bg-dark text-light" id="depositAmount" name="depositAmount" required>
+                        <input type="number" class="form-control bg-dark text-white" id="depositAmount" name="depositAmount" required>
                     </div>
                     <script>
                         document.getElementById('estimatedBudget').addEventListener('input', function() {
@@ -244,23 +366,23 @@
                     </script>
                     <div class="mb-3">
                         <label for="deadline" class="form-label">Date limite</label>
-                        <input type="date" class="form-control bg-dark text-light" id="deadline" name="deadline">
+                        <input type="date" class="form-control bg-dark text-white" id="deadline" name="deadline">
                     </div>
                     <div class="mb-3">
                         <label for="estimatedPages" class="form-label">Nombre de pages estimé</label>
-                        <input type="number" class="form-control bg-dark text-light" id="estimatedPages" name="estimatedPages" required>
+                        <input type="number" class="form-control bg-dark text-white" id="estimatedPages" name="estimatedPages" required>
                     </div>
                     <div class="mb-3">
                         <label for="existingWebsite" class="form-label">Site web existant</label>
-                        <input type="url" class="form-control bg-dark text-light" id="existingWebsite" name="existingWebsite">
+                        <input type="url" class="form-control bg-dark text-white" id="existingWebsite" name="existingWebsite">
                     </div>
                     <div class="mb-3">
                         <label for="likedWebsites" class="form-label">Sites de référence</label>
-                        <textarea class="form-control bg-dark text-light" id="likedWebsites" name="likedWebsites" rows="2"></textarea>
+                        <textarea class="form-control bg-dark text-white" id="likedWebsites" name="likedWebsites" rows="2"></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="specificFunctions" class="form-label">Fonctionnalités spécifiques</label>
-                        <textarea class="form-control bg-dark text-light" id="specificFunctions" name="specificFunctions" rows="3"></textarea>
+                        <textarea class="form-control bg-dark text-white" id="specificFunctions" name="specificFunctions" rows="3"></textarea>
                         <small class="text-muted">Séparez les fonctionnalités par des virgules</small>
                     </div>
                     <div class="mb-3">
@@ -286,10 +408,10 @@
             <div class="user-card">
                 <div class="user-info">
                     <div class="user-label">E-mail</div>
-                    <div class="user-value text-light">{{ user.email }}</div>
+                    <div class="user-value text-white">{{ user.email }}</div>
 
                     <div class="user-label">Role</div>
-                    <div class="user-value text-light">
+                    <div class="user-value text-white">
                         {% if "ROLE_ADMIN" in user.roles %}
                             Administrator
                         {% elseif "ROLE_USER" in user.roles %}
@@ -354,16 +476,16 @@
 </div>
 
 <!-- Modal pour marquer un projet comme terminé -->
-<div class="modal fade" id="completeProjectModal" tabindex="-1" aria-labelledby="completeProjectModalLabel" aria-hidden="true">
+<div class="modal fade" data-bs-backdrop="false" id="completeProjectModal" tabindex="-1" aria-labelledby="completeProjectModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content bg-dark text-light">
+        <div class="modal-content bg-dark text-white">
             <div class="modal-header border-secondary">
                 <h5 class="modal-title" id="completeProjectModalLabel">Marquer le projet comme terminé</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="project-info mb-4">
-                    <h6 class="text-light mb-3">Détails du projet</h6>
+                    <h6 class="text-white mb-3">Détails du projet</h6>
                     <p class="mb-2">Projet : <span id="projectName" class="text-info"></span></p>
                 </div>
                 <p class="text-warning">Êtes-vous sûr de vouloir marquer ce projet comme terminé ?</p>
@@ -381,9 +503,9 @@
 </div>
 
 <!-- Modal pour mettre à jour l'étape du projet -->
-<div class="modal fade" id="updateStageModal" tabindex="-1" aria-labelledby="updateStageModalLabel" aria-hidden="true">
+<div class="modal fade" data-bs-backdrop="false" id="updateStageModal" tabindex="-1" aria-labelledby="updateStageModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content bg-dark text-light">
+        <div class="modal-content bg-dark text-white">
             <div class="modal-header border-secondary">
                 <h5 class="modal-title" id="updateStageModalLabel">Mettre à jour l'étape du projet</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -392,7 +514,7 @@
                 <form id="updateStageForm" method="POST" action="{{ path('update_project_stage') }}">
                     <div class="mb-3">
                         <label for="projectStage" class="form-label">Étape actuelle</label>
-                        <select class="form-select bg-dark text-light" id="projectStage" name="stage" required>
+                        <select class="form-select bg-dark text-white" id="projectStage" name="stage" required>
                             <option value="1">1. Prise de contact</option>
                             <option value="2">2. Brief et devis</option>
                             <option value="3">3. Maquette</option>

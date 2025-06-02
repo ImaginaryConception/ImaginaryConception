@@ -1,26 +1,116 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Reset
-{% endblock %}
+{% block title %}Reset{% endblock %}
 
 {% block body %}
+<div class="container">
+    <div class="glass-card mt-5">
+        <div class="card-header text-center">
+            <h2 class="text-light mb-4">Nouveau mot de passe</h2>
+            <div class="header-underline"></div>
+        </div>
 
-    <h2 class="text-light text-center mt-6">New Password</h2>
+        <div class="card-body">
+            <div class="form-container">
+                {{ form_start(resetForm, {'attr': {'class': 'modern-form'}}) }}
 
-	<div id="reset_forma" class="row mt-6 mx-auto">
+                <div class="form-group mb-4">
+                    {{ form_row(resetForm.plainPassword, {
+                        'attr': {
+                            'class': 'form-control glass-input text-dark',
+                            'placeholder': 'Votre nouveau mot de passe'
+                        }
+                    }) }}
+                </div>
 
-		{{ form_start(resetForm) }}
+                {% for flash_error in app.flashes('reset_password_error') %}
+                    <div class="alert alert-danger text-center mb-4" role="alert">
+                        {{ flash_error }}
+                    </div>
+                {% endfor %}
 
-		{{ form_row(resetForm.plainPassword) }}
+                {{ form_errors(resetForm) }}
 
-		{% for flash_error in app.flashes('reset_password_error') %}
-			<div class="text-danger text-center" role="alert">{{ flash_error }}</div>
-		{% endfor %}
+                <div class="form-actions text-center">
+                    {{ form_row(resetForm.save, {
+                        'attr': {
+                            'class': 'btn btn-primary btn-lg glass-button w-100',
+                            'style': 'color: white;'
+                        }
+                    }) }}
+                </div>
 
-		{{ form_errors(resetForm) }}
+                {{ form_end(resetForm) }}
+            </div>
+        </div>
+    </div>
+</div>
 
-		{{ form_row(resetForm.save) }}
+<style>
+    .glass-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        max-width: 500px;
+        margin: 0 auto;
+        transition: transform 0.3s ease;
+    }
 
-	    {{ form_end(resetForm) }}
+    .glass-card:hover {
+        transform: translateY(-5px);
+    }
 
+    .header-underline {
+        width: 50px;
+        height: 3px;
+        background: linear-gradient(90deg, #007bff, #00ff88);
+        margin: 1rem auto;
+        border-radius: 3px;
+    }
+
+    .glass-input {
+        background: rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        color: white !important;
+        border-radius: 10px;
+        padding: 0.8rem 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .glass-input:focus {
+        background: rgba(255, 255, 255, 0.15) !important;
+        border-color: rgba(255, 255, 255, 0.3) !important;
+        box-shadow: 0 0 15px rgba(0, 123, 255, 0.3) !important;
+    }
+
+    .glass-button {
+        background: linear-gradient(45deg, #007bff, #00ff88) !important;
+        border: none !important;
+        padding: 12px 24px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+    }
+
+    .glass-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+    }
+
+    .alert-danger {
+        background: rgba(220, 53, 69, 0.2);
+        border: 1px solid rgba(220, 53, 69, 0.3);
+        color: #fff;
+    }
+
+    @media (max-width: 768px) {
+        .glass-card {
+            margin: 1rem;
+            padding: 1.5rem;
+        }
+    }
+</style>
 {% endblock %}

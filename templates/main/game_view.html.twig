@@ -3,81 +3,99 @@
 {% block title %}{{ game.title }}{% endblock %}
 
 {% block body %}
-	<div class="container py-5">
+	<div class="container py-2">
 		<div class="row justify-content-center">
-			<div class="col-12 col-lg-10">
-				<div class="game-details-card bg-black bg-opacity-75 p-4 rounded-3 shadow-lg" data-aos="fade-up">
-					<div class="row">
-						<div class="col-md-6 mb-4 mb-md-0">
-							<div class="game-image-wrapper position-relative overflow-hidden rounded-3 shadow" style="object-fit: contain; image-rendering: -webkit-optimize-contrast;">
-								<img class="img-fluid w-100 hover-scale" style="object-fit: contain; image-rendering: -webkit-optimize-contrast;" src="{{ asset('Images/Jeux/' ~ game.image) }}" alt="{{ game.title }}">
+			<div class="col-12 col-lg-7">
+				<div class="game-details-card" data-aos="fade-up">
+					<nav aria-label="breadcrumb" class="mb-1">
+						<ol class="breadcrumb mb-0 small">
+							<li class="breadcrumb-item"><a href="{{ path('games') }}" class="text-secondary text-decoration-none">Jeux</a></li>
+							<li class="breadcrumb-item active text-dark" aria-current="page">{{ game.title }}</li>
+						</ol>
+					</nav>
+					<div class="row g-2">
+						<div class="col-md-6 mb-2 mb-md-0">
+							<div class="game-image-wrapper position-relative overflow-hidden shadow-sm" style="height: 280px; border-radius: 20px; cursor: pointer;">
+								<div class="position-absolute w-100 h-100" style="background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 100%); transition: opacity 0.3s ease;"></div>
+								<img class="img-fluid w-100 h-100" style="object-fit: cover; transition: all 0.3s ease; transform-origin: center;" onmouseover="this.style.transform='scale(1.05)';this.parentElement.querySelector('.overlay-text').style.transform='translateY(0)';" onmouseout="this.style.transform='scale(1)';this.parentElement.querySelector('.overlay-text').style.transform='translateY(100%)';" src="{{ asset('Images/Jeux/' ~ game.image) }}" alt="{{ game.title }}">
+								<div class="position-absolute bottom-0 start-0 w-100 p-3 overlay-text" style="background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%); transition: transform 0.3s ease; transform: translateY(100%);">
+									<h2 class="text-white h5 mb-0 fw-bold">{{ game.title }}</h2>
+									<p class="text-white-50 small mb-0 mt-1">Cliquez pour agrandir</p>
+								</div>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="game-info" data-aos="fade-left" data-aos-delay="200">
-								<h1 class="text-danger fw-bold mb-4 display-4">{{ game.title }}</h1>
+								<h1 class="text-dark fw-bold mb-2 h4">{{ game.title }}</h1>
 								
-								<div class="game-meta mb-4">
-									<div class="meta-item mb-3">
-										<h3 class="text-danger fw-bold h5">Genre</h3>
-										<p class="text-light h6">{{ game.genre }}</p>
+								<div class="game-meta mb-2">
+								<div class="d-flex flex-wrap gap-2">
+									<div class="meta-item border-start border-danger border-2 ps-2">
+										<h3 class="text-secondary fw-semibold small mb-0">Genre</h3>
+										<p class="text-dark small mb-0">{{ game.genre }}</p>
 									</div>
 									
-									<div class="meta-item mb-3">
-										<h3 class="text-danger fw-bold h5">Prix</h3>
-										<p class="text-light h4">{{ game.price }}</p>
+									<div class="meta-item border-start border-danger border-2 ps-2">
+										<h3 class="text-secondary fw-semibold small mb-0">Prix</h3>
+										<p class="text-dark small mb-0">{{ game.price }}</p>
 									</div>
 								</div>
-								
-								<div class="game-description">
-									<h3 class="text-danger fw-bold h5 mb-3">Description</h3>
-									<p class="text-light">{{ game.description }}</p>
 								</div>
+								
+								<div class="game-description mt-2 border-start border-danger border-2 ps-2">
+								<h3 class="text-danger fw-bold h6 mb-1">Description</h3>
+								<p class="text-dark small">{{ game.description }}</p>
+							</div>
 							</div>
 						</div>
 					</div>
+					</div>
 
-					<div class="game-actions mt-4" data-aos="fade-up" data-aos-delay="400">
-						<div class="d-flex flex-wrap gap-3 justify-content-center">
+					<div class="game-actions mt-5" data-aos="fade-up" data-aos-delay="400">
+					<div class="d-flex flex-wrap gap-3 justify-content-center">
+						<div class="position-relative d-inline-block">
 							{% if not is_granted('ROLE_ADMIN') %}
-								<a class="btn btn-danger btn-lg hover-scale" target="_blank" href="{{ game.buyLink }}">
+								<a class="btn btn-sm btn-danger hover-scale" target="_blank" href="{{ game.buyLink }}">
 									<i class="fa-solid fa-arrow-up-right-from-square me-2"></i>Buy
 								</a>
 							{% endif %}
 
 							{% if is_granted('ROLE_ADMIN') %}
-								<a class="btn btn-danger btn-lg hover-scale" target="_blank" href="{{ game.buyLink }}">
+								<a class="btn btn-sm btn-danger hover-scale" target="_blank" href="{{ game.buyLink }}">
 									<i class="fa-solid fa-arrow-up-right-from-square me-2"></i>Buy
 								</a>
 
-								<a class="btn btn-outline-danger btn-lg hover-scale" href="{{ path('delete_game', {'id': game.id, csrf_token: csrf_token('delete_game_' ~ game.id ) }) }}">
+								<a class="btn btn-sm btn-outline-danger hover-scale" href="{{ path('delete_game', {'id': game.id, csrf_token: csrf_token('delete_game_' ~ game.id ) }) }}">
 									<i class="fa-solid fa-trash me-2"></i>Delete
 								</a>
 
-								<a class="btn btn-outline-danger btn-lg hover-scale" href="{{ path('edit_game', {'id': game.id}) }}">
+								<a class="btn btn-sm btn-outline-danger hover-scale" href="{{ path('edit_game', {'id': game.id}) }}">
 									<i class="fa-solid fa-edit me-2"></i>Edit
 								</a>
 							{% endif %}
 						</div>
 					</div>
+					</div>
 				</div>
 
-				<div class="game-trailer mt-5" data-aos="fade-up">
-					<iframe class="w-100 rounded-3 shadow" height="500" src="{{ game.trailer }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+				<div class="game-trailer mt-3 position-relative" data-aos="fade-up">
+					<div class="ratio ratio-16x9 rounded-3 overflow-hidden mx-auto" style="max-width: 600px; height: 250px;">
+					<iframe class="w-100" src="{{ game.trailer }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+					</div>
 				</div>
 
-				<div class="comments-section mt-5" data-aos="fade-up">
-					<h2 class="text-light text-center display-5 mb-4">Votre avis compte</h2>
+				<div class="comments-section mt-3 pt-3 border-top border-light border-opacity-10" data-aos="fade-up">
+					<h2 class="text-center mb-2 h5">Votre avis compte</h2>
 
 				{% if app.user %}
-					<div id="add_comment_form" class="comment-form bg-dark bg-opacity-50 p-4 rounded-3 shadow-sm" data-aos="fade-up" data-aos-delay="200">
+					<div id="add_comment_form" class="comment-form bg-light p-2 rounded-1 mx-auto" style="max-width: 500px;" data-aos="fade-up" data-aos-delay="200">
 						{{ form_start(commentForm, {'attr': {'class': 'needs-validation'}}) }}
-							<div class="mb-3">
-								{{ form_widget(commentForm.content, {'attr': {'class': 'form-control bg-dark text-light', 'placeholder': 'Partagez votre expérience...'}}) }}
+							<div class="mb-2">
+								{{ form_widget(commentForm.content, {'attr': {'class': 'form-control form-control-sm', 'placeholder': 'Partagez votre expérience...', 'rows': '2'}}) }}
 							</div>
 							{{ form_errors(commentForm) }}
 							<div class="text-end">
-								{{ form_widget(commentForm.save, {'attr': {'class': 'btn btn-danger mb-3 hover-scale'}}) }}
+								{{ form_widget(commentForm.save, {'attr': {'class': 'btn btn-sm btn-danger hover-scale'}}) }}
 							</div>
 						{{ form_end(commentForm) }}
 					</div>
@@ -88,18 +106,18 @@
 					</div>
 				{% endif %}
 
-				<div class="comments-list mt-5" data-aos="fade-up" data-aos-delay="300">
-					<h2 class="text-light text-center h3 mb-4">
-						<i class="fas fa-comments me-2"></i>
+				<div class="comments-list mt-4" data-aos="fade-up" data-aos-delay="300">
+					<h2 class="text-light text-center h6 mb-3">
+						<i class="fas fa-comments me-1"></i>
 						Commentaires ({{ game.comments|length }})
 					</h2>
 
 					<div class="comments-container">
 						{% for comment in game.comments %}
-							<div class="comment-card bg-dark bg-opacity-50 p-4 rounded-3 shadow-sm mb-4" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
-								<div class="comment-header d-flex justify-content-between align-items-center mb-3">
-									<span class="text-muted">
-										<i class="far fa-calendar-alt me-2"></i>
+							<div class="comment-card bg-dark rounded-3 shadow-sm p-2 mb-3" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
+								<div class="comment-header d-flex justify-content-between align-items-center mb-2">
+									<span class="text-white small fw-light">
+										<i class="far fa-calendar-alt me-1"></i>
 										{{ comment.publicationDate|date('d/m/Y') }}
 									</span>
 									{% if is_granted('ROLE_ADMIN') %}
@@ -109,12 +127,12 @@
 										</a>
 									{% endif %}
 								</div>
-								<div class="comment-content text-light">
+								<div class="comment-content text-white small">
 									{{ comment.content|nl2br }}
 								</div>
 							</div>
 						{% else %}
-							<div class="text-center text-muted py-5" data-aos="fade-up">
+							<div class="text-center text-light py-5" data-aos="fade-up">
 								<i class="far fa-comment-dots fa-3x mb-3"></i>
 								<p>Soyez le premier à commenter!</p>
 							</div>

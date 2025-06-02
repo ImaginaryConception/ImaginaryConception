@@ -77,9 +77,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Détails de l'estimation
         const details = document.getElementById('estimationDetails');
         details.innerHTML = `
-            <li>Coût de base (${type}): ${baseCost}€</li>
-            <li>Pages supplémentaires: ${pageCost}€</li>
-            <li>Fonctionnalités spécifiques: ${functionsCost}€</li>
+            <li class="text-black">Coût de base (${type}): ${baseCost}€</li>
+            <li class="text-black">Pages supplémentaires: ${pageCost}€</li>
+            <li class="text-black">Fonctionnalités spécifiques: ${functionsCost}€</li>
             ${!hasLogo ? '<li>Création logo/charte graphique: ' + logoCost + '€</li>' : ''}
         `;
 

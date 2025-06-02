@@ -5,119 +5,130 @@
 {% block meta_description %}Découvrez notre collection de jeux vidéo indépendants innovants. Studio de création de jeux passionné par le développement de jeux uniques et immersifs.{% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
-        <h2 class="text-center text-light mb-5">Nos Créations de Jeux Vidéo Indépendants</h2>
+    <div class="main-content">
+        <div class="container">
+            <h2 class="section-title text-center text-dark">Nos Créations de Jeux Vidéo Indépendants</h2>
 
-        {% if games is not empty %}
-            <div class="text-center mb-4">
-                {{ knp_pagination_render(games) }}
-            </div>
-        {% endif %}
+            {% if games is not empty %}
+                <div class="text-center mb-4">
+                    {{ knp_pagination_render(games) }}
+                </div>
+            {% endif %}
 
-        <div class="row g-4">
-            {% for game in games %}
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 bg-transparent text-light border-danger game-card" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
-                        <div class="card-img-wrapper">
-                            <img src="{{ asset('Images/Jeux/' ~ game.image) }}" class="card-img-top" alt="{{ game.title }} - Jeu vidéo indépendant par Imaginary Conception" loading="lazy">
-                        </div>
-                        <div class="card-body">
-                            <h2 class="h4 card-title text-danger mb-3">{{ game.title }}</h2>
-                            <div class="game-info mb-3">
-                                <div class="info-item mb-2">
-                                    <span class="text-danger">Genre:</span>
-                                    <span class="ms-2">{{ game.genre }}</span>
-                                </div>
-                                <div class="info-item">
-                                    <span class="text-danger">Prix:</span>
-                                    <span class="ms-2">{{ game.price }}</span>
-                                </div>
+            <div class="row g-4">
+                {% for game in games %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 bg-transparent border-danger game-card" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
+                            <div class="card-img-wrapper">
+                                <img src="{{ asset('Images/Jeux/' ~ game.image) }}" class="card-img-top" alt="{{ game.title }} - Jeu vidéo indépendant par Imaginary Conception" loading="lazy">
                             </div>
-                            <div class="card-actions">
-                                {% if not is_granted('ROLE_ADMIN') %}
-                                    <a href="{{ path('game_view', {'title': game.title, 'id': game.id }) }}" 
-                                       class="btn btn-outline-danger w-100">Voir plus</a>
-                                {% endif %}
-
-                                {% if is_granted('ROLE_ADMIN') %}
-                                    <div class="d-flex gap-2">
-                                        <a href="{{ path('game_view', {'title': game.title, 'id': game.id }) }}" 
-                                           class="btn btn-outline-danger flex-grow-1">Voir plus</a>
-                                        <a href="{{ path('edit_game', {'id': game.id}) }}" 
-                                           class="btn btn-outline-warning">Éditer</a>
-                                        <a href="{{ path('delete_game', {'id': game.id, csrf_token: csrf_token('delete_game_' ~ game.id ) }) }}" 
-                                           class="btn btn-outline-danger">Supprimer</a>
+                            <div class="card-body">
+                                <h2 class="h4 card-title text-dark mb-3">{{ game.title }}</h2>
+                                <div class="game-info mb-3">
+                                    <div class="info-item mb-2">
+                                        <span class="text-danger">Genre:</span>
+                                        <span class="text-dark ms-2">{{ game.genre }}</span>
                                     </div>
-                                {% endif %}
+                                    <div class="info-item">
+                                        <span class="text-danger">Prix:</span>
+                                        <span class="text-dark ms-2">{{ game.price }}</span>
+                                    </div>
+                                </div>
+                                <div class="card-actions">
+                                    {% if not is_granted('ROLE_ADMIN') %}
+                                        <a href="{{ path('game_view', {'title': game.title, 'id': game.id }) }}" 
+                                           class="btn btn-outline-danger w-100">Voir plus</a>
+                                    {% endif %}
+
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <div class="d-flex gap-2">
+                                            <a href="{{ path('game_view', {'title': game.title, 'id': game.id }) }}" 
+                                               class="btn btn-outline-danger flex-grow-1">Voir plus</a>
+                                            <a href="{{ path('edit_game', {'id': game.id}) }}" 
+                                               class="btn btn-outline-warning">Éditer</a>
+                                            <a href="{{ path('delete_game', {'id': game.id, csrf_token: csrf_token('delete_game_' ~ game.id ) }) }}" 
+                                               class="btn btn-outline-danger">Supprimer</a>
+                                        </div>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
                     </div>
+                {% else %}
+                    <div class="col-12">
+                        <p class="text-center text-light">Aucun jeu n'est disponible pour le moment.</p>
+                    </div>
+                {% endfor %}
+            </div>
+
+            {% if games is not empty %}
+                <div class="text-center mt-4">
+                    {{ knp_pagination_render(games) }}
                 </div>
-            {% else %}
-                <div class="col-12">
-                    <p class="text-center text-light">Aucun jeu n'est disponible pour le moment.</p>
-                </div>
-            {% endfor %}
+            {% endif %}
         </div>
 
-        {% if games is not empty %}
-            <div class="text-center mt-4">
-                {{ knp_pagination_render(games) }}
-            </div>
-        {% endif %}
+        <style>
+            .game-card {
+                transition: all 0.3s ease;
+                backdrop-filter: blur(5px);
+                background: rgba(0, 0, 0, 0.7);
+                border: 1px solid rgba(128, 128, 128, 0.3);
+                opacity: 1 !important;
+            }
+            .game-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 5px 15px rgba(128, 128, 128, 0.3);
+                background: rgba(0, 0, 0, 0.8);
+            }
+            .card-img-wrapper {
+                overflow: hidden;
+                position: relative;
+                padding-top: 56.25%;
+            }
+            .card-img-wrapper img {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center;
+                image-rendering: -webkit-optimize-contrast;
+                image-rendering: crisp-edges;
+                transition: transform 0.5s ease;
+            }
+            .game-card:hover .card-img-wrapper img {
+                transform: scale(1.1);
+            }
+            .game-info {
+                font-size: 0.95rem;
+                margin: 15px 0;
+            }
+            .btn-outline-danger {
+                border: 1px solid rgba(128, 128, 128, 0.5);
+                color: #000;
+                transition: all 0.3s ease;
+                background-color: rgba(255, 255, 255, 0.9);
+                font-size: 0.85rem;
+                padding: 0.4rem 0.8rem;
+            }
+            .btn-outline-danger:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 2px 8px rgba(128, 128, 128, 0.2);
+                background-color: rgba(255, 255, 255, 1);
+                border-color: rgba(128, 128, 128, 0.8);
+                color: #000;
+            }
+            [data-aos] {
+                opacity: 1 !important;
+            }
+        </style>
     </div>
 
-    <style>
-        .game-card {
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(128, 128, 128, 0.3);
-            opacity: 1 !important;
-        }
-        .game-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 5px 15px rgba(128, 128, 128, 0.3);
-            background: rgba(0, 0, 0, 0.8);
-        }
-        .card-img-wrapper {
-            overflow: hidden;
-            position: relative;
-            padding-top: 56.25%;
-        }
-        .card-img-wrapper img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            image-rendering: -webkit-optimize-contrast;
-            image-rendering: crisp-edges;
-            transition: transform 0.5s ease;
-        }
-        .game-card:hover .card-img-wrapper img {
-            transform: scale(1.1);
-        }
-        .game-info {
-            font-size: 0.95rem;
-            margin: 15px 0;
-        }
-        .btn-outline-danger {
-            border: 1px solid rgba(128, 128, 128, 0.5);
-            color: #fff;
-            transition: all 0.3s ease;
-        }
-        .btn-outline-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 2px 8px rgba(128, 128, 128, 0.2);
-            background-color: rgba(128, 128, 128, 0.8);
-            border-color: rgba(128, 128, 128, 0.8);
-            color: #fff;
-        }
-        [data-aos] {
-            opacity: 1 !important;
-        }
-    </style>
+    {% if games is not empty %}
+        <div class="text-center mt-4">
+            {{ knp_pagination_render(games) }}
+        </div>
+    {% endif %}
 {% endblock %}

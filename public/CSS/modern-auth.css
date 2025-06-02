@@ -1,0 +1,160 @@
+:root {
+    --auth-bg: #ffffff;
+    --auth-border: rgba(0, 0, 0, 0.1);
+    --auth-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    --input-bg: #ffffff;
+    --input-border: rgba(0, 0, 0, 0.1);
+    --input-focus: var(--primary-color);
+    --text-color: #000000;
+    --link-color: var(--primary-color);
+    --error-color: #ff3366;
+}
+
+#login_form,
+#register_form {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: var(--auth-bg);
+    border: 1px solid var(--auth-border);
+    border-radius: 1rem;
+    box-shadow: var(--auth-shadow);
+    backdrop-filter: blur(8px);
+}
+
+.auth-container {
+    min-height: calc(100vh - 200px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.auth-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 2rem;
+    letter-spacing: -0.02em;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-control,
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    padding: 1rem;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 0.5rem;
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--input-focus);
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+}
+
+.form-control::placeholder,
+input::placeholder {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.btn-save {
+    width: 100%;
+    padding: 1rem;
+    background: var(--primary-color);
+    color: var(--text-color);
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-save:hover {
+    background: #0052a3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.2);
+}
+
+.auth-link {
+    color: var(--link-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.auth-link:hover {
+    color: #0052a3;
+    text-decoration: underline;
+}
+
+#forgot-password {
+    display: block;
+    text-align: center;
+    color: var(--link-color);
+    text-decoration: none;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+#forgot-password:hover {
+    color: #0052a3;
+    text-decoration: underline;
+}
+
+.text-danger {
+    color: var(--error-color);
+    margin: 1rem 0;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.form-text {
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+/* Form errors */
+.invalid-feedback {
+    color: var(--error-color);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.is-invalid {
+    border-color: var(--error-color) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    #login_form,
+    #register_form {
+        padding: 1.5rem;
+    }
+
+    .auth-title {
+        font-size: 2rem;
+    }
+
+    .form-control,
+    input[type="email"],
+    input[type="password"],
+    input[type="text"] {
+        padding: 0.875rem;
+    }
+}

@@ -3,122 +3,187 @@
 {% block title %}Editing profile{% endblock %}
 
 {% block body %}
-<h2 class="text-light text-center mt-6">Modifier le profil</h2>
+<style>
+    .profile-container {
+        max-width: 800px;
+        margin: 60px auto;
+        padding: 20px;
+    }
+
+    .profile-card {
+        background: rgba(31, 31, 31, 0.8);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .profile-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .profile-header {
+        padding: 30px;
+        background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+    }
+
+    .profile-title {
+        color: #4d90fe;
+        font-size: 24px;
+        font-weight: 600;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    .profile-info {
+        padding: 30px;
+        background: rgba(44, 44, 44, 0.5);
+    }
+
+    .info-item {
+        margin-bottom: 25px;
+        position: relative;
+    }
+
+    .info-item label {
+        display: block;
+        font-weight: 600;
+        color: #4d90fe;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+    }
+
+    .info-item input {
+        width: 100%;
+        padding: 15px;
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        color: #fff;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+    }
+
+    .info-item input:focus {
+        background: rgba(0, 0, 0, 0.3);
+        border-color: #4d90fe;
+        box-shadow: 0 0 20px rgba(77, 144, 254, 0.2);
+        outline: none;
+    }
+
+    .forgot-password {
+        display: block;
+        text-align: center;
+        color: #4d90fe;
+        text-decoration: none;
+        font-size: 14px;
+        margin: 15px 0;
+        transition: all 0.3s ease;
+    }
+
+    .forgot-password:hover {
+        color: #3b80e1;
+        text-decoration: none;
+    }
+
+    .profile-actions {
+        padding: 30px;
+        background: rgba(44, 44, 44, 0.7);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .action-btn {
+        display: block;
+        width: 100%;
+        padding: 15px 30px;
+        background: linear-gradient(135deg, #4d90fe 0%, #3b80e1 100%);
+        border: none;
+        border-radius: 12px;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(77, 144, 254, 0.3);
+    }
+
+    .action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(77, 144, 254, 0.4);
+        background: linear-gradient(135deg, #3b80e1 0%, #2a6ed4 100%);
+    }
+
+    .form-error {
+        color: #ff4444;
+        font-size: 14px;
+        margin-top: 5px;
+        text-align: center;
+    }
+
+    @media (max-width: 768px) {
+        .profile-container {
+            margin: 30px 20px;
+        }
+
+        .profile-title {
+            font-size: 20px;
+        }
+
+        .action-btn {
+            padding: 12px 20px;
+            font-size: 14px;
+        }
+    }
+</style>
 
 <div class="profile-container">
-  <div class="profile-card">
-    {{ form_start(edit_profil_form) }}
-    
-    <div class="profile-info">
-      <div class="info-item">
-        {{ form_row(edit_profil_form.email, {
-          'attr': {
-            'class': 'form-control bg-dark text-light border-secondary',
-            'placeholder': 'Adresse e-mail'
-          }
-        }) }}
-      </div>
+    <div class="profile-card">
+        <div class="profile-header">
+            <h2 class="profile-title">Modifier le profil</h2>
+        </div>
+        
+        {{ form_start(edit_profil_form) }}
+        <div class="profile-info">
+            <div class="info-item">
+                {{ form_label(edit_profil_form.email, 'Adresse e-mail') }}
+                {{ form_widget(edit_profil_form.email, {
+                    'attr': {
+                        'class': 'form-control text-white',
+                        'placeholder': 'Votre adresse e-mail'
+                    }
+                }) }}
+                {{ form_errors(edit_profil_form.email) }}
+            </div>
 
-      <div class="d-flex justify-content-center mb-3">
-        <a class="text-center link" aria-current="page" href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a>
-      </div>
+            <a href="{{ path('app_forgot_password_request') }}" class="forgot-password">Mot de passe oublié ?</a>
 
-      {{ form_errors(edit_profil_form) }}
+            {% if form_errors(edit_profil_form) %}
+                <div class="form-error">
+                    {{ form_errors(edit_profil_form) }}
+                </div>
+            {% endif %}
+        </div>
 
-      <div class="profile-actions">
-        {{ form_row(edit_profil_form.save, {
-          'attr': {
-            'class': 'action-btn'
-          }
-        }) }}
-      </div>
+        <div class="profile-actions">
+            {{ form_widget(edit_profil_form.save, {
+                'attr': {
+                    'class': 'action-btn'
+                }
+            }) }}
+        </div>
+        {{ form_end(edit_profil_form) }}
     </div>
-
-    {{ form_end(edit_profil_form) }}
-  </div>
 </div>
-
-<style>
-.profile-container {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-}
-
-.profile-card {
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(10px);
-  border-radius: 15px;
-  padding: 2rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.profile-info {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.info-item input {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  color: #fff;
-  padding: 12px 16px;
-  width: 100%;
-  transition: all 0.3s ease;
-}
-
-.info-item input:focus {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 0, 0, 0.5);
-  box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
-  outline: none;
-}
-
-.info-item label {
-  color: #fff;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  opacity: 0.9;
-  transition: opacity 0.3s ease;
-}
-
-.action-btn {
-  background: linear-gradient(45deg, #ff0000, #ff3333);
-  border: none;
-  border-radius: 8px;
-  color: white;
-  padding: 12px 24px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  transition: all 0.3s ease;
-  width: 100%;
-  text-decoration: none;
-  display: inline-block;
-  text-align: center;
-}
-
-.action-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
-  color: white;
-  text-decoration: none;
-}
-
-.action-btn:active {
-  transform: translateY(0);
-}
-
-@media (max-width: 768px) {
-  .profile-container {
-    margin: 1rem;
-  }
-  
-  .profile-card {
-    padding: 1.5rem;
-  }
-}
-</style>
 {% endblock %}

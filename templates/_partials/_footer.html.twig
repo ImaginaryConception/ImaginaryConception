@@ -1,9 +1,59 @@
-<div class="container-fluid pb-5">
-    <div class="row">
-        <nav class="mt-5 mb-5 d-flex flex-md-row flex-column justify-content-center align-items-center">
-            <a class="mx-md-4 mx-2 mb-3 mb-md-0 text-decoration-none text-center linked fw-bold" href="https://www.linkedin.com/in/anis-imaginary-conception/" target="_blank"><i class="fab fa-linkedin me-2"></i> LinkedIn</a>
-            <a class="mx-md-4 mx-2 mb-3 mb-md-0 text-decoration-none text-center linked fw-bold" href="https://github.com/ImaginaryConception" target="_blank"><i class="fab fa-github me-2"></i> GitHub</a>
-            <a class="mx-md-4 mx-2 text-center{{ route == 'mentions_legales' ? ' nav-active' }} linked fw-bold" href="{{ path('mentions_legales') }}">Legal Notices</a>
-        </nav>
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-content">
+            <!-- Company Info -->
+            <div class="footer-section">
+                <img src="{{ asset('Images/ic.png') }}" alt="Imaginary Conception Logo" class="footer-logo">
+                <p class="footer-description">Studio de développement spécialisé dans la création de sites web sur mesure et de jeux vidéo innovants.</p>
+                <div class="footer-social">
+                    <a href="https://www.linkedin.com/in/anis-imaginary-conception/" target="_blank" class="social-link">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://github.com/ImaginaryConception" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-section">
+                <h3 class="footer-title">Liens Rapides</h3>
+                <ul class="footer-links">
+                    <li class="footer-link"><a href="{{ path('home') }}"><i class="fas fa-home"></i> Accueil</a></li>
+                    <li class="footer-link"><a href="{{ path('games') }}"><i class="fas fa-gamepad"></i> Jeux</a></li>
+                    <li class="footer-link"><a href="{{ path('services') }}"><i class="fas fa-cogs"></i> Services</a></li>
+                    <li class="footer-link"><a href="{{ path('realisations') }}"><i class="fas fa-briefcase"></i> Portfolio</a></li>
+                    <li class="footer-link"><a href="{{ path('contact') }}"><i class="fas fa-envelope"></i> Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="footer-section">
+                <h3 class="footer-title">Contact</h3>
+                <div class="contact-info">
+                    <i class="fas fa-envelope"></i>
+                    <span>support@imaginaryconception.com</span>
+                </div>
+                <div class="contact-info">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>France</span>
+                </div>
+            </div>
+
+            <!-- Newsletter -->
+            {# <div class="footer-section">
+                <h3 class="footer-title">Newsletter</h3>
+                <p class="footer-description">Restez informé de nos dernières actualités et mises à jour.</p>
+                <form class="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="Votre email">
+                    <button type="submit" class="newsletter-button">S'abonner</button>
+                </form>
+            </div> #}
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <p>&copy; {{ 'now'|date('Y') }} Imaginary Conception. Tous droits réservés. <a href="{{ path('mentions_legales') }}">Mentions légales</a></p>
+        </div>
     </div>
-</div>
+</footer>

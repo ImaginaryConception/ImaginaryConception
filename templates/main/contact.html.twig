@@ -3,49 +3,172 @@
 {% block title %}Contact{% endblock %}
 
 {% block body %}
-	<style>
-		.platform-link {
-			transition: transform 0.3s ease;
-			display: inline-block;
-		}
-		.platform-link:hover {
-			transform: translateY(-5px);
-		}
-		.platform-logo {
-			width: 100%;
-			max-width: 80px;
-			height: auto;
-			aspect-ratio: 1;
-			padding: 10px;
-			color: white;
-			transition: all 0.3s ease;
-		}
-		.platform-link:hover .platform-logo {
-			color: #ff0000;
-		}
-		@media (max-width: 768px) {
-			.platform-logo {
-				max-width: 60px;
-				padding: 8px;
-			}
-		}
-	</style>
-	<div class="container text-white">
-        <div class="row justify-content-center">
-            <div class="col-md-6 mt-6">
-                <div class="contact-card p-4 rounded-4 mb-4">
-                    <h2 class="text-center mb-4">Contact</h2>
-                    <div class="d-flex flex-column text-center gap-3">
-                        <p class="mb-0"><i class="fa-solid fa-envelope me-2"></i> Email : <a href="mailto:anishamouche@gmail.com" class="text-light">anishamouche@gmail.com</a></p>
-                        <p class="mb-0"><i class="fa-solid fa-envelope me-2"></i> Email 2 : <a href="mailto:anishamouche@gmail.com" class="text-light">support@imaginaryconception.com</a></p>
-                        <p class="mb-0"><i class="fa-solid fa-phone me-2"></i> Téléphone : <a href="tel:+33749430718" class="text-light">+33 7 49 43 07 18</a></p>
-                        <p class="mb-0"><i class="fab fa-github me-2"></i> GitHub : <a href="https://github.com/ImaginaryConception" target="_blank" class="text-light">ImaginaryConception</a></p>
-                        <p class="mb-0"><i class="fab fa-linkedin me-2"></i> LinkedIn : <a href="https://www.linkedin.com/in/anis-imaginary-conception/" target="_blank" class="text-light">Anis Hamouche</a></p>
+<style>
+    .contact-container {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 2rem;
+        margin-top: 2rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .contact-section {
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .contact-section:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .contact-info a {
+        color: #000;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        font-size: 0.95rem;
+    }
+
+    .contact-info a:hover {
+        color: #00806b;
+    }
+
+    .platform-link {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 0.8rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .platform-link:hover {
+        transform: translateY(-5px) scale(1.05);
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .platform-logo {
+        width: 100%;
+        max-width: 70px;
+        height: auto;
+        aspect-ratio: 1;
+        filter: brightness(1.1);
+        transition: all 0.3s ease;
+    }
+
+    .quote-btn {
+        background: linear-gradient(45deg, #00ffcc, #00cc99);
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        color: #fff;
+    }
+
+    .quote-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 255, 204, 0.3);
+        background: linear-gradient(45deg, #00cc99, #00ffcc);
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .form-control {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        border-radius: 10px;
+        padding: 0.8rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: #00ffcc;
+        box-shadow: 0 0 0 0.2rem rgba(0, 255, 204, 0.25);
+        color: white;
+    }
+
+    .form-label {
+        color: #fff;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .platform-logo {
+            max-width: 50px;
+        }
+        .contact-container {
+            padding: 1rem;
+        }
+        .quote-btn {
+            padding: 0.8rem 1.5rem;
+            font-size: 0.8rem;
+        }
+    }
+</style>
+
+<div class="container text-white">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="contact-container">
+                <h2 class="text-center mb-4" style="font-weight: 600; letter-spacing: 1px;">Contact</h2>
+                
+                <div class="contact-section contact-info">
+                    <div class="d-flex flex-column gap-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fa-solid fa-envelope me-3" style="color: #00806b;"></i>
+                            <div>
+                                <a href="mailto:anishamouche@gmail.com">anishamouche@gmail.com</a>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="fa-solid fa-envelope me-3" style="color: #00806b;"></i>
+                            <div>
+                                <a href="mailto:support@imaginaryconception.com">support@imaginaryconception.com</a>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="fa-solid fa-phone me-3" style="color: #00806b;"></i>
+                            <div>
+                                <a href="tel:+33749430718">+33 7 49 43 07 18</a>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="fab fa-github me-3" style="color: #00806b;"></i>
+                            <div>
+                                <a href="https://github.com/ImaginaryConception" target="_blank">ImaginaryConception</a>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="fab fa-linkedin me-3" style="color: #00806b;"></i>
+                            <div>
+                                <a href="https://www.linkedin.com/in/anis-imaginary-conception/" target="_blank">Anis Hamouche</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="platforms-section mt-4">
-                    <h3 class="text-center mb-4">Mes plateformes de vente</h3>
+                <div class="contact-section">
+                    <h3 class="text-center mb-4" style="font-size: 1.5rem; font-weight: 500; color: #000;">Mes plateformes de vente</h3>
                     <div class="d-flex justify-content-center gap-4 flex-wrap">
                         <a href="https://comeup.com/fr/service/470690/creer-ton-site-web-pro-rapide-responsive-et-optimise" target="_blank" class="platform-link" data-bs-toggle="tooltip" title="ComeUp">
                             <img src="{{ asset('Images/ComeUp.jpg') }}" alt="ComeUp" class="platform-logo">
@@ -59,32 +182,33 @@
                     </div>
                 </div>
 
-                <div class="text-center mt-4">
-                    <a href="{{ path('website') }}" class="btn btn-light btn-lg"><i class="fas fa-file-signature me-2"></i>Demander un devis</a>
+                <div class="text-center mb-5">
+                    <a href="{{ path('website') }}" class="quote-btn" style="text-decoration: none;">
+                        <i class="fas fa-file-signature me-2"></i>Demander un devis
+                    </a>
                 </div>
 
-                <div id="contact_form" class="row my-5 mx-auto">
+                <div class="contact-section">
+                    {{ form_start(contact_form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+                    {{ form_errors(contact_form) }}
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            {{ form_row(contact_form.lastname, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(contact_form.firstname, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
 
-                    {{ form_start( contact_form ) }}
+                    {{ form_row(contact_form.email, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_row(contact_form.object, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_row(contact_form.message, {'attr': {'class': 'form-control', 'rows': '5'}}) }}
 
-                    {{ form_errors( contact_form ) }}
-
-                    {{ form_row( contact_form.lastname ) }}
-
-                    {{ form_row( contact_form.firstname ) }}
-
-                    {{ form_row( contact_form.email) }}
-
-                    {{ form_row( contact_form.object ) }}
-
-                    {{ form_row( contact_form.message ) }}
-
-                    {# {{ form_row( contact_form.save ) }} #}
-
-                    {{ form_end( contact_form ) }}
-
+                    {{ form_end(contact_form) }}
                 </div>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}

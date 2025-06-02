@@ -6,7 +6,7 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-10">
-            <div class="card bg-dark text-light border-light">
+            <div class="card bg-dark text-white border-light">
                 <div class="card-header">
                     <h1 class="h3 mb-0 text-center">Générer une facture</h1>
                 </div>
@@ -18,16 +18,16 @@
                         <h2 class="h4 mb-3">Informations du client</h2>
                         <div class="row g-3">
                             <div class="col-md-6">
-                                {{ form_row(invoiceForm.clientName, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                                {{ form_row(invoiceForm.clientName, {'attr': {'class': 'form-control bg-dark text-white border-light'}}) }}
                             </div>
                             <div class="col-md-6">
-                                {{ form_row(invoiceForm.clientEmail, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                                {{ form_row(invoiceForm.clientEmail, {'attr': {'class': 'form-control bg-dark text-white border-light'}}) }}
                             </div>
                             <div class="col-12">
-                                {{ form_row(invoiceForm.clientAddress, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                                {{ form_row(invoiceForm.clientAddress, {'attr': {'class': 'form-control bg-dark text-white border-light'}}) }}
                             </div>
                             <div class="col-md-6">
-                                {{ form_row(invoiceForm.clientSiret, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                                {{ form_row(invoiceForm.clientSiret, {'attr': {'class': 'form-control bg-dark text-white border-light'}}) }}
                             </div>
                         </div>
                     </div>
@@ -37,13 +37,13 @@
                         <h2 class="h4 mb-3">Informations de la facture</h2>
                         <div class="row g-3">
                             <div class="col-md-6">
-                                {{ form_row(invoiceForm.invoiceDate, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                                {{ form_row(invoiceForm.invoiceDate, {'attr': {'class': 'form-control bg-dark text-white border-light'}}) }}
                             </div>
                             <div class="col-md-6">
-                                {{ form_row(invoiceForm.invoiceNumber, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                                {{ form_row(invoiceForm.invoiceNumber, {'attr': {'class': 'form-control bg-dark text-white border-light'}}) }}
                             </div>
                             <div class="col-12">
-                                {{ form_row(invoiceForm.invoiceTitle, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                                {{ form_row(invoiceForm.invoiceTitle, {'attr': {'class': 'form-control bg-dark text-white border-light'}}) }}
                             </div>
                         </div>
                     </div>
@@ -53,13 +53,13 @@
                         <h2 class="h4 mb-3">Détails du service</h2>
                         <div class="row g-3">
                             <div class="col-12">
-                                {{ form_row(invoiceForm.serviceDescription, {'attr': {'class': 'form-control bg-dark text-light border-light', 'rows': '4'}}) }}
+                                {{ form_row(invoiceForm.serviceDescription, {'attr': {'class': 'form-control bg-dark text-white border-light', 'rows': '4'}}) }}
                             </div>
                             <div class="col-md-6">
-                                {{ form_row(invoiceForm.quantity, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                                {{ form_row(invoiceForm.quantity, {'attr': {'class': 'form-control bg-dark text-white border-light'}}) }}
                             </div>
                             <div class="col-md-6">
-                                {{ form_row(invoiceForm.unitPrice, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                                {{ form_row(invoiceForm.unitPrice, {'attr': {'class': 'form-control bg-dark text-white border-light'}}) }}
                             </div>
                         </div>
                     </div>
@@ -69,10 +69,10 @@
                         <h2 class="h4 mb-3">Conditions de paiement</h2>
                         <div class="row g-3">
                             <div class="col-12">
-                                {{ form_row(invoiceForm.paymentTerms, {'attr': {'class': 'form-control bg-dark text-light border-light', 'rows': '3'}}) }}
+                                {{ form_row(invoiceForm.paymentTerms, {'attr': {'class': 'form-control bg-dark text-white border-light', 'rows': '3'}}) }}
                             </div>
                             <div class="col-12">
-                                {{ form_row(invoiceForm.latePenalty, {'attr': {'class': 'form-control bg-dark text-light border-light'}}) }}
+                                {{ form_row(invoiceForm.latePenalty, {'attr': {'class': 'form-control bg-dark text-white border-light'}}) }}
                             </div>
                         </div>
                     </div>

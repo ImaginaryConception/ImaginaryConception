@@ -72,9 +72,9 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('recaptcha', ReCaptchaType::class)
             ->add('save', SubmitType::class, [
-                'label' => 'Register',
+                'label' => 'S\'inscrire',
                 'attr' => [
-                    'class' => 'btn-save d-flex justify-content-center',
+                    'class' => 'btn-save text-white mt-3 d-flex justify-content-center',
                 ],
             ])
         ;

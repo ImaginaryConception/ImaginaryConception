@@ -106,7 +106,7 @@ class ContactFormType extends AbstractType
             ->add('save', SubmitType::class, [
                 'label' => 'Envoyer',
                 'attr' => [
-                    'class' => 'w-100 mt-3',
+                    'class' => 'w-100 mt-3 btn btn-primary quote-btn',
                 ],
             ])
         ;

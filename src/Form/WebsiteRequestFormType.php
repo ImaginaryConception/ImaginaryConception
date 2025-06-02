@@ -189,7 +189,7 @@ class WebsiteRequestFormType extends AbstractType
                 ],
             ])
             ->add('specificFunctions', ChoiceType::class, [
-                'label' => 'Fonctions spécifiques souhaitées',
+                'label' => false,
                 'choices' => [
                     'Formulaire de contact' => 'contact_form',
                     'Réservation' => 'reservation',
